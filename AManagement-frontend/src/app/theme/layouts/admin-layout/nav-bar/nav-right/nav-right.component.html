@@ -12,7 +12,7 @@
     <div class="dropdown-menu dropdown-notification dropdown-menu-end pc-h-dropdown" ngbDropdownMenu>
       <div class="dropdown-header d-flex align-items-center justify-content-between">
         <h5 class="m-0">Notification</h5>
-        <a class="bg-transparent"><i class="text-success d-flex f-20" antIcon theme="outline" type="check-circle"></i></a>
+        <a class="bg-transparent"><i class="text-success d-flex f-20" antIcon theme="outline" type="check-circle" ></i ></a>
       </div>
       <div class="dropdown-divider"></div>
       <ng-scrollbar style="min-height: 300px" visibility="hover">
@@ -104,7 +104,7 @@
             <h6 class="mb-0">JWT User</h6>
             <span>UI/UX Designer</span>
           </div>
-          <a href="javascript:" class="bg-transparent"><i class="d-flex f-20" antIcon theme="outline" type="logout"></i></a>
+          <a href="javascript:" class="bg-transparent" (click)="onLogout()"><i class="d-flex f-20" antIcon theme="outline" type="logout"></i></a>
         </div>
       </div>
       <ul ngbNav #nav="ngbNav" class="nav drp-tabs nav-fill nav-tabs">
@@ -123,7 +123,7 @@
               </div>
             }
             <div>
-              <a class="dropdown-item">
+              <a class="dropdown-item" (click)="onLogout()">
                 <i class="text-muted" antIcon theme="outline" type="logout"></i>
                 <span>Logout</span>
               </a>

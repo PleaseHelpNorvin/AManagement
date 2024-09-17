@@ -25,22 +25,35 @@ export default class LoginComponent {
   onSubmit(form: NgForm) {
     if (form.valid) {
       const { email, password } = form.value;
-
+  
       this.authService.login(email, password).subscribe(
         response => {
-          // Store token and user role if needed
-          localStorage.setItem('authToken', response.token);
-          localStorage.setItem('userRole', response.role);
-
-          // Redirect based on role or other logic
-          if (response.role === 'admin') {
-            this.router.navigate(['/dashboard/default']);
+          // Log the response to verify structure
+          console.log('API response:', response);
+  
+          // Access token and role from the data object
+          const token = response.data?.token;
+          const role = response.data?.role;
+  
+          if (token && role) {
+            // Use the AuthService to save the token and role
+            this.authService.saveToken(token);
+            this.authService.saveRole(role);
+  
+            // Redirect based on role
+            if (role === 'admin') {
+              console.log('Admin successfully logged in', response);
+              this.router.navigate(['/dashboard/default']);
+            } else {
+              console.log('User successfully logged in', response);
+              this.router.navigate(['/user-dashboard']);
+            }
           } else {
-            this.router.navigate(['/user-dashboard']); // Adjust path as necessary
+            console.error('Token or role not found in the response');
+            this.errorMessage = 'Login failed. Invalid response from server.';
           }
         },
         error => {
-          // Handle login error
           console.error('Login failed', error);
           this.errorMessage = 'Login failed. Please check your credentials and try again.';
         }

@@ -1,6 +1,7 @@
 // angular import
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router  } from '@angular/router';
+import { AuthService } from 'src/app/demo/authentication/login/auth.service';
 
 // project import
 import { SharedModule } from 'src/app/theme/shared/shared.module';
@@ -42,7 +43,11 @@ export class NavRightComponent {
   windowWidth: number;
   screenFull: boolean = true;
 
-  constructor(private iconService: IconService) {
+  constructor(
+    private iconService: IconService, 
+    private authService: AuthService,
+    private router: Router
+    ) {
     this.windowWidth = window.innerWidth;
     this.iconService.addIcon(
       ...[
@@ -108,4 +113,9 @@ export class NavRightComponent {
       title: 'History'
     }
   ];
+  // Add logout method
+  onLogout() {
+    this.authService.logout(); // Call the logout method from AuthService
+    this.router.navigate(['/login']); // Redirect to login page after logout
+  }
 }

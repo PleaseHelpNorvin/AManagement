@@ -3,6 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
+import { tap } from 'rxjs/operators';
+
 
 @Injectable({
   providedIn: 'root'
@@ -14,13 +16,12 @@ export class AuthService {
   constructor(private http: HttpClient) { }
 
   login(email: string, password: string) {
-    return this.http.post<any>(this.apiUrl, { email, password })
-      .pipe(
-        catchError(error => {
-          console.error('Login failed', error);
-          return throwError(error);
-        })
-      );
+    return this.http.post<any>(this.apiUrl, { email, password }).pipe(
+      catchError(error => {
+        console.error('Login failed', error);
+        return throwError(error);
+      })
+    );
   }
 
   saveToken(token: string) {
