@@ -29,7 +29,7 @@ export default class LoginComponent {
       this.authService.login(email, password).subscribe(
         response => {
           // Log the response to verify structure
-          console.log('API response:', response);
+         // console.log('API response:', response);
   
           // Access token and role from the data object
           const token = response.data?.token;
@@ -42,11 +42,14 @@ export default class LoginComponent {
   
             // Redirect based on role
             if (role === 'admin') {
-              console.log('Admin successfully logged in', response);
+              alert("Admin Logged successfully!")
+            //  console.log('Admin successfully logged in', response);
               this.router.navigate(['/dashboard/default']);
             } else {
-              console.log('User successfully logged in', response);
-              this.router.navigate(['/user-dashboard']);
+              alert("Please Log in on your mobile device")
+
+              //console.log('User successfully logged in', response);
+              //this.router.navigate(['/user-dashboard']);
             }
           } else {
             console.error('Token or role not found in the response');

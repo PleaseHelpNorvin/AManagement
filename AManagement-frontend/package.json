@@ -30,6 +30,7 @@
     "@popperjs/core": "^2.11.8",
     "apexcharts": "^3.49.2",
     "bootstrap": "^5.3.3",
+    "crypto-js": "^4.2.0",
     "install": "^0.13.0",
     "ng-apexcharts": "^1.11.0",
     "ngx-scrollbar": "^15.0.1",

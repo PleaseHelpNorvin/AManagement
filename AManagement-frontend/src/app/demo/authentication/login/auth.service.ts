@@ -3,8 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
-import { tap } from 'rxjs/operators';
-
+import * as CryptoJS from 'crypto-js';
 
 @Injectable({
   providedIn: 'root'
@@ -24,8 +23,14 @@ export class AuthService {
     );
   }
 
+  hashToken(token: string) {
+    return CryptoJS.SHA256(token).toString(CryptoJS.enc.Hex); // Hashing the token
+
+  }
+
   saveToken(token: string) {
-    localStorage.setItem('authToken', token);
+    const hashedToken = this.hashToken(token);
+    localStorage.setItem('authToken', hashedToken);
   }
 
   getToken(): string | null {
