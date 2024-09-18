@@ -25,7 +25,6 @@ export class AuthService {
 
   hashToken(token: string) {
     return CryptoJS.SHA256(token).toString(CryptoJS.enc.Hex); // Hashing the token
-
   }
 
   saveToken(token: string) {
