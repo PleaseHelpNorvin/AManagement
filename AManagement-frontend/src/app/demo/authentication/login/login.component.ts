@@ -20,7 +20,14 @@ export default class LoginComponent {
   password: string = '';
   errorMessage: string | null = null;
 
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(private authService: AuthService, private router: Router) {
+    window.addEventListener('storage', (event) => {
+      if (event.key === 'authToken' && event.newValue === null) {
+        // Token removed from another tab or browser
+        this.handleLogout();
+      }
+    });
+  }
 
   onSubmit(form: NgForm) {
     if (form.valid) {
@@ -28,28 +35,24 @@ export default class LoginComponent {
   
       this.authService.login(email, password).subscribe(
         response => {
-          // Log the response to verify structure
-         // console.log('API response:', response);
+          console.log('API response:', response);
   
-          // Access token and role from the data object
-          const token = response.data?.token;
-          const role = response.data?.role;
+          // Directly access token and role without `data`
+          const token = response.token;
+          const role = response.role;
   
           if (token && role) {
-            // Use the AuthService to save the token and role
             this.authService.saveToken(token);
             this.authService.saveRole(role);
   
-            // Redirect based on role
             if (role === 'admin') {
-              alert("Admin Logged successfully!")
-            //  console.log('Admin successfully logged in', response);
+              alert("Admin Logged successfully!");
+              console.log('Admin successfully logged in', response);
               this.router.navigate(['/dashboard/default']);
             } else {
-              alert("Please Log in on your mobile device")
-
-              //console.log('User successfully logged in', response);
-              //this.router.navigate(['/user-dashboard']);
+              alert("Please Log in on your mobile device");
+              // Uncomment if there's a route for regular users
+              // this.router.navigate(['/user-dashboard']);
             }
           } else {
             console.error('Token or role not found in the response');
@@ -62,5 +65,10 @@ export default class LoginComponent {
         }
       );
     }
+  }
+  
+  handleLogout() {
+    alert('You have been logged out from another tab or browser.');
+    this.router.navigate(['/login']);
   }
 }

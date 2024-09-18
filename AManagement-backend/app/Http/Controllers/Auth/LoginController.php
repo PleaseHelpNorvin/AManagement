@@ -19,29 +19,35 @@ class LoginController extends ApiController
             'password' => 'required',
         ]);
 
+
+        $existingUser = User::where('email', $request->email)->first();
         
-        // Attempt to authenticate the user
-        if (Auth::attempt($credentials)) {
-            $user = Auth::user();
-
-            // Generate a token for the user
-            $token = $user->createToken('Personal Access Token')->plainTextToken;
-
-            // Determine role and respond accordingly
-            if ($user->isAdmin()) {
-                return $this->successResponse([
-                    'token' => $token,
-                    'role' => 'admin'
-                ], 'Admin logged in successfully');
+        if ($existingUser) {
+            
+            if ($existingUser->is_logged_in) {
+                $existingUser->revokeAdminTokens();
+                $existingUser->update(['is_logged_in' => false]);
             }
-
-            if ($user->isUser()) {
-                return $this->successResponse([
+    
+            if (Auth::attempt($credentials)) {
+                $user = Auth::user();
+    
+                $user->update(['is_logged_in' => true]);
+    
+                if ($user->isAdmin()) {
+                    User::all()->each(function ($admin) {
+                        $admin->revokeAdminTokens();
+                    });
+                }
+    
+                $user->revokeAdminTokens();
+                $token = $user->createToken('Personal Access Token')->plainTextToken;
+    
+                return response()->json([
                     'token' => $token,
-                    'role' => 'user'
-                ], 'User logged in successfully');
+                    'role' => $user->isAdmin() ? 'admin' : 'user'
+                ], 200);
             }
-            return $this->forbiddenResponse(null, 'Unauthorized');
         }
 
         // Return error if authentication fails

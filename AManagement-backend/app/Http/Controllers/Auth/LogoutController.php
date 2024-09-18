@@ -18,8 +18,15 @@ class LogoutController extends ApiController
             // Revoke all tokens for the authenticated user
             $user = Auth::user();
             if ($user) {
-                $user->tokens()->delete(); // Ensure the User model has the tokens() method
-                return $this->successResponse(null, 'Successfully logged out.');
+
+                $user->update(['is_logged_in' => false]);
+                
+                $request->user()->currentAccessToken()->delete();
+                // $user->tokens()->delete(); // Ensure the User model has the tokens() method
+                return $this->successResponse(
+                    $user->is_logged_in,
+                    'Successfully logged out.'
+                );
             } else {
                 return $this->errorResponse(null, 'User not authenticated.', 401);
             }

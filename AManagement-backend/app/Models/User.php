@@ -21,7 +21,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role'
+        'role',
+        'is_logged_in',
     ];
 
     /**
@@ -58,5 +59,21 @@ class User extends Authenticatable
     
     public function isUser(){
         return $this->role === 0;
+    }
+
+    public function revokeAllTokens()
+    {
+        $this->tokens->each(function ($token) {
+            $token->delete();
+        });
+    }
+
+    public function revokeAdminTokens()
+    {
+        if ($this->isAdmin()) {
+            $this->tokens->each(function ($token) {
+                $token->delete();
+            });
+        }
     }
 }

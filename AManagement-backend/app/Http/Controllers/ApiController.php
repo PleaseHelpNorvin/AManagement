@@ -30,4 +30,12 @@ class ApiController extends Controller
             'data' => $data
         ], $status);
     }
+    public function InternalServerErrorResponse($data = null, $message = 'Error', $statusCode = 500)
+{
+    return Response::json([
+        'success' => false,
+        'message' => $message,
+        'data'    => $data
+    ], $statusCode);
+}
 }

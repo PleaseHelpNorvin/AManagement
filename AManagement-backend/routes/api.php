@@ -12,24 +12,11 @@ use Illuminate\Support\Facades\Route;
 Route::post('/login',[LoginController::class, 'login'])->name('login');
 Route::post('/register',[RegisterController::class, 'register'])->name('register');
 
-// Protected routes
-Route::middleware('auth:sanctum')->group(function(){
-    //user profile
-    Route::get('/profile/user', function (Request $request) {
-        return $request->user();
-    });
-    //user dashboard
+Route::middleware('auth:sanctum')->group(function() {
     Route::get('/home/user', [HomeController::class, 'userHome']);
-    //logout
-    
+    Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
 });
 
-Route::middleware('auth:sanctum', AdminMiddleware::class)->group(function(){
-    //admin profile
-    Route::get('/profile/admin', function (Request $request) {
-        return $request->user();
-    }); 
-    //admin dashboard
+Route::middleware(['auth:sanctum', 'admin'])->group(function() {
     Route::get('/home/admin', [HomeController::class, 'adminHome']);
-    Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
 });

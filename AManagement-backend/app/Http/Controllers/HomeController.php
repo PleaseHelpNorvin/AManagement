@@ -18,11 +18,12 @@ class HomeController extends ApiController
             }
 
             return $this->successResponse([
-                'redirect_url' => url('/home/admin')
+                'admin_info' => $request->user(),
+                // 'redirect_url' => url('/home/admin')
             ], 'Admin redirect URL provided');
 
         } catch (\Exception $e) {
-            return $this->errorResponse(null, 'Something went wrong');
+            return $this->InternalServerErrorResponse(null, 'Something went wrong');
         }
     }
 
