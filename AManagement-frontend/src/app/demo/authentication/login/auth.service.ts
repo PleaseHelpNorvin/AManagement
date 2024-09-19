@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient,HttpHeaders  } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { catchError } from 'rxjs/operators';
+import { catchError, tap } from 'rxjs/operators';
 import { throwError, Observable  } from 'rxjs';
 import { Router } from '@angular/router';
-
+// import { tap } from 'rxjs/operators';
+ 
 
 @Injectable({
   providedIn: 'root'
@@ -27,6 +28,7 @@ export class AuthService {
   logout(): Observable<any> {
     const token = localStorage.getItem('token'); // or from wherever you store your token
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
     return this.http.post(`${this.apiUrl}/logout`, {}, { headers });
   }
 

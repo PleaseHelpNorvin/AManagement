@@ -128,7 +128,7 @@ export class NavRightComponent {
         .subscribe(
             response => {
                 console.log('Logout successful', response);
-                this.router.navigate(['/login']);
+                this.authService.clearAuth();
             },
             error => {
                 console.error('Logout failed:', error);
