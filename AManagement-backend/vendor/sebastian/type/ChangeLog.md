@@ -2,15 +2,12 @@
 
 All notable changes are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
-<<<<<<< HEAD
-=======
 ## [5.1.0] - 2024-09-17
 
 ### Added
 
 * Added `ReflectionMapper::fromPropertyType()` for mapping `\ReflectionProperty` to a `Type` object
 
->>>>>>> Norvin-dev
 ## [5.0.1] - 2024-07-03
 
 ### Changed
