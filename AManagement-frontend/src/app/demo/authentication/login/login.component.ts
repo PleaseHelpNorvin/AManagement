@@ -28,28 +28,23 @@ export default class LoginComponent {
   
       this.authService.login(email, password).subscribe(
         response => {
-          // Log the response to verify structure
-         // console.log('API response:', response);
-  
-          // Access token and role from the data object
-          const token = response.data?.token;
-          const role = response.data?.role;
+          // console.log('API response:', response);
+          // Access token and role from the response (no data object)
+          const token = response.token;
+          const role = response.role;
   
           if (token && role) {
-            // Use the AuthService to save the token and role
+            // Save token and role
             this.authService.saveToken(token);
             this.authService.saveRole(role);
   
             // Redirect based on role
             if (role === 'admin') {
-              alert("Admin Logged successfully!")
-            //  console.log('Admin successfully logged in', response);
+              alert("Admin logged in successfully!");
               this.router.navigate(['/dashboard/default']);
             } else {
-              alert("Please Log in on your mobile device")
-
-              //console.log('User successfully logged in', response);
-              //this.router.navigate(['/user-dashboard']);
+              alert("Please log in on your mobile device.");
+              // this.router.navigate(['/user-dashboard']);
             }
           } else {
             console.error('Token or role not found in the response');
@@ -63,4 +58,17 @@ export default class LoginComponent {
       );
     }
   }
+  // onLogout() {
+  //   this.authService.logout().subscribe(
+  //     () => {
+  //       this.authService.clearAuth();
+  //       this.router.navigate(['/login']); // Redirect to login page or any other page
+  //     },
+  //     error => {
+  //       console.error('Logout failed', error);
+  //       // Handle error, e.g., show an error message
+  //     }
+  //   );
+  // }
+
 }

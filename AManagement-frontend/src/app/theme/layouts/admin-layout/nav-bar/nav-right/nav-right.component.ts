@@ -2,6 +2,11 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { RouterModule, Router  } from '@angular/router';
 import { AuthService } from 'src/app/demo/authentication/login/auth.service';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
+
+
+
 
 // project import
 import { SharedModule } from 'src/app/theme/shared/shared.module';
@@ -46,6 +51,7 @@ export class NavRightComponent {
   constructor(
     private iconService: IconService, 
     private authService: AuthService,
+    private http: HttpClient,
     private router: Router
     ) {
     this.windowWidth = window.innerWidth;
@@ -113,9 +119,22 @@ export class NavRightComponent {
       title: 'History'
     }
   ];
-  // Add logout method
+
   onLogout() {
-    this.authService.logout(); // Call the logout method from AuthService
-    this.router.navigate(['/login']); // Redirect to login page after logout
+    const token = localStorage.getItem('authToken'); // Correct token key
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    
+    this.http.post(`${environment.apiUrl}/logout`, {}, { headers })
+        .subscribe(
+            response => {
+                console.log('Logout successful', response);
+                this.router.navigate(['/login']);
+            },
+            error => {
+                console.error('Logout failed:', error);
+                // Handle logout failure
+            }
+        );
   }
+
 }

@@ -27,5 +27,10 @@ class AppServiceProvider extends ServiceProvider
     {
         // Register your middleware
         $router->aliasMiddleware('admin', AdminMiddleware::class);
+
+        $middleware = [
+            // Other global middleware
+            \App\Http\Middleware\CorsMiddleware::class,
+        ];
     }
 }

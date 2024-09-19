@@ -1,21 +1,22 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient,HttpHeaders  } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { catchError } from 'rxjs/operators';
-import { throwError } from 'rxjs';
-import * as CryptoJS from 'crypto-js';
+import { throwError, Observable  } from 'rxjs';
+import { Router } from '@angular/router';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  private apiUrl = `${environment.apiUrl}/login`;
+  private apiUrl = `${environment.apiUrl}`;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private router: Router) { }
 
   login(email: string, password: string) {
-    return this.http.post<any>(this.apiUrl, { email, password }).pipe(
+    return this.http.post<any>(`${this.apiUrl}/login`, { email, password }).pipe(
       catchError(error => {
         console.error('Login failed', error);
         return throwError(error);
@@ -23,25 +24,25 @@ export class AuthService {
     );
   }
 
-  hashToken(token: string) {
-    return CryptoJS.SHA256(token).toString(CryptoJS.enc.Hex); // Hashing the token
-
+  logout(): Observable<any> {
+    const token = localStorage.getItem('token'); // or from wherever you store your token
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.post(`${this.apiUrl}/logout`, {}, { headers });
   }
 
   saveToken(token: string) {
-    const hashedToken = this.hashToken(token);
-    localStorage.setItem('authToken', hashedToken);
+    localStorage.setItem('authToken', token);
   }
 
-  getToken(): string | null {
-    return localStorage.getItem('authToken');
+  getToken() {
+    return localStorage.getItem('authToken') || '';
   }
 
   saveRole(role: string) {
     localStorage.setItem('userRole', role);
   }
 
-  getRole(): string | null {
+  getRole() {
     return localStorage.getItem('userRole');
   }
 
@@ -53,8 +54,14 @@ export class AuthService {
     return this.getRole() === 'admin';
   }
 
-  logout() {
+  clearAuth() {
     localStorage.removeItem('authToken');
     localStorage.removeItem('userRole');
+    this.router.navigate(['/login']);
+  }
+
+   // Optional: If you want to manually update local status
+   updateLocalStatus(isLoggedIn: boolean) {
+    // Implement your logic here if you need to update any local state
   }
 }

@@ -15,16 +15,20 @@ export class DashboardService {
   constructor(private http: HttpClient, private authService: AuthService) { }
 
   getAdminStatus() {
+    const token = this.authService.getToken();
+    console.log('Retrieved Token:', token); // Add this line for debugging
     const headers = new HttpHeaders({
-      'Authorization': `Bearer ${this.authService.getToken()}`
+      'Authorization': `Bearer ${token}`
     });
   
-    return this.http.get(`${environment.apiUrl}/home/admin`, { headers }).pipe(
+    console.log('Request Headers:', headers); // Add this line for debugging
+  
+    return this.http.get(this.adminStatusUrl, { headers }).pipe(
       catchError(error => {
         console.error('Failed to fetch admin status', error);
         return throwError(error);
       })
     );
-  }  
+  }
   
 }

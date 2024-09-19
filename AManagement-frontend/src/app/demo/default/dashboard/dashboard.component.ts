@@ -1,6 +1,7 @@
 // angular import
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { DashboardService } from 'src/app/demo/default/dashboard/service/dashboard.service';
 
 // project import
 import tableData from 'src/fake-data/default-data.json';
@@ -30,9 +31,10 @@ import { FallOutline, GiftOutline, MessageOutline, RiseOutline, SettingOutline }
 })
 export class DefaultComponent {
   // constructor
-  constructor(private iconService: IconService) {
+  constructor(private iconService: IconService, private dashboardService: DashboardService) {
     this.iconService.addIcon(...[RiseOutline, FallOutline, SettingOutline, GiftOutline, MessageOutline]);
   }
+  isLoggedIn: boolean = false;
 
   recentOrder = tableData;
 
@@ -105,4 +107,20 @@ export class DefaultComponent {
       percentage: '16%'
     }
   ];
+
+  ngOnInit() {
+    this.dashboardService.getAdminStatus().subscribe(
+      
+      isLoggedIn => {
+        console.log('Admin Status Response:', isLoggedIn); 
+        this.isLoggedIn = isLoggedIn === 1; 
+      },
+
+      
+      error => {
+        console.error('Failed to fetch admin status', error);
+        // Optionally, handle error state
+      }
+    );
+  }
 }
