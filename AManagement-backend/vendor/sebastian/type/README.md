@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 [![Latest Stable Version](https://poser.pugx.org/sebastian/type/v/stable.png)](https://packagist.org/packages/sebastian/type)
+=======
+[![Latest Stable Version](https://poser.pugx.org/sebastian/type/v)](https://packagist.org/packages/sebastian/type)
+>>>>>>> Norvin-dev
 [![CI Status](https://github.com/sebastianbergmann/type/workflows/CI/badge.svg)](https://github.com/sebastianbergmann/type/actions)
 [![codecov](https://codecov.io/gh/sebastianbergmann/type/branch/main/graph/badge.svg)](https://codecov.io/gh/sebastianbergmann/type)
 

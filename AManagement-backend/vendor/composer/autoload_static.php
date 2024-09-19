@@ -333,8 +333,13 @@ class ComposerStaticIniteba04bbb24b3180d2a6614993a886c4b
         ),
         'Psr\\Http\\Message\\' => 
         array (
+<<<<<<< HEAD
             0 => __DIR__ . '/..' . '/psr/http-message/src',
             1 => __DIR__ . '/..' . '/psr/http-factory/src',
+=======
+            0 => __DIR__ . '/..' . '/psr/http-factory/src',
+            1 => __DIR__ . '/..' . '/psr/http-message/src',
+>>>>>>> Norvin-dev
         ),
         'Psr\\Http\\Client\\' => 
         array (

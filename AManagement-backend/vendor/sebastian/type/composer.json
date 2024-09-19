@@ -20,7 +20,11 @@
         "php": ">=8.2"
     },
     "require-dev": {
+<<<<<<< HEAD
         "phpunit/phpunit": "^11.0"
+=======
+        "phpunit/phpunit": "^11.3"
+>>>>>>> Norvin-dev
     },
     "config": {
         "platform": {
@@ -45,7 +49,11 @@
     },
     "extra": {
         "branch-alias": {
+<<<<<<< HEAD
             "dev-main": "5.0-dev"
+=======
+            "dev-main": "5.1-dev"
+>>>>>>> Norvin-dev
         }
     }
 }

@@ -1,0 +1,38 @@
+<div class="row">
+    <div class="col-sm-12">
+        <div class="mb-1 float-end">
+            <a href="http://" class="btn btn-primary">Add Apartment</a>
+        </div>
+        <div class="card tbl-card" style="width: 100%;">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th>apartment_id</th>
+                            <th>apartment_name</th>
+                            <th>address</th>
+                            <th class="text-end">number_of_units</th>
+                            <th class="text-end">manager_id</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let apartments of apartment">
+                            <td>
+                                <a href="javascript:" class="text-muted">{{apartments.apartment_id}}</a>
+                            </td>
+                            <td>{{apartments.apartment_name}}</td>
+                            <td>
+                                <span class="d-block">
+                                    <i class="badge-circle   f-10 m-r-5"></i>
+                                    {{apartments.address}}
+                                </span>
+                            </td>
+                            <td class="text-end">{{apartments.number_of_units}}</td>
+                            <td class="text-end">{{apartments.manager_id}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

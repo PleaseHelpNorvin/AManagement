@@ -3,7 +3,7 @@
         'name' => 'laravel/laravel',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => 'eae13af031c5077791dae52201c9adc6f19561cd',
+        'reference' => '315567f12e90deb115879dc9c0ef0710fa3ce027',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -388,7 +388,11 @@
         'laravel/laravel' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
+<<<<<<< HEAD
             'reference' => 'eae13af031c5077791dae52201c9adc6f19561cd',
+=======
+            'reference' => '315567f12e90deb115879dc9c0ef0710fa3ce027',
+>>>>>>> Norvin-dev
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -942,9 +946,15 @@
             'dev_requirement' => true,
         ),
         'sebastian/type' => array(
+<<<<<<< HEAD
             'pretty_version' => '5.0.1',
             'version' => '5.0.1.0',
             'reference' => 'fb6a6566f9589e86661291d13eba708cce5eb4aa',
+=======
+            'pretty_version' => '5.1.0',
+            'version' => '5.1.0.0',
+            'reference' => '461b9c5da241511a2a0e8f240814fb23ce5c0aac',
+>>>>>>> Norvin-dev
             'type' => 'library',
             'install_path' => __DIR__ . '/../sebastian/type',
             'aliases' => array(),
