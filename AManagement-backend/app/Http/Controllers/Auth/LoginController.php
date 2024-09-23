@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
 use App\Http\Controllers\ApiController;
-use App\Http\Controllers\Controller;
+// use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -51,7 +51,8 @@ class LoginController extends ApiController
     
                 return response()->json([
                     'token' => $token,
-                    'role' => $user->isAdmin() ? 'admin' : 'user'
+                    'role' => $user->isAdmin() ? 'admin' : 'user',
+                    'is_logged_in' => $user->is_logged_in,
                 ], 200);
             }
         }

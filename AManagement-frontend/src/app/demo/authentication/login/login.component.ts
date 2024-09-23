@@ -46,6 +46,8 @@ export default class LoginComponent {
               alert("Please log in on your mobile device.");
               // this.router.navigate(['/user-dashboard']);
             }
+
+
           } else {
             console.error('Token or role not found in the response');
             this.errorMessage = 'Login failed. Invalid response from server.';
@@ -53,22 +55,11 @@ export default class LoginComponent {
         },
         error => {
           console.error('Login failed', error);
-          this.errorMessage = 'Login failed. Please check your credentials and try again.';
+          this.errorMessage = error;
         }
       );
     }
   }
-  // onLogout() {
-  //   this.authService.logout().subscribe(
-  //     () => {
-  //       this.authService.clearAuth();
-  //       this.router.navigate(['/login']); // Redirect to login page or any other page
-  //     },
-  //     error => {
-  //       console.error('Logout failed', error);
-  //       // Handle error, e.g., show an error message
-  //     }
-  //   );
-  // }
+ 
 
 }
