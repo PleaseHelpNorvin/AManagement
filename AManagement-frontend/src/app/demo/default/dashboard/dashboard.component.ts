@@ -2,9 +2,11 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DashboardService } from 'src/app/demo/default/dashboard/service/dashboard.service';
+import { AuthService } from '../../authentication/login/auth.service';
 
 // project import
 import tableData from 'src/fake-data/default-data.json';
+import { Router } from '@angular/router'; // Import Router
 import { SharedModule } from 'src/app/theme/shared/shared.module';
 import { MonthlyBarChartComponent } from './monthly-bar-chart/monthly-bar-chart.component';
 import { IncomeOverviewChartComponent } from './income-overview-chart/income-overview-chart.component';
@@ -31,7 +33,7 @@ import { FallOutline, GiftOutline, MessageOutline, RiseOutline, SettingOutline }
 })
 export class DefaultComponent {
   // constructor
-  constructor(private iconService: IconService, private dashboardService: DashboardService) {
+  constructor(private iconService: IconService, private dashboardService: DashboardService, private authService: AuthService ,private router: Router ) {
     this.iconService.addIcon(...[RiseOutline, FallOutline, SettingOutline, GiftOutline, MessageOutline]);
   }
   isLoggedIn: boolean = false;
@@ -110,17 +112,29 @@ export class DefaultComponent {
 
   ngOnInit() {
     this.dashboardService.getAdminStatus().subscribe(
-      
       isLoggedIn => {
-        console.log('Admin Status Response:', isLoggedIn); 
-        this.isLoggedIn = isLoggedIn === 1; 
+        console.log('Admin Status Response:', isLoggedIn);
+        this.isLoggedIn = isLoggedIn === 1;
+        // this.authService.updateLocalStatus(this.isLoggedIn); // Update AuthService state
       },
-
-      
       error => {
         console.error('Failed to fetch admin status', error);
-        // Optionally, handle error state
+        if (error.status === 401) { // Check for unauthorized status
+          this.router.navigate(['/login']); // Redirect to login page
+        }
+        // Optionally, handle other error states
       }
     );
+
+    // Subscribe to logout event
+    // this.authService.logoutEvent$.subscribe(() => {
+    //   this.handleLogout();
+    // });
   }
+
+  // handleLogout() {
+  //   console.log('User logged out, updating dashboard state...');
+  //   this.isLoggedIn = false; // Update login status
+  //   this.router.navigate(['/login']); // Redirect to login page
+  // }
 }

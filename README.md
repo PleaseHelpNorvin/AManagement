@@ -1,8 +1,5 @@
-<<<<<<< HEAD
 # AManagement
 still on login phase still buggy
-=======
->>>>>>> 27f7fab9cdd9373569e9ba118af17cf894596f52
 **AManagement set up guide**
 
 1. split a bash terminal in vscode
