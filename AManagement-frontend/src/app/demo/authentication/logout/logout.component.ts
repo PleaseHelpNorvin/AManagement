@@ -20,7 +20,7 @@ export default class LogoutComponent {
   ){}
 
   ngOnInit(){
-    this.onPreventTemplate();
+    // this.onPreventTemplate();
     this.onLogout();
   }
 

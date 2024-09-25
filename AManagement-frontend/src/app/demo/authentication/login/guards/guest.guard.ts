@@ -9,6 +9,7 @@ export const guestGuard: CanActivateFn = (route, state) => {
 
   if (isLoggedIn) {
     // If the user is logged in, redirect them to the dashboard
+    alert("Please Logout first");
     router.navigate(['/dashboard/default']);
     return false;
   }
