@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { LogoutComponent } from './logout.component';
+import LogoutComponent from './logout.component';
+import { CommonModule } from '@angular/common'; // Import necessary modules
 
 describe('LogoutComponent', () => {
   let component: LogoutComponent;
@@ -8,7 +8,8 @@ describe('LogoutComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [LogoutComponent]
+      declarations: [LogoutComponent], // Use 'declarations' instead of 'imports'
+      imports: [CommonModule] // Import any necessary Angular modules
     })
     .compileComponents();
 
