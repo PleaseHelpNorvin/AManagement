@@ -66,6 +66,11 @@ const routes: Routes = [
       {
         path: 'test',
         loadComponent: () => import('./demo/other/test/test.component')
+      },
+      {
+        path: 'logout',
+        loadComponent: () => import('./demo/authentication/logout/logout.component'),
+        canActivate: [authGuard]
       }
     ]
   },
