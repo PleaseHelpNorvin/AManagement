@@ -1,11 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient,HttpHeaders  } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { catchError, tap ,switchMap  } from 'rxjs/operators';
-import { throwError, Observable ,  } from 'rxjs';
+import { catchError, tap, switchMap } from 'rxjs/operators';
+import { throwError, Observable } from 'rxjs';
 import { Router } from '@angular/router';
-// import { tap } from 'rxjs/operators';
- 
 
 @Injectable({
   providedIn: 'root'
@@ -13,22 +11,8 @@ import { Router } from '@angular/router';
 export class AuthService {
 
   private apiUrl = `${environment.apiUrl}`;
-  // private logoutSubject = new Subject<void>();
-  // logoutEvent$ = this.logoutSubject.asObservable();
 
   constructor(private http: HttpClient, private router: Router) { }
-
-  // login(email: string, password: string) {
-  //   return this.http.post<any>(`${this.apiUrl}/login`, { email, password }).pipe(
-  //     catchError(error => {
-  //       const errorMessage = error.error?.message || 'Login failed. Please try again.';
-  //       console.error('Login failed', errorMessage);
-  //       return throwError(errorMessage); 
-  //       // console.error('Login failed', error);
-  //       // return throwError(error);
-  //     })
-  //   );
-  // }
 
   login(email: string, password: string): Observable<any> {
     if (this.isLoggedIn()) {
@@ -38,12 +22,10 @@ export class AuthService {
       return this.logout().pipe(
         switchMap(() => {
           console.log('Successfully logged out the previous session.');
-          // Proceed with new login attempt
           return this.http.post<any>(`${this.apiUrl}/login`, { email, password }).pipe(
             tap(response => {
               this.saveToken(response.token);
               this.saveRole(response.role);
-              // localStorage.setItem('isLoggedIn', response.is_logged_in); // Save is_logged_in
             }),
             catchError(error => {
               const errorMessage = error.error?.message || 'Login failed. Please try again.';
@@ -58,12 +40,10 @@ export class AuthService {
         })
       );
     } else {
-      // Proceed with normal login attempt
       return this.http.post<any>(`${this.apiUrl}/login`, { email, password }).pipe(
         tap(response => {
           this.saveToken(response.token);
           this.saveRole(response.role);
-          // localStorage.setItem('isLoggedIn', response.is_logged_in); // Save is_logged_in
         }),
         catchError(error => {
           const errorMessage = error.error?.message || 'Login failed. Please try again.';
@@ -75,26 +55,26 @@ export class AuthService {
   }
 
   logout(): Observable<any> {
-    const token = localStorage.getItem('token'); // or from wherever you store your token
+    const token = sessionStorage.getItem('authToken');
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
     return this.http.post(`${this.apiUrl}/logout`, {}, { headers });
   }
 
   saveToken(token: string) {
-    localStorage.setItem('authToken', token);
+    sessionStorage.setItem('authToken', token); // Change to sessionStorage
   }
 
   getToken() {
-    return localStorage.getItem('authToken') || '';
+    return sessionStorage.getItem('authToken') || ''; // Change to sessionStorage
   }
 
   saveRole(role: string) {
-    localStorage.setItem('userRole', role);
+    sessionStorage.setItem('userRole', role); // Change to sessionStorage
   }
 
   getRole() {
-    return localStorage.getItem('userRole');
+    return sessionStorage.getItem('userRole'); // Change to sessionStorage
   }
 
   isLoggedIn(): boolean {
@@ -106,12 +86,8 @@ export class AuthService {
   }
 
   clearAuth() {
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('userRole');
-    localStorage.removeItem('isloggedIn');
-    // this.logoutSubject.next(); 
+    sessionStorage.removeItem('authToken'); // Change to sessionStorage
+    sessionStorage.removeItem('userRole'); // Change to sessionStorage
     this.router.navigate(['/login']);
   }
-
-   
 }

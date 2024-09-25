@@ -5,9 +5,8 @@ import { AuthService } from 'src/app/demo/authentication/login/auth.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 
-
-
-
+//authentication
+// import LogoutComponent from 'src/app/demo/authentication/logout/logout.component';
 // project import
 import { SharedModule } from 'src/app/theme/shared/shared.module';
 
@@ -49,6 +48,7 @@ export class NavRightComponent {
   screenFull: boolean = true;
 
   constructor(
+    // private LogoutComponent: LogoutComponent,
     private iconService: IconService, 
     private authService: AuthService,
     private http: HttpClient,
@@ -119,22 +119,8 @@ export class NavRightComponent {
       title: 'History'
     }
   ];
-
-  onLogout() {
-    const token = localStorage.getItem('authToken'); // Correct token key
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    
-    this.http.post(`${environment.apiUrl}/logout`, {}, { headers })
-        .subscribe(
-            response => {
-                console.log('Logout successful', response);
-                this.authService.clearAuth();
-            },
-            error => {
-                console.error('Logout failed:', error);
-                // Handle logout failure
-            }
-        );
+  navigateToLogout() {
+    this.router.navigate(['/logout']); // Adjust the path based on your routing setup
+    // onLogout();
   }
-
 }
