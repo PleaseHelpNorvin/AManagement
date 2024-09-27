@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DashboardService } from 'src/app/demo/default/dashboard/service/dashboard.service';
 import { AuthService } from '../../authentication/login/auth.service';
+import { PingResponse } from './service/ping-response.interface'; // Import the interface
 
 // project import
 import tableData from 'src/fake-data/default-data.json';
@@ -16,6 +17,7 @@ import { SalesReportChartComponent } from './sales-report-chart/sales-report-cha
 // icons
 import { IconService } from '@ant-design/icons-angular';
 import { FallOutline, GiftOutline, MessageOutline, RiseOutline, SettingOutline } from '@ant-design/icons-angular/icons';
+import { error } from 'console';
 
 @Component({
   selector: 'app-default',
@@ -111,30 +113,44 @@ export class DefaultComponent {
   ];
 
   ngOnInit() {
+
+
     this.dashboardService.getAdminStatus().subscribe(
       isLoggedIn => {
         console.log('Admin Status Response:', isLoggedIn);
         this.isLoggedIn = isLoggedIn === 1;
         // this.authService.updateLocalStatus(this.isLoggedIn); // Update AuthService state
+        this.onCheckServerPing();
+        setInterval(() => this.onCheckServerPing(), 5000);
       },
       error => {
         console.error('Failed to fetch admin status', error);
         if (error.status === 401) { // Check for unauthorized status
+
           this.router.navigate(['/login']); // Redirect to login page
         }
         // Optionally, handle other error states
       }
     );
-
-    // Subscribe to logout event
-    // this.authService.logoutEvent$.subscribe(() => {
-    //   this.handleLogout();
-    // });
   }
 
-  // handleLogout() {
-  //   console.log('User logged out, updating dashboard state...');
-  //   this.isLoggedIn = false; // Update login status
-  //   this.router.navigate(['/login']); // Redirect to login page
-  // }
+  onCheckServerPing() {
+    this.dashboardService.getServerPing().subscribe(
+        (response: PingResponse) => {
+            if (response.data.status === 'Ping Successful') {
+                console.log('Ping successful:', response);
+            }
+        },
+        error => {
+            if (error.status === 403) {
+                console.error('Admin session expired or logged out');
+
+                this.authService.clearAuth();
+                // Redirect to login
+            }
+        }
+    );
+}
+
+ 
 }

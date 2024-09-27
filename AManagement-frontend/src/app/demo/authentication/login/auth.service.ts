@@ -55,10 +55,18 @@ export class AuthService {
   }
 
   logout(): Observable<any> {
-    const token = sessionStorage.getItem('authToken');
+    const token = this.getToken();
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
-    return this.http.post(`${this.apiUrl}/logout`, {}, { headers });
+    return this.http.post(`${this.apiUrl}/logout`, {}, { headers }).pipe(
+      tap(() => {
+        this.clearAuth(); // Clear auth details on logout
+      }),
+      catchError(error => {
+        console.error('Logout failed', error);
+        return throwError('Logout failed. Please try again.');
+      })
+    );
   }
 
   saveToken(token: string) {

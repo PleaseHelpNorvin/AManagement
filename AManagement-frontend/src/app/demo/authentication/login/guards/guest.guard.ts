@@ -4,15 +4,15 @@ import { inject } from '@angular/core';
 
 export const guestGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService);
-  const router = inject(Router);
-  const isLoggedIn = authService.isLoggedIn(); // Assuming this checks if session or token exists
+  // const router = inject(Router);
+  // const isLoggedIn = authService.isLoggedIn(); // Assuming this checks if session or token exists
 
-  if (isLoggedIn) {
-    // If the user is logged in, redirect them to the dashboard
-    alert("Please Logout first");
-    router.navigate(['/dashboard/default']);
-    return false;
-  }
+  // if (isLoggedIn) {
+  //   // If the user is logged in, redirect them to the dashboard
+  //   alert("Please Logout first");
+  //   router.navigate(['/dashboard/default']);
+  //   return false;
+  // }
   
   return true; // Allow access to the login/register pages if not logged in
 };

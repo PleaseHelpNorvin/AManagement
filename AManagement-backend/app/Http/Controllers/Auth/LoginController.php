@@ -26,14 +26,17 @@ class LoginController extends ApiController
 
             // Check if the user is already logged in
             if ($existingUser->is_logged_in) {
+                $existingUser->revokeAdminTokens();
+                // $existingUser->session_destroy();
+                $existingUser->update(['is_logged_in' => false]);
                 return response()->json(['message' => 'User is already logged in.'], 403);
             }
 
             
-            if ($existingUser->is_logged_in) {
-                $existingUser->revokeAdminTokens();
-                $existingUser->update(['is_logged_in' => false]);
-            }
+            // if ($existingUser->is_logged_in) {
+            //     $existingUser->revokeAdminTokens();
+            //     $existingUser->update(['is_logged_in' => false]);
+            // }
     
             if (Auth::attempt($credentials)) {
                 $user = Auth::user();
