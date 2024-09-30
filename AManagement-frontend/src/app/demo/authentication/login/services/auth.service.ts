@@ -11,6 +11,9 @@ import { Router } from '@angular/router';
 export class AuthService {
 
   private apiUrl = `${environment.apiUrl}`;
+  // private idleTimeout: any;
+  // private idleTimeLimit
+
 
   constructor(private http: HttpClient, private router: Router) { }
 
@@ -55,12 +58,21 @@ export class AuthService {
   }
 
   logout(): Observable<any> {
-    const token = sessionStorage.getItem('authToken');
+    const token = this.getToken();
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
-    return this.http.post(`${this.apiUrl}/logout`, {}, { headers });
+    return this.http.post(`${this.apiUrl}/logout`, {}, { headers }).pipe(
+      tap((response) => {
+        this.clearAuth(); // Clear auth details on logout
+        console.log('logout successful', response);
+      }),
+      catchError(error => {
+        console.error('Logout failed', error);
+        return throwError('Logout failed. Please try again.');
+      })
+    );
   }
-
+ 
   saveToken(token: string) {
     sessionStorage.setItem('authToken', token); // Change to sessionStorage
   }

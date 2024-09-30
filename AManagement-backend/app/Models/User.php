@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Session;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -23,6 +24,8 @@ class User extends Authenticatable
         'password',
         'role',
         'is_logged_in',
+        // 'is_idle',
+        'last_active_at',
     ];
 
     /**
@@ -50,6 +53,7 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
+        'last_active_at' => 'datetime'
     ];
 
     public function isAdmin(){
@@ -71,9 +75,11 @@ class User extends Authenticatable
     public function revokeAdminTokens()
     {
         if ($this->isAdmin()) {
+            
             $this->tokens->each(function ($token) {
                 $token->delete();
             });
+            Session::flush();
         }
     }
 }

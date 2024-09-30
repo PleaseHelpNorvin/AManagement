@@ -27,3 +27,4 @@ AManagement-backend/vendor/composer/autoload_static.php
 AManagement-backend/vendor/composer/installed.json
 AManagement-backend/vendor/sebastian/type/ChangeLog.md
 AManagement-backend/vendor/sebastian/type/src/type/VoidType.php
+AManagement-backend/storage/logs/laravel.log
