@@ -24,6 +24,8 @@ class User extends Authenticatable
         'password',
         'role',
         'is_logged_in',
+        // 'is_idle',
+        'last_active_at',
     ];
 
     /**
@@ -51,6 +53,7 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
+        'last_active_at' => 'datetime'
     ];
 
     public function isAdmin(){

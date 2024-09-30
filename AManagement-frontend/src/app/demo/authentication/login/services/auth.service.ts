@@ -11,6 +11,9 @@ import { Router } from '@angular/router';
 export class AuthService {
 
   private apiUrl = `${environment.apiUrl}`;
+  // private idleTimeout: any;
+  // private idleTimeLimit
+
 
   constructor(private http: HttpClient, private router: Router) { }
 
@@ -59,8 +62,9 @@ export class AuthService {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
     return this.http.post(`${this.apiUrl}/logout`, {}, { headers }).pipe(
-      tap(() => {
+      tap((response) => {
         this.clearAuth(); // Clear auth details on logout
+        console.log('logout successful', response);
       }),
       catchError(error => {
         console.error('Logout failed', error);
@@ -68,7 +72,7 @@ export class AuthService {
       })
     );
   }
-
+ 
   saveToken(token: string) {
     sessionStorage.setItem('authToken', token); // Change to sessionStorage
   }

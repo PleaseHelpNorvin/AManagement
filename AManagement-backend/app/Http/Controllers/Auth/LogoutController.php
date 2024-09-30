@@ -6,6 +6,7 @@ use App\Http\Controllers\ApiController;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 
 
@@ -18,8 +19,10 @@ class LogoutController extends ApiController
             // Revoke all tokens for the authenticated user
             $user = Auth::user();
             if ($user) {
+                $now = Carbon::now();
 
                 $user->update(['is_logged_in' => false]);
+                $user->update(['last_active_at' => $now]);
                 
                 $request->user()->currentAccessToken()->delete();
                 // $user->tokens()->delete(); // Ensure the User model has the tokens() method

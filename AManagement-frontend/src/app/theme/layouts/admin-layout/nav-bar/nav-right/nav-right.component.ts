@@ -1,7 +1,7 @@
 // angular import
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { RouterModule, Router  } from '@angular/router';
-import { AuthService } from 'src/app/demo/authentication/login/auth.service';
+import { AuthService } from 'src/app/demo/authentication/login/services/auth.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 

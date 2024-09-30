@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders  } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { catchError, map, tap } from 'rxjs/operators';
-import { throwError } from 'rxjs';
-import { AuthService } from 'src/app/demo/authentication/login/auth.service';
+import { catchError, map, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { throwError, fromEvent, timer  } from 'rxjs';
+
+import { AuthService } from 'src/app/demo/authentication/login/services/auth.service';
 import { error } from 'console';
 import { env } from 'process';
 
@@ -14,6 +15,7 @@ export class DashboardService {
 
   
   private adminStatusUrl = `${environment.apiUrl}/home/admin`;
+  // private iddleTimeout = 10 * 60 * 1000; // 10mins in milliseconds
 
   constructor(private http: HttpClient, private authService: AuthService) { }
 
@@ -29,7 +31,7 @@ export class DashboardService {
     
     return this.http.get(this.adminStatusUrl, { headers }).pipe(
       tap(response => {
-        console.log('Response Body:', response); // Logs the response body for debugging
+        // console.log('Response Body:', response); // Logs the response body for debugging
       }),
       catchError(error => {
         console.error('Failed to fetch admin status', error);
