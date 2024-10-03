@@ -7,6 +7,7 @@ use App\Http\Controllers\ApiController;
 // use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class LoginController extends ApiController
 {
@@ -31,6 +32,9 @@ class LoginController extends ApiController
 
             if (Auth::attempt($credentials)) {
                 $user = Auth::user();
+
+                Session::put('user_id', $user->id);
+                Session::put('role', $user->isAdmin() ? 'admin' : 'user');
     
                 $user->update(['is_logged_in' => true]);
     
@@ -41,6 +45,7 @@ class LoginController extends ApiController
                 }
     
                 $user->revokeAdminTokens();
+
                 $token = $user->createToken('Personal Access Token')->plainTextToken;
     
                 return response()->json([

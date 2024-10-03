@@ -14,12 +14,19 @@ Route::post('/login',[LoginController::class, 'login'])->name('login');
 Route::post('/register',[RegisterController::class, 'register'])->name('register');
 
 Route::middleware('auth:sanctum')->group(function() {
-    Route::get('/home/user', [HomeController::class, 'userHome']);
+    
     Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
-
     Route::post('/admin/ping', [PingController::class, 'ping']);
+
+    Route::middleware('user')->group(function() {
+        Route::get('/home/user', [HomeController::class, 'userHome']);
+  
+    });
+    
+    Route::middleware('admin')->group(function() {
+        Route::get('/home/admin', [HomeController::class, 'adminHome']);
+    });
+
 });
 
-Route::middleware(['auth:sanctum', 'admin'])->group(function() {
-    Route::get('/home/admin', [HomeController::class, 'adminHome']);
-});
+

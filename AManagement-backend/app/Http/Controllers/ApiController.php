@@ -32,7 +32,7 @@ class ApiController extends Controller
     }
     public function InternalServerErrorResponse($data = null, $message = 'Error', $statusCode = 500)
 {
-    return Response::json([
+    return response()->json([
         'success' => false,
         'message' => $message,
         'data'    => $data

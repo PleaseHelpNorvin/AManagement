@@ -17,8 +17,10 @@ class HomeController extends ApiController
                 return $this->forbiddenResponse(null, 'Forbidden');
             }
 
+            $user = $request->user();
+
             return $this->successResponse([
-                'admin_info' => $request->user(),
+                'admin_info' => $user,
                 // 'redirect_url' => url('/home/admin')
             ], 'Admin redirect URL provided');
 
@@ -34,6 +36,8 @@ class HomeController extends ApiController
             if (!$request->user()->isUser()) {
                 return $this->forbiddenResponse(null, 'Forbidden');
             }
+
+            $user = $request->user();
 
             return $this->successResponse([
                 'redirect_url' => url('/home/user')

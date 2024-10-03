@@ -17,22 +17,25 @@ class LogoutController extends ApiController
     {
         try {
             // Revoke all tokens for the authenticated user
-            $user = Auth::user();
-            if ($user) {
-                $now = Carbon::now();
+           if(!Auth::check()){
+            return $this->errorResponse(null, 'User not authenticated', 401);
+           }
 
-                $user->update(['is_logged_in' => false]);
-                $user->update(['last_active_at' => $now]);
+            $user = Auth::user();
+            $now = Carbon::now();
+
+            $user->update([
+                'is_logged_in' => false,
+                'last_active_at' => $now,
+            ]);
+
+            $request->user()->currentAccessToken()->delete();
+
+            return $this->successResponse(
+                $user->is_logged_in,
+                'Successfully logged out.'
+            );
                 
-                $request->user()->currentAccessToken()->delete();
-                // $user->tokens()->delete(); // Ensure the User model has the tokens() method
-                return $this->successResponse(
-                    $user->is_logged_in,
-                    'Successfully logged out.'
-                );
-            } else {
-                return $this->errorResponse(null, 'User not authenticated.', 401);
-            }
         } catch (\Exception $e) {
             return $this->errorResponse(null, 'Failed to log out. ' . $e->getMessage(), 500);
         }
