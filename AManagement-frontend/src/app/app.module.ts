@@ -9,9 +9,15 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SharedModule } from './theme/shared/shared.module';
 
+//other inmport
+import { QRCodeModule } from 'angularx-qrcode';
+import QrComponent from "./demo/other/qr/qr.component"
+import { FormsModule } from '@angular/forms';
+import {QrCodeComponent}  from './demo/other/qr/qr-code/qr-code.component';
+
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, AppRoutingModule, SharedModule, BrowserAnimationsModule, HttpClientModule ],
+  imports: [BrowserModule, AppRoutingModule, SharedModule, BrowserAnimationsModule, HttpClientModule ,QRCodeModule, FormsModule,QrComponent ,QrCodeComponent],
   // providers:[],
   bootstrap: [AppComponent]
 })

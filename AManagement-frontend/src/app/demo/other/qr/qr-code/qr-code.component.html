@@ -1,0 +1,7 @@
+<!-- <p>qr-code works!</p> -->
+<h2>Printable Qr code for Tenants Application</h2>
+<div>
+    <!--  -->
+    <input [(ngModel)]="qrData" placeholder="Enter data" hidden/>
+    <qrcode [qrdata]="qrData" [width]="500" [errorCorrectionLevel]="'M'"></qrcode>
+</div>
