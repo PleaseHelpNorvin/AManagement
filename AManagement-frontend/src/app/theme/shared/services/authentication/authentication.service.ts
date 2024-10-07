@@ -91,8 +91,12 @@ export class AuthenticationService {
   getUserRole(): string {
     return sessionStorage.getItem(this.userRole) || '';
   }
-  // getIsLogin(): boolean {}
   
+  isLoggedIn(): boolean {
+    // Implement logic to check if the user is logged in
+    // For example, check if a token exists in local storage
+    return !!localStorage.getItem('authToken'); // Adjust based on your implementation
+}
   // Clear token from local storage
   private clearToken(): void {
     sessionStorage.removeItem(this.tokenKey);

@@ -40,35 +40,31 @@ export class AppComponent implements OnInit,OnDestroy{
   }
 
   private handleIdleTimeout(): void {
-    if (this.logoutInProgress) {
-        return; 
-    }
+    if (this.logoutInProgress || !this.authService.isLoggedIn()) {
+      return; 
+  }
 
     this.logoutInProgress = true; 
     this.stopPing();
     this.idleTimeoutService.resetTimer(); 
 
-    this.logoutSubscription = this.authService.logout().subscribe({
-        next: () => {
-            alert('Session expired due to inactivity. Please log in again.');
-            this.reloadPage();
-           
-        },
-        error: (err) => {
+    this.authService.logout().toPromise()
+        .then(() => {
+            if (this.logoutInProgress) {
+                alert('Session expired due to inactivity. Please log in again.');
+                this.reloadPage();
+            }
+        })
+        .catch(err => {
             console.error('Logout failed:', err);
             alert('Logout failed. You may need to refresh the page.');
             this.reloadPage(); // Call the reload function here
-        },
-        complete: () => {
+        })
+        .finally(() => {
             this.logoutInProgress = false; 
-            if(this.logoutSubscription){
-              this.logoutSubscription.unsubscribe();
-              this.logoutSubscription.closed;
-              this.logoutSubscription.remove;
-            }
-        }
-    });
-  }
+            // No need for logoutSubscription anymore
+        });
+}
 
   private reloadPage(): void {
     window.location.reload();
