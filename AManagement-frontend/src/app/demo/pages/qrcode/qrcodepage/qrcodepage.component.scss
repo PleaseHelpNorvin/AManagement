@@ -1,0 +1,36 @@
+:root {
+    --pc-header-submenu-background: #ffffff; /* Example color */
+    --border-radius: 5px;
+}
+
+.coded-content{
+    border:  1px solid red;
+    height: calc(100vh - 150px);
+    background-color: var(--pc-header-submenu-background); /* Use the variable for background color */
+    border-radius: var(--border-radius); /* Use the variable for border radius */
+}
+
+.page-wrapper{
+    border: 1px solid black;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding-top: 0;
+}
+.container {
+    border: 1px solid black;
+    // height: inherit;
+    height: 100%;
+    // margin: 50px 20px 0px 20px;
+}
+.qr-container {
+    border: 1px solid black;
+    // height: 100%;
+}
+.card{
+    
+}
+.qr-btn{
+    margin: 5px;
+    border:  1px solid;
+}
