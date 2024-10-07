@@ -26,6 +26,14 @@ const routes: Routes = [
         loadComponent: () => import('./demo/default/dashboard/dashboard.component').then((c) => c.DefaultComponent)
       },
       {
+        path: 'pages/tenant',
+        loadComponent: () => import('./demo/pages/tenants/tenantspage/tenantspage.component')
+      },
+      {
+        path: 'pages/qr-code',
+        loadComponent: () => import ('./demo/pages/qrcode/qrcodepage/qrcodepage.component')
+      },
+      {
         path: 'typography',
         loadComponent: () => import('./demo/ui-component/typography/typography.component')
       },

@@ -7,6 +7,6 @@ import { Component } from '@angular/core';
   templateUrl: './qrcodepage.component.html',
   styleUrl: './qrcodepage.component.scss'
 })
-export class QrcodepageComponent {
+export default class QrcodepageComponent {
 
 }
