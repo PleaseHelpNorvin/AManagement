@@ -6,7 +6,7 @@ import { mapTo, switchMap, takeUntil } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class IddleTimeoutService {
-  private idleTimeLimit = 10 * 1000; // 30 seconds for testing purposes
+  private idleTimeLimit = 60 * 1000; // 30 seconds for testing purposes
   private timeout$ = new Subject<void>();
   private activitySubscription: Subscription | null = null;
 

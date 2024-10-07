@@ -132,7 +132,7 @@ export class AuthenticationService {
         takeUntil(this.idleTimeoutService.onTimeout()) // Stop pinging if idle timeout occurs
       ).subscribe(
         response => {
-          console.log('Ping successful:', response);
+          // console.log('Ping successful:', response);
           this.idleTimeoutService.resetTimer(); // Reset idle timer on successful ping
         },
         error => {
