@@ -1,5 +1,5 @@
 // angular import
-import { Component,OnInit,OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AuthenticationService } from './theme/shared/services/authentication/authentication.service';
 import { IddleTimeoutService } from './theme/shared/services/iddle-timeout/iddle-timeout.service';
 import { Subscription, interval } from 'rxjs';
@@ -11,7 +11,7 @@ import { switchMap, takeUntil } from 'rxjs/operators';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit,OnDestroy{
+export class AppComponent implements OnInit, OnDestroy {
   // public props
   title = 'mantis-free-version';
   private idleTimeoutSubscription: Subscription;
@@ -20,11 +20,11 @@ export class AppComponent implements OnInit,OnDestroy{
   private logoutInProgress = false;
 
 
-  constructor( 
+  constructor(
     private authService: AuthenticationService,
     private idleTimeoutService: IddleTimeoutService
   ) { }
-  
+
 
   ngOnInit(): void {
     this.idleTimeoutService.startWatching();
@@ -40,31 +40,31 @@ export class AppComponent implements OnInit,OnDestroy{
   }
 
   private handleIdleTimeout(): void {
-    if (this.logoutInProgress || !this.authService.isLoggedIn()) {
-      return; 
-  }
+    if (this.logoutInProgress || !this.authService.getIsLogin()) {
+      return;
+    }
 
-    this.logoutInProgress = true; 
+    this.logoutInProgress = true;
     this.stopPing();
-    this.idleTimeoutService.resetTimer(); 
+    this.idleTimeoutService.resetTimer();
 
     this.authService.logout().toPromise()
-        .then(() => {
-            if (this.logoutInProgress) {
-                alert('Session expired due to inactivity. Please log in again.');
-                this.reloadPage();
-            }
-        })
-        .catch(err => {
-            console.error('Logout failed:', err);
-            alert('Logout failed. You may need to refresh the page.');
-            this.reloadPage(); // Call the reload function here
-        })
-        .finally(() => {
-            this.logoutInProgress = false; 
-            // No need for logoutSubscription anymore
-        });
-}
+      .then(() => {
+        if (this.logoutInProgress) {
+          alert('Session expired due to inactivity. Please log in again.');
+          this.reloadPage();
+        }
+      })
+      .catch(err => {
+        console.error('Logout failed:', err);
+        alert('Logout failed. You may need to refresh the page.');
+        this.reloadPage(); // Call the reload function here
+      })
+      .finally(() => {
+        this.logoutInProgress = false;
+        // No need for logoutSubscription anymore
+      });
+  }
 
   private reloadPage(): void {
     window.location.reload();

@@ -11,6 +11,7 @@ export class AuthenticationService {
   private apiURL = 'http://localhost:8000/api';
   private tokenKey = 'authToken';
   private userRole = 'userRole';
+  private isLoggeIn = 'is_login';
   private idleTimeoutService: IddleTimeoutService;
   private pingSubscription: Subscription | null = null;
   // authService: any;
@@ -26,7 +27,8 @@ export class AuthenticationService {
       map((response: any) => {
         // Assume the success response structure
         this.storeToken(response.token);
-        sessionStorage.setItem(this.userRole, response.role);
+        sessionStorage.setItem(this.userRole, response.role,);
+        sessionStorage.setItem(this.isLoggeIn, response.is_logged_in ? 'true' : 'false');
         this.startPing(); 
         return response;
       }),
@@ -91,17 +93,19 @@ export class AuthenticationService {
   getUserRole(): string {
     return sessionStorage.getItem(this.userRole) || '';
   }
-  
-  isLoggedIn(): boolean {
+
+  getIsLogin(): boolean {
     // Implement logic to check if the user is logged in
     // For example, check if a token exists in local storage
-    return !!localStorage.getItem('authToken'); // Adjust based on your implementation
+    return !!sessionStorage.getItem('is_login'); // Adjust based on your implementation
 }
   // Clear token from local storage
   private clearToken(): void {
     sessionStorage.removeItem(this.tokenKey);
     sessionStorage.removeItem(this.userRole);
+    sessionStorage.removeItem(this.isLoggeIn);
   }
+
 
 
   // Ping server to keep session alive
