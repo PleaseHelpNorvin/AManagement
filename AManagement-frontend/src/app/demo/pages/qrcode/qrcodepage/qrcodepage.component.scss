@@ -1,34 +1,45 @@
 :root {
     --pc-header-submenu-background: #ffffff; /* Example color */
-    --border-radius: 5px;
+    // --border-radius: 10px;
+    
 }
 
-.coded-content{
-    border:  1px solid red;
+.coded-content {
+    // border: 1px solid red;
     height: calc(100vh - 150px);
     background-color: var(--pc-header-submenu-background); /* Use the variable for background color */
-    border-radius: var(--border-radius); /* Use the variable for border radius */
+    border-radius: 5px; /* Use the variable for border radius */
+
 }
 
-.page-wrapper{
-    border: 1px solid black;
+.page-wrapper {
+    // border: 1px solid black;
     display: flex;
     flex-direction: column;
     height: 100%;
     padding-top: 0;
 }
-.container {
-    border: 1px solid black;
-    // height: inherit;
-    height: 100%;
-    // margin: 50px 20px 0px 20px;
-}
-.qr-container {
-    border: 1px solid black;
-    // height: 100%;
+
+.qr-btn {
+    margin: 5px;
 }
 
-.qr-btn{
-    margin: 5px;
-    border:  1px solid;
+.container {
+    // border: 1px solid black;
+    display: flex; /* Set to flex to control layout */
+    flex-direction: column; /* Ensure children stack vertically */
+    height: calc(100% - 20px); /* Full height of page-wrapper */
+    flex-grow: 1; /* Allow container to grow and fill remaining space */
+    // box-shadow: black 2;
+}
+
+.qr-container {
+    // border: 1px solid black;
+    display: flex;
+    align-items:center;
+    justify-content: center;
+    // flex-grow: 1;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Proper box shadow for a floating effect */
+    border-radius: 8px; /* Optional: Rounded corners to enhance the floating look */
+    background-color: #ffffff;
 }

@@ -2,6 +2,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { QRCodeModule } from 'angularx-qrcode';
+
 
 // project import
 import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
@@ -27,7 +29,8 @@ import { NgbDropdownModule, NgbNavModule, NgbModule, NgbCollapseModule } from '@
     NgbCollapseModule,
     NgScrollbarModule,
     CardComponent,
-    IconModule
+    IconModule,
+    QRCodeModule
   ],
   exports: [
     CommonModule,
@@ -41,7 +44,8 @@ import { NgbDropdownModule, NgbNavModule, NgbModule, NgbCollapseModule } from '@
     NgbCollapseModule,
     NgScrollbarModule,
     CardComponent,
-    IconModule
+    IconModule,
+    QRCodeModule
   ],
   declarations: [SpinnerComponent]
 })

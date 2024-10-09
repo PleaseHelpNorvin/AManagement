@@ -27,6 +27,7 @@
     "@ant-design/icons-angular": "^18.0.0",
     "@ng-bootstrap/ng-bootstrap": "^17.0.0",
     "@popperjs/core": "^2.11.8",
+    "angularx-qrcode": "^18.0.2",
     "apexcharts": "^3.49.2",
     "bootstrap": "^5.3.3",
     "ng-apexcharts": "^1.11.0",

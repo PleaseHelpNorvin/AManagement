@@ -13,13 +13,15 @@ import { AuthenticationService } from './theme/shared/services/authentication/au
 import { IddleTimeoutService } from './theme/shared/services/iddle-timeout/iddle-timeout.service';
 import { HttpClientModule } from '@angular/common/http'; // Import HttpClientModule
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { QRCodeModule }  from 'angularx-qrcode'; 
 
 
 
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, AppRoutingModule, SharedModule, BrowserAnimationsModule, CommonModule, HttpClientModule ],
+  imports: [BrowserModule, AppRoutingModule, SharedModule, BrowserAnimationsModule, CommonModule, HttpClientModule, FormsModule, QRCodeModule ],
   providers: [ AuthenticationService, IddleTimeoutService ],
   bootstrap: [AppComponent]
 })
