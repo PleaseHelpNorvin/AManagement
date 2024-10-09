@@ -7,6 +7,8 @@ i thought i finished the authentication on my Norvin-dev branch that i just real
 **10/08/24**
 i just added my first phase of mobile application for tenants though its still skeleton eheee
 
+**10/09/24**
+finally ive completed the qrcode page design wise although its still lacking function for print and i want to encapsulate the url i want to put that url logic in backend
 
 **AManagement set up guide**
 
