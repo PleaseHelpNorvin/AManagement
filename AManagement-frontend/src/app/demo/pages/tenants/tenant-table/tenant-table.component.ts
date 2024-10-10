@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { TenantsService } from '../services/tenants.service';
 import { CommonModule } from '@angular/common'; 
 import { FormsModule } from '@angular/forms';
+
 import Swal from 'sweetalert2';
 
 import { TenantModalComponent } from './tenant-modal/tenant-modal.component';

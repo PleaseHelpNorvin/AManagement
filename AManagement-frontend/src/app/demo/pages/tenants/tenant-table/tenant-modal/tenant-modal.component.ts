@@ -1,11 +1,13 @@
 import { Component, Inject } from '@angular/core';
-import {MatDialogModule  } from 'angular/material/dialog';
+
+// import {MatDialogModule  } from 'angular/material/dialog';
 // import { MatDialogRef } from '@angular/material/dialog';
 
 
 @Component({
   selector: 'app-tenant-modal',
   standalone: true,
+  imports: [],
   templateUrl: './tenant-modal.component.html',
   styleUrls: ['./tenant-modal.component.scss'],
 })
