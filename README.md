@@ -10,6 +10,9 @@ i just added my first phase of mobile application for tenants though its still s
 **10/09/24**
 finally ive completed the qrcode page design wise although its still lacking function for print and i want to encapsulate the url i want to put that url logic in backend
 
+**10/09/24**
+fixed login validations
+
 **AManagement set up guide**
 
 1. split a bash terminal in vscode
