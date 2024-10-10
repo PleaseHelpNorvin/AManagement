@@ -12,7 +12,7 @@ export class AuthenticationService {
   private apiURL = 'http://localhost:8000/api';
   private tokenKey = 'authToken';
   private userRole = 'userRole';
-  private isLoggeIn = 'is_login';
+  private isLoggeIn = 'isLoggedIn';
   private idleTimeoutService: IddleTimeoutService;
   private pingSubscription: Subscription | null = null;
   // authService: any;
@@ -21,8 +21,8 @@ export class AuthenticationService {
     this.idleTimeoutService = idleTimeoutService;
   }
 
-  login(email: string, password: string): Observable<any> {
-    const body = { email, password };
+  login(email: string, password: string, rememberMe: boolean): Observable<any> {
+    const body = { email, password, rememberMe };
     return this.http.post(`${this.apiURL}/login`, body).pipe(
       map((response: any) => {
         // Store token and other session information
@@ -89,7 +89,7 @@ export class AuthenticationService {
   getIsLogin(): boolean {
     // Implement logic to check if the user is logged in
     // For example, check if a token exists in local storage
-    return !!sessionStorage.getItem('is_login'); // Adjust based on your implementation
+    return !!sessionStorage.getItem('isLoggedIn'); // Adjust based on your implementation
 }
   // Clear token from local storage
   private clearToken(): void {

@@ -14,6 +14,8 @@ export class IddleTimeoutService {
 
   // Start watching user activity and notify when idle timeout is reached
   startWatching(): void {
+    console.log('Idle timeout service started.');
+
     if(this.activitySubscription) {
       // console.log(this.activitySubscription);
       this.activitySubscription.unsubscribe();

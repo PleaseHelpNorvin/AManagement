@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Auth;
 use App\Models\User;
 use App\Http\Controllers\ApiController;
 // use App\Http\Controllers\Controller;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+// use O;;
 
 class LoginController extends ApiController
 {
@@ -18,9 +20,12 @@ class LoginController extends ApiController
         $credentials = $request->validate([
             'email' => 'required|email',
             'password' => 'required',
+            // 'rememberMe' => 'required'
         ]);
-        
-        try {
+
+        // dd($credentials);
+
+        try {   
 
             $existingUser = User::where('email', $request->email)->first();
             
@@ -51,12 +56,21 @@ class LoginController extends ApiController
 
                 if (Auth::attempt($credentials)) {
                     $user = Auth::user();
-                    // dd($user);
+
+                    if ($request->filled('rememberMe')) {
+                        $rememberToken = Str::random(60);
+                        $user->update(['remember_token' => $rememberToken]);
+                    }
+                        
                     Session::put('user_id', $user->id);
                 
                     Session::put('role', $user->isAdmin() ? 'admin' : 'user');
         
-                    $user->update(['is_logged_in' => true]);
+                    $user->update([
+                        'is_logged_in' => true,
+                        // 'remember_token' => $rememberToken
+                    ]);
+                    // $user->update('remember_token'=> $random);
         
                     if ($user->isAdmin()) {
                         $user->revokeAdminTokenById($user->id);
@@ -79,11 +93,11 @@ class LoginController extends ApiController
             );
         } catch (\Throwable $th) {
             //throw $th;
-            return $this->InternalServerErrorResponse(
-                null,
-                'An Internal Sever error occurred. Please try again later',
-                500
-            );
+            // return $this->InternalServerErrorResponse(
+            //     null,
+            //     'An Internal Sever error occurred. Please try again later',
+            //     500
+            // );
         }
     }
 }

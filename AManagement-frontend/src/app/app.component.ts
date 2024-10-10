@@ -17,7 +17,7 @@ export class AppComponent implements OnInit, OnDestroy {
   title = 'mantis-free-version';
   private idleTimeoutSubscription: Subscription;
   private pingSubscription: Subscription | null = null;
-  private logoutSubscription: Subscription | null = null;
+  // private logoutSubscription: Subscription | null = null;
   private logoutInProgress = false;
 
 

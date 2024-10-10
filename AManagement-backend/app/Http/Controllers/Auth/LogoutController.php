@@ -27,6 +27,7 @@ class LogoutController extends ApiController
             $user->update([
                 'is_logged_in' => false,
                 'last_active_at' => $now,
+                'remember_token' => null,
                 
             ]);
 

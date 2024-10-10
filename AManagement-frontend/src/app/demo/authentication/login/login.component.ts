@@ -44,6 +44,7 @@ export default class LoginComponent {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
+      rememberMe: [false]
     });
   }
 
@@ -53,8 +54,8 @@ export default class LoginComponent {
  
   onLogin() {
     if (this.loginForm.valid) {
-      const { email, password } = this.loginForm.value;
-      this.authService.login(email, password).subscribe({
+      const { email, password,rememberMe } = this.loginForm.value;
+      this.authService.login(email, password, rememberMe).subscribe({
         next: (response) => {
           if (response && response.success === false) {
             this.notificationService.showNotification(response.message);
@@ -81,6 +82,53 @@ export default class LoginComponent {
       });
     }
   }
+
+  // onLogin() {
+  //   if (this.loginForm.valid) {
+  //     const { email, password, rememberMe } = this.loginForm.value;
+  //     this.authService.login(email, password, rememberMe).subscribe({
+  //       next: (response) => {
+  //         if (response && response.success === false) {
+  //           this.notificationService.showNotification(response.message);
+  //         } else if (response) {
+  //           console.log('Login successful', response);
+  //           this.router.navigate(['/dashboard/default']);
+  //         }
+  //       },
+  //       error: (error: HttpErrorResponse) => {
+  //         let errorMessage = 'An error occurred.';
+  
+  //         // Check if error.error exists and is an object
+  //         if (error.error && typeof error.error === 'object') {
+  //           if (error.error.message) {
+  //             errorMessage = error.error.message; // Use the provided error message
+  //           } else {
+  //             errorMessage = 'Unexpected error occurred.'; // Fallback message
+  //           }
+  //         } else {
+  //           // Handle specific status codes
+  //           switch (error.status) {
+  //             case 403:
+  //               errorMessage = 'Forbidden: You do not have permission to access this resource.';
+  //               break;
+  //             case 500:
+  //               errorMessage = 'Internal server error. Please try again later.';
+  //               break;
+  //             case 0:
+  //               errorMessage = 'Network error: Unable to reach the server.';
+  //               break;
+  //             default:
+  //               errorMessage = 'An unexpected error occurred.';
+  //               break;
+  //           }
+  //         }
+  
+  //         this.notificationService.showNotification(errorMessage); 
+  //       },
+  //     });
+  //   }
+  // }
+  
 
 
   // inputValidator() {

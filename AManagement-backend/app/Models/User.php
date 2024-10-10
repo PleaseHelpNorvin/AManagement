@@ -23,8 +23,8 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'remember_token',
         'is_logged_in',
-        // 'is_idle',
         'last_active_at',
     ];
 
