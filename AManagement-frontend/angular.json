@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "allowedCommonJsDependencies": ["bezier-easing", "apexcharts"],
+            "allowedCommonJsDependencies": ["bezier-easing", "apexcharts", "qrcode"],
             "outputPath": "dist",
             "index": "src/index.html",
             "main": "src/main.ts",

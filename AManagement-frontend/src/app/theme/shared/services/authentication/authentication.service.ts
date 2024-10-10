@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { interval, Observable, of, Subscription } from 'rxjs';
 import { catchError, map, switchMap, takeUntil } from 'rxjs/operators';
-import { Console } from 'console';
 import { IddleTimeoutService } from '../iddle-timeout/iddle-timeout.service';
+
 @Injectable({
   providedIn: 'root'
 })
+
 export class AuthenticationService {
   private apiURL = 'http://localhost:8000/api';
   private tokenKey = 'authToken';
@@ -20,29 +21,20 @@ export class AuthenticationService {
     this.idleTimeoutService = idleTimeoutService;
   }
 
-  // Login method
   login(email: string, password: string): Observable<any> {
     const body = { email, password };
     return this.http.post(`${this.apiURL}/login`, body).pipe(
       map((response: any) => {
-        // Assume the success response structure
+        // Store token and other session information
         this.storeToken(response.token);
-        sessionStorage.setItem(this.userRole, response.role,);
-        sessionStorage.setItem(this.isLoggeIn, response.is_logged_in ? 'true' : 'false');
-        this.startPing(); 
+        sessionStorage.setItem('userRole', response.role);
+        sessionStorage.setItem('isLoggedIn', response.is_logged_in ? 'true' : 'false');
+        this.startPing();
         return response;
-      }),
-      catchError((error) => {
-        // Handle specific error cases
-        if (error.status === 403) {
-          // If it's a 403 error, return a specific message
-          return of({ success: false, message: error.error.message });
-        }
-        console.error('Login failed', error);
-        return of({ success: false, message: 'Login failed. Please check your credentials.' }); // Handle login failure
       })
     );
   }
+  
 
   // Unsubscribe from ping server
   public unsubscribeFromPing(): void {
