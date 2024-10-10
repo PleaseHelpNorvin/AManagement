@@ -56,6 +56,7 @@ export class IddleTimeoutService {
 
    // Stop watching user activity
   stopWatching(): void {
+    console.log('iddle time out service stopped');
     if (this.activitySubscription) {
       this.activitySubscription.unsubscribe();
       this.activitySubscription = null; // Clear the subscription

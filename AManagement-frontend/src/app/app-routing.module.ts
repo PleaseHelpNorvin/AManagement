@@ -34,6 +34,10 @@ const routes: Routes = [
         loadComponent: () => import ('./demo/pages/qrcode/qrcodepage/qrcodepage.component')
       },
       {
+        path: 'pages/apartment-page',
+        loadComponent: () => import ('./demo/pages/apartments/apartment-page/apartment-page.component')
+      },
+      {
         path: 'typography',
         loadComponent: () => import('./demo/ui-component/typography/typography.component')
       },

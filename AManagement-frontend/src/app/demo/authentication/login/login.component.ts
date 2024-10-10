@@ -8,6 +8,8 @@ import { NotificationComponent } from '../../../theme/shared/components/notifica
 import { NotificationService} from '../../../theme/shared/services/notifications/notification.service';
 import { OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import Swal from 'sweetalert2';
+
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -54,20 +56,28 @@ export default class LoginComponent {
  
   onLogin() {
     if (this.loginForm.valid) {
-      const { email, password,rememberMe } = this.loginForm.value;
+      const { email, password, rememberMe } = this.loginForm.value;
       this.authService.login(email, password, rememberMe).subscribe({
         next: (response) => {
           if (response && response.success === false) {
             this.notificationService.showNotification(response.message);
-          } else if (response) {
-            console.log('Login successful', response);
-            this.router.navigate(['/dashboard/default']);
+          } else if (response) {            
+            // Show SweetAlert for successful login
+            Swal.fire({
+              title: 'Login Successful',
+              text: 'Welcome back!',
+              icon: 'success',
+              confirmButtonText: 'OK'
+            }).then(() => {
+              // Redirect to the dashboard after the alert is closed
+              this.router.navigate(['/dashboard/default']);
+            });
           }
         },
         error: (error: HttpErrorResponse) => {
           // Handle errors in the component
           let errorMessage = error.error.message;
-
+  
           if (error.error && error.error.message) {
             errorMessage = error.error.message;
           } else if (error.status === 403) {
@@ -82,61 +92,5 @@ export default class LoginComponent {
       });
     }
   }
-
-  // onLogin() {
-  //   if (this.loginForm.valid) {
-  //     const { email, password, rememberMe } = this.loginForm.value;
-  //     this.authService.login(email, password, rememberMe).subscribe({
-  //       next: (response) => {
-  //         if (response && response.success === false) {
-  //           this.notificationService.showNotification(response.message);
-  //         } else if (response) {
-  //           console.log('Login successful', response);
-  //           this.router.navigate(['/dashboard/default']);
-  //         }
-  //       },
-  //       error: (error: HttpErrorResponse) => {
-  //         let errorMessage = 'An error occurred.';
   
-  //         // Check if error.error exists and is an object
-  //         if (error.error && typeof error.error === 'object') {
-  //           if (error.error.message) {
-  //             errorMessage = error.error.message; // Use the provided error message
-  //           } else {
-  //             errorMessage = 'Unexpected error occurred.'; // Fallback message
-  //           }
-  //         } else {
-  //           // Handle specific status codes
-  //           switch (error.status) {
-  //             case 403:
-  //               errorMessage = 'Forbidden: You do not have permission to access this resource.';
-  //               break;
-  //             case 500:
-  //               errorMessage = 'Internal server error. Please try again later.';
-  //               break;
-  //             case 0:
-  //               errorMessage = 'Network error: Unable to reach the server.';
-  //               break;
-  //             default:
-  //               errorMessage = 'An unexpected error occurred.';
-  //               break;
-  //           }
-  //         }
-  
-  //         this.notificationService.showNotification(errorMessage); 
-  //       },
-  //     });
-  //   }
-  // }
-  
-
-
-  // inputValidator() {
-  // var email = document.getElementById('email');
-  // var password = document.getElementById('password')
-
-  //   if(email == null || password == null) {
-  //     return
-  //   }
-  // }
 }

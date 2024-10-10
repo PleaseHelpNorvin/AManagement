@@ -1,1 +1,28 @@
-<p>tenant-table works!</p>
+<div class="container">
+  <h2>Tenant List</h2>
+
+  <!-- Button to open the modal to add a new tenant -->
+  <!-- <div class=""> -->
+    <button class="btn btn-primary mt-2 mb-1" (click)="openModal()">Add New Tenant</button>
+  <!-- </div> -->
+
+  <!-- Tenant Table -->
+  <table class="table table-bordered table-striped">
+    <thead>
+      <tr>
+        <th>First Name</th>
+        <th>Last Name</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let tenant of tenants">
+        <td>{{ tenant.firstname }}</td>
+        <td>{{ tenant.lastname }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+
+  <!-- Modal for adding a new tenant -->
+  <app-tenant-modal (tenantAdded)="onTenantAdded()"></app-tenant-modal>
+</div>
