@@ -1,0 +1,48 @@
+:root {
+    --pc-header-submenu-background: #ffffff; /* Example color */
+    // --border-radius: 10px;
+    
+}
+
+.coded-content {
+    // border: 1px solid red;
+    height: calc(100vh - 150px);
+    background-color: var(--pc-header-submenu-background); /* Use the variable for background color */
+    border-radius: 5px; /* Use the variable for border radius */
+
+}
+
+.page-wrapper {
+    // border: 1px solid black;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding-top: 0;
+}
+
+.qr-btn {
+    margin: 5px;
+}
+
+.container {
+    // border: 1px solid black;
+    display: flex; /* Set to flex to control layout */
+    flex-direction: column; /* Ensure children stack vertically */
+    height: calc(100% - 20px); /* Full height of page-wrapper */
+    flex-grow: 1; /* Allow container to grow and fill remaining space */
+    // box-shadow: black 2;
+}
+
+.qr-container {
+    // border: 1px solid black;
+    display: flex;flex-direction: column;
+    align-items:center;
+    justify-content: center;
+    // flex-grow: 1;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Proper box shadow for a floating effect */
+    border-radius: 8px; /* Optional: Rounded corners to enhance the floating look */
+    background-color: #ffffff;
+}
+.qr-container h4 {
+    margin-top: 15px;
+}

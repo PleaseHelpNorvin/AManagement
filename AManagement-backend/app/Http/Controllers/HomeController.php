@@ -20,7 +20,7 @@ class HomeController extends ApiController
             $user = $request->user();
 
             return $this->successResponse([
-                'admin_info' => $user,
+                'body' => $user,
                 // 'redirect_url' => url('/home/admin')
             ], 'Admin redirect URL provided');
 
