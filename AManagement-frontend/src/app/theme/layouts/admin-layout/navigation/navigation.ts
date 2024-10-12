@@ -54,15 +54,6 @@ export const NavigationItems: NavigationItem[] = [
         breadcrumbs: false
       },
       {
-        id: 'qr-code',
-        title: 'Qr-Code',
-        type: 'item',
-        classes:'nav-item',
-        url: '/pages/qr-code',
-        icon: 'dashboard',
-        breadcrumbs:false
-      },
-      {
         id: 'apartment-page',
         title: 'Apartment-Page',
         type: 'item',
@@ -71,7 +62,15 @@ export const NavigationItems: NavigationItem[] = [
         icon: 'dashboard',
         breadcrumbs: false
       },
- 
+      {
+        id: 'qr-code',
+        title: 'Qr-Code',
+        type: 'item',
+        classes:'nav-item',
+        url: '/pages/qr-code',
+        icon: 'dashboard',
+        breadcrumbs:false
+      },
     ]
   }
 
