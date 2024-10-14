@@ -38,11 +38,12 @@ class CheckUserActivity
             Log::info('User ID: ' . $user->id . ' inactive duration: ' . $inactiveDuration . ' MINUTES');
 
             // Set the allowed inactive time in minutes
-            $allowedInactiveTime = 60; // Change this value to your preference
+            //CHANGE VALUE IN MINUTES
+            $allowedInactiveTime = 1; // Change this value to your preference
             
 
             // Check if the user has been inactive for too long
-            if ($inactiveDurationInSeconds > $allowedInactiveTime) {
+            if ($inactiveDuration > $allowedInactiveTime) {
                 Log::info('User ID: ' . $user->id . ' has been logged out due to inactivity at ' . $now->format('g:i A'));
                 // Log::info('you inactive for: ' . $. )
                 Log::info('Calling logout method for User ID: ' . $user->id);
