@@ -29,23 +29,31 @@ class CheckUserActivity
         if ($user) {
             $now = Carbon::now('Asia/Manila');
             $lastActiveAt = Carbon::parse($user->last_active_at)->setTimezone('Asia/Manila');
-            $inactiveDuration = $lastActiveAt->diffInMinutes($now); // Calculate inactivity duration in minutes
+            $inactiveDurationInSeconds  = $lastActiveAt->diffInSeconds($now); // Calculate inactivity duration in minutes
+            $inactiveDuration = round($inactiveDurationInSeconds / 60, 2); // Rounded to 2 decimal places
 
-            Log::info('User ID: ' . $user->id . ' last_active_at: ' . $lastActiveAt);
-            Log::info('User ID: ' . $user->id . ' inactive duration: ' . $inactiveDuration . ' minutes');
+
+            // Log the time in 12-hour format with AM/PM
+            Log::info('User ID: ' . $user->id . ' last_active_at: ' . $lastActiveAt->format('g:i A'));
+            Log::info('User ID: ' . $user->id . ' inactive duration: ' . $inactiveDuration . ' MINUTES');
 
             // Set the allowed inactive time in minutes
-            $allowedInactiveTime = 1; // Change this value to your preference
+            $allowedInactiveTime = 60; // Change this value to your preference
+            
 
             // Check if the user has been inactive for too long
-            if ($inactiveDuration > $allowedInactiveTime) {
-                Log::info('User ID: ' . $user->id . ' has been logged out due to inactivity at ' . $now);
+            if ($inactiveDurationInSeconds > $allowedInactiveTime) {
+                Log::info('User ID: ' . $user->id . ' has been logged out due to inactivity at ' . $now->format('g:i A'));
+                // Log::info('you inactive for: ' . $. )
                 Log::info('Calling logout method for User ID: ' . $user->id);
 
                 // Call the logout method from LogoutController
                 return $this->logoutController->logout($request);
             } else {
-                Log::info('User ID: ' . $user->id . ' is active. Updating last active time.');
+                // Log::info('User ID: ' . $user->id . ' is active. resetting last active time.');
+                Log::info('User ID: ' . $user->id . ' is active. resetting last active time at ' . $now->format('g:i A'));
+
+                // Reset the last active time to now
                 $user->update(['last_active_at' => $now]);
             }
         }

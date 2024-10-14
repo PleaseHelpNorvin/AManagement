@@ -20,7 +20,7 @@ class LogoutController extends ApiController
         try {
             // Revoke all tokens for the authenticated user
            if(!Auth::check()){
-            Log::warning('Logout attempt by unauthenticated user.', [
+                Log::warning('Logout attempt by unauthenticated user.', [
                 'ip_address' => $request->ip(),
                 'timestamp' => Carbon::now()
             ]);
@@ -30,6 +30,7 @@ class LogoutController extends ApiController
 
             $user = Auth::user();
             $now = Carbon::now();
+            Log::info('user UD: ' . $user->id . ' successfuly log out');
 
             $user->update([
                 'is_logged_in' => false,
