@@ -1,34 +1,33 @@
-<!-- <div class="modal" [ngStyle]="{ display: display }">
+<div class="modal" *ngIf="isVisible">
     <div class="modal-content">
-        <span class="close" (click)="onCloseHandled()">&times;</span>
-        <h2>Add New Tenant</h2>
-        
-        <form (ngSubmit)="addNewTenant()">
+      <span class="close" (click)="onCloseHandled()">&times;</span>
+      <h2>Add New Tenant</h2>
+      
+      <form (ngSubmit)="addNewTenant()">
         <div class="form-group">
-            <label for="firstname">First Name:</label>
-            <input 
+          <label for="firstname">First Name:</label>
+          <input 
             type="text" 
             id="firstname" 
             [(ngModel)]="tenantObj.firstname" 
             name="firstname" 
             required 
-            />
+          />
         </div>
-
+    
         <div class="form-group">
-            <label for="lastname">Last Name:</label>
-            <input 
+          <label for="lastname">Last Name:</label>
+          <input 
             type="text" 
             id="lastname" 
             [(ngModel)]="tenantObj.lastname" 
             name="lastname" 
             required 
-            />
+          />
         </div>
-
+    
         <button type="submit">Save Tenant</button>
-        </form>
+      </form>
     </div>
-</div> -->
-
-<h1>test</h1>
+  </div>
+  

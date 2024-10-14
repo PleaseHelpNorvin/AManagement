@@ -1,19 +1,21 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { TenantsService } from '../../services/tenants.service';
-import { CommonModule } from '@angular/common'; 
+import { CommonModule, NgIf } from '@angular/common'; 
+
 import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-tenant-modal',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule ,NgIf],
   templateUrl: './tenant-modal.component.html',
   styleUrls: ['./tenant-modal.component.scss'] // Fixed the typo
 })
 export default class TenantModalComponent {
 
   tenantObj: { firstname: string; lastname: string } = { firstname: '', lastname: '' };
-  display: 'none';
+  // display: 'none';
+  isVisible: boolean = false; // Changed from string to boolean
 
   @Output() tenantAdded = new EventEmitter<void>(); // EventEmitter to notify parent component
 
@@ -32,6 +34,7 @@ export default class TenantModalComponent {
   }
 
   onCloseHandled(): void {
-    this.display = 'none';
+    // this.display = 'none';
+    this.isVisible = false; // Update visibility status
   }
 }
