@@ -9,6 +9,8 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Log; // Add this import
+
 // use O;;
 
 class LoginController extends ApiController
@@ -56,6 +58,9 @@ class LoginController extends ApiController
 
                 if (Auth::attempt($credentials)) {
                     $user = Auth::user();
+                    // Log::info('User ID: ' . $user->id . ' has logged in.');
+                    Log::info('User ID: ' . $user->id . ' has logged in successfully.');
+
 
                     if ($request->filled('rememberMe')) {
                         $rememberToken = Str::random(60);

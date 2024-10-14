@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\HomeController;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Controllers\PingController;
+use App\Http\Middleware\CheckUserActivity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -13,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 Route::post('/login',[LoginController::class, 'login'])->name('login');
 Route::post('/register',[RegisterController::class, 'register'])->name('register');
 
-Route::middleware('auth:sanctum')->group(function() {
+Route::middleware('auth:sanctum', 'check.user.activity')->group(function() {
     
     Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
     Route::post('/admin/ping', [PingController::class, 'ping']);
