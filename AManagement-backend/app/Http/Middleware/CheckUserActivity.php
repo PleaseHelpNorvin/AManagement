@@ -25,6 +25,16 @@ class CheckUserActivity
      */
     public function handle(Request $request, Closure $next): Response
     {
+        $logoutResponse = $this->checkUserActivity($request);
+
+        if ($logoutResponse) {
+            return $logoutResponse; // Return logout response if needed
+        }
+
+        return $next($request);
+    }
+
+    public function checkuseractivity(Request $request) : ?Response {
         $user = Auth::user();
         if ($user) {
             $now = Carbon::now('Asia/Manila');
@@ -58,7 +68,6 @@ class CheckUserActivity
                 $user->update(['last_active_at' => $now]);
             }
         }
-
-        return $next($request);
+        return null;
     }
 }
