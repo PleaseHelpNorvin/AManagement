@@ -6,6 +6,7 @@ use Illuminate\Foundation\Configuration\Middleware;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\UserMiddleware;
 use App\Http\Middleware\CorsMiddleware;
+// use App\Http\Middleware\UserActivityMiddleware;
 // use App\Http\Middleware\CheckUserActivity;
 
 
@@ -27,7 +28,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'cors' => CorsMiddleware::class,
             'admin' => AdminMiddleware::class,
             'user' => UserMiddleware::class,
-            'check.user.activity' => \App\Http\Middleware\CheckUserActivity::class // Register your CheckUserActivity middleware
+            'check.user.activity' => \App\Http\Middleware\UserActivityMiddleware::class // Register your CheckUserActivity middleware
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

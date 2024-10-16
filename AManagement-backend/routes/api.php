@@ -17,9 +17,10 @@ Route::post('/register',[RegisterController::class, 'register'])->name('register
 
 Route::middleware('auth:sanctum', 'check.user.activity')->group(function() {
     Route::get('/check-activity', [UserActivityController::class, 'getActivityInfo']); // Adjusted method name
+    Route::post('/update-activity', [UserActivityController::class, 'updateActivity']);
+    
+    Route::post('/logout', [LogoutController::class, 'logout']);
 
-
-    Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
     Route::post('/admin/ping', [PingController::class, 'ping']);
 
     Route::middleware('user')->group(function() {

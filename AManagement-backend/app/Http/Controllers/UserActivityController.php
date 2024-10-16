@@ -4,44 +4,63 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Middleware\CheckUserActivity;
+use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
 
 class UserActivityController extends ApiController
 {
-    protected $checkUserActivityMiddleware;
-    
-    public function __construct(CheckUserActivity $checkUserActivityMiddleware) {
-        $this->checkUserActivityMiddleware = $checkUserActivityMiddleware;
-    }
-    //
-    public function getActivityInfo(Request $request) {
-         // Call the checkUserActivity method to handle inactivity check
-        //  $logoutResponse = $this->checkUserActivityMiddleware->checkUserActivity($request);
-        
-         // If the user is logged out, return the response
-        //  if ($logoutResponse) {
-        //      return $logoutResponse; 
-        //  }
-        // if ($user) {
-        //     return response()->json([
-        //         'last_active_at' => $user->last_active_at,
-        //         'message' => 'User activity retrieved successfully.'
-        //     ]);
-        // }
- 
-         // If the user is active, return the activity info
-         $user = Auth::user();
-
+    /**
+     * Update the user's activity timestamp.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function updateActivity(Request $request)
+    {
+        $user = Auth::user();
         if ($user) {
+            $now = Carbon::now('Asia/Manila');
+            $user->update(['last_active_at' => $now]);
+
+            // Log the activity update
+            Log::info('User activity updated.', [
+                'user_id' => $user->id,
+                'last_active_at' => $now->toDateTimeString()
+            ]);
+
+            return response()->json(['message' => 'User activity updated successfully.', 'last_active_at' => $now]);
+        }
+
+        // Log the error for unauthenticated user
+        Log::warning('User activity update failed - user not authenticated.');
+
+        return response()->json(['error' => 'User not authenticated.'], 401);
+    }
+
+    /**
+     * Get information about the user's last activity.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getActivityInfo()
+    {
+        $user = Auth::user();
+        if ($user) {
+            // Log the activity information retrieval
+            Log::info('User activity information retrieved.', [
+                'user_id' => $user->id,
+                'last_active_at' => $user->last_active_at
+            ]);
+
             return response()->json([
                 'last_active_at' => $user->last_active_at,
-                'message' => 'User activity retrieved successfully.'
+                'message' => 'Activity information retrieved successfully.'
             ]);
         }
 
-        return response()->json([
-            'error' => 'User not authenticated.'
-        ], 401);
+        // Log the error for unauthenticated user
+        Log::warning('Activity information retrieval failed - user not authenticated.');
+
+        return response()->json(['error' => 'User not authenticated.'], 401);
     }
 }

@@ -3,6 +3,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AuthenticationService } from './theme/shared/services/authentication/authentication.service';
 import { IddleTimeoutService } from './theme/shared/services/iddle-timeout/iddle-timeout.service';
 import { Subscription, interval } from 'rxjs';
+import { ActivityService } from './theme/shared/services/activity/activity.service';
 import { switchMap, takeUntil } from 'rxjs/operators';
 
 
@@ -23,7 +24,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
   constructor(
     private authService: AuthenticationService,
-    private idleTimeoutService: IddleTimeoutService
+    private idleTimeoutService: IddleTimeoutService,
+    private activityService: ActivityService
   ) { }
 
 
@@ -78,4 +80,15 @@ export class AppComponent implements OnInit, OnDestroy {
     }
   }
 
-}
+  updateUserActivity(): void {
+    this.activityService.updateUserActivity().subscribe(
+      () => {
+        console.log('User activity updated successfully.');
+      },
+      (error) => {
+        console.error('Error updating user activity:', error);
+      }
+    );
+  }
+
+} 
