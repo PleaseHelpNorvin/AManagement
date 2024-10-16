@@ -27,7 +27,7 @@ class UserActivityMiddleware
             $lastActiveAt = Carbon::parse($user->last_active_at)->setTimezone('Asia/Manila');
             $inactiveDuration = $lastActiveAt->diffInMinutes($now);
 
-            $allowedInactiveTime = 3; // In minutes
+            $allowedInactiveTime = 1; // In minutes
 
             if ($inactiveDuration > $allowedInactiveTime) {
                 Log::info('User ID: ' . $user->id . ' has been logged out due to inactivity at ' . $now->format('g:i A'));

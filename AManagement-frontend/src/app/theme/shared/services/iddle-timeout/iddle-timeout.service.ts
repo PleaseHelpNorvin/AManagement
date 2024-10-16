@@ -15,7 +15,7 @@ interface CheckActivityResponse {
   providedIn: 'root'
 })
 export class IdleTimeoutService {
-  private idleTimeLimit = 30 * 1000; // 30 seconds for testing
+  private idleTimeLimit = 10 * 1000; // 30 seconds for testing
   private timeout$ = new Subject<void>();
   private activitySubscription: Subscription | null = null;
   private isUpdatingActivity = false;
@@ -72,8 +72,14 @@ export class IdleTimeoutService {
       });
   }
 
+  // private idleTimeoutCheck(): void {
+  //   timer(this.idleTimeLimit).subscribe(() => {
+  //     this.checkActivity();
+  //   });
+  // }
   private idleTimeoutCheck(): void {
     timer(this.idleTimeLimit).subscribe(() => {
+      console.log('Idle timeout reached, checking activity...');
       this.checkActivity();
     });
   }
@@ -83,23 +89,29 @@ export class IdleTimeoutService {
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`
     });
-
+  
     this.http.get<CheckActivityResponse>(`${this.apiUrl}/check-activity`, { headers })
       .pipe(catchError(error => {
         console.error('Error checking activity:', error);
-        this.authService.logout().subscribe();
+        this.triggerLogout();
         return of(null);
       }))
       .subscribe(response => {
         if (response && response.error) {
           console.error('Error in response:', response.error);
-          this.authService.logout().subscribe();
+          this.triggerLogout();
         } else {
           console.log('Last active at:', response?.last_active_at);
         }
       });
   }
-
+  
+  private triggerLogout(): void {
+    // Emit the timeout event and perform logout
+    this.timeout$.next();
+    this.authService.logout().subscribe();
+  }
+  
   private getAuthToken(): string | null {
     return sessionStorage.getItem('authToken');
   }

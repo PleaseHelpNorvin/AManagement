@@ -73,7 +73,7 @@ export class AuthenticationService {
     return sessionStorage.getItem(this.isLoggeIn) || '';
   }
 
-  private clearToken(): void {
+  clearToken(): void {
     sessionStorage.removeItem(this.tokenKey);
     sessionStorage.removeItem(this.userRole);
     sessionStorage.removeItem(this.isLoggeIn);

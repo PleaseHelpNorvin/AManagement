@@ -3,6 +3,7 @@ import { AuthenticationService } from './theme/shared/services/authentication/au
 import { AuthStateService } from './theme/shared/services/authentication/state/authe-state-service.service';
 import { IdleTimeoutService } from './theme/shared/services/iddle-timeout/iddle-timeout.service';
 import { Subscription } from 'rxjs';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-root',
@@ -27,6 +28,7 @@ export class AppComponent implements OnInit, OnDestroy {
     }
 
     this.idleTimeoutSubscription = this.idleTimeoutService.onTimeout().subscribe(() => {
+      console.log('ontimeout in appcomponent');
       this.handleIdleTimeout();
     });
   }
@@ -45,18 +47,38 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   private handleIdleTimeout(): void {
+    console.log('Idle timeout detected, attempting to log out...');
+  
     this.authService.logout().subscribe({
       next: () => {
-        alert('Session expired due to inactivity. Please log in again.');
-        this.reloadPage();
+        console.log('Logout successful. Displaying alert and clearing token.');
+        // Clear the token from storage
+        // sessionStorage.removeItem('authToken'); // Or localStorage.removeItem('authToken');
+        this.authStateService.setAuthenticated(false); // Update the authentication state
+        this.authService.clearToken();
+        Swal.fire({
+          title: 'Session Timeout',
+          text: 'You have been logged out due to inactivity. Please log in again.',
+          icon: 'warning',
+          confirmButtonText: 'OK'
+        }).then(() => {
+          this.reloadPage();
+        });
       },
       error: (err) => {
         console.error('Logout failed:', err);
-        alert('Logout failed. You may need to refresh the page.');
-        this.reloadPage();
+        Swal.fire({
+          title: 'Error',
+          text: 'Logout failed. You may need to refresh the page.',
+          icon: 'error',
+          confirmButtonText: 'OK'
+        }).then(() => {
+          this.reloadPage();
+        });
       }
     });
   }
+  
 
   private reloadPage(): void {
     window.location.reload();
