@@ -1,12 +1,7 @@
-// angular import
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AuthenticationService } from './theme/shared/services/authentication/authentication.service';
-import { IddleTimeoutService } from './theme/shared/services/iddle-timeout/iddle-timeout.service';
-import { Subscription, interval } from 'rxjs';
-import { ActivityService } from './theme/shared/services/activity/activity.service';
-import { switchMap, takeUntil } from 'rxjs/operators';
-
-
+import { IdleTimeoutService } from './theme/shared/services/iddle-timeout/iddle-timeout.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -14,20 +9,14 @@ import { switchMap, takeUntil } from 'rxjs/operators';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit, OnDestroy {
-  // public props
   title = 'mantis-free-version';
   private idleTimeoutSubscription: Subscription;
-  private pingSubscription: Subscription | null = null;
-  // private logoutSubscription: Subscription | null = null;
   private logoutInProgress = false;
-
 
   constructor(
     private authService: AuthenticationService,
-    private idleTimeoutService: IddleTimeoutService,
-    private activityService: ActivityService
-  ) { }
-
+    private idleTimeoutService: IdleTimeoutService
+  ) {}
 
   ngOnInit(): void {
     this.idleTimeoutService.startWatching();
@@ -48,7 +37,6 @@ export class AppComponent implements OnInit, OnDestroy {
     }
 
     this.logoutInProgress = true;
-    this.stopPing();
     this.idleTimeoutService.resetTimer();
 
     this.authService.logout().toPromise()
@@ -61,34 +49,14 @@ export class AppComponent implements OnInit, OnDestroy {
       .catch(err => {
         console.error('Logout failed:', err);
         alert('Logout failed. You may need to refresh the page.');
-        this.reloadPage(); // Call the reload function here
+        this.reloadPage();
       })
       .finally(() => {
         this.logoutInProgress = false;
-        // No need for logoutSubscription anymore
       });
   }
 
   private reloadPage(): void {
     window.location.reload();
   }
-
-  private stopPing(): void {
-    if (this.pingSubscription) {
-      this.pingSubscription.unsubscribe();
-      this.pingSubscription = null;
-    }
-  }
-
-  updateUserActivity(): void {
-    this.activityService.updateUserActivity().subscribe(
-      () => {
-        console.log('User activity updated successfully.');
-      },
-      (error) => {
-        console.error('Error updating user activity:', error);
-      }
-    );
-  }
-
-} 
+}

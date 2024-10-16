@@ -23,7 +23,7 @@ class UserActivityController extends ApiController
             $user->update(['last_active_at' => $now]);
 
             // Log the activity update
-            Log::info('User activity updated.', [
+            Log::info('User activity updated.', [   
                 'user_id' => $user->id,
                 'last_active_at' => $now->toDateTimeString()
             ]);
