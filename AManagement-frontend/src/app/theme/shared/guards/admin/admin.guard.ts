@@ -8,7 +8,7 @@ import { IdleTimeoutService } from '../../services/iddle-timeout/iddle-timeout.s
 })
 export class AdminGuard implements CanActivate {
   constructor(
-    private authService: AuthenticationService, 
+    private authService: AuthenticationService,
     private router: Router,
     private idleTimeoutService: IdleTimeoutService
   ) {}
@@ -20,12 +20,13 @@ export class AdminGuard implements CanActivate {
     const token = this.authService.getToken();
     
     if (token && this.isAdmin()) {
-      this.idleTimeoutService.startWatching();
+      this.idleTimeoutService.startWatching(); // Start watching for user activity
       return true;
     }
 
-    this.authService.logout();
-    this.router.navigate(['/login']);
+    this.authService.logout().subscribe(() => {
+      this.router.navigate(['/login']);
+    });
     return false;
   }
 

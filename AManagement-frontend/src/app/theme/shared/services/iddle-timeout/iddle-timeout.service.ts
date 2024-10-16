@@ -1,25 +1,30 @@
 import { Injectable } from '@angular/core';
-import { Subject, Observable, fromEvent, merge, timer, Subscription } from 'rxjs';
-import { switchMap, takeUntil } from 'rxjs/operators';
+import { Subject, Observable, fromEvent, merge, timer, Subscription, of } from 'rxjs';
+import { switchMap, takeUntil, catchError } from 'rxjs/operators';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-// import { AuthStateService } from '../auth-state.service'; // Import your AuthStateService
 import { AuthStateService } from '../authentication/state/authe-state-service.service';
+import { AuthenticationService } from '../authentication/authentication.service';
 
+
+interface CheckActivityResponse {
+  error?: string; // Optional property if it exists in the response
+  last_active_at?: string;
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class IdleTimeoutService {
-  private idleTimeLimit = 30 * 1000; // 30 seconds for testing purposes
+  private idleTimeLimit = 30 * 1000; // 30 seconds for testing
   private timeout$ = new Subject<void>();
   private activitySubscription: Subscription | null = null;
-  private isCountingBackend = false;
+  private isUpdatingActivity = false;
   private apiUrl = 'http://localhost:8000/api';
-  private isUpdatingActivity = false; // Flag to prevent duplicate requests
 
-  constructor(private http: HttpClient, private authStateService: AuthStateService) {}
+  constructor(private http: HttpClient,
+              private authStateService: AuthStateService,
+              private authService: AuthenticationService) {}
 
-  // Start watching user activity and notify when idle timeout is reached
   startWatching(): void {
     console.log('Idle timeout service started.');
 
@@ -29,87 +34,89 @@ export class IdleTimeoutService {
 
     const activityEvents$ = merge(
       fromEvent(document, 'keydown'),
-      fromEvent(document, 'click')
+      fromEvent(document, 'click'),
+      // fromEvent(document, 'mousemove') // Add more events as needed
     );
 
     this.authStateService.isAuthenticated$.subscribe(isAuthenticated => {
-      activityEvents$
-        .pipe(takeUntil(this.timeout$)) // Stop watching when timeout occurs
-        .subscribe(() => {
-          if (isAuthenticated) { // Use the observable value
-            this.updateLastActive(); // Call updateLastActive directly
-          }
-        });
+      if (isAuthenticated) {
+        activityEvents$
+          .pipe(takeUntil(this.timeout$))
+          .subscribe(() => {
+            this.updateLastActive();
+            this.idleTimeoutCheck();
+          });
+      }
     });
   }
 
-  // Update last active time in backend
   private updateLastActive(): void {
     if (this.isUpdatingActivity) {
-      return; // Exit if an update is already in progress
+      return;
     }
 
-    this.isUpdatingActivity = true; // Set the flag to true
+    this.isUpdatingActivity = true;
     const token = this.getAuthToken();
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`
     });
 
     this.http.post(`${this.apiUrl}/update-activity`, {}, { headers })
-      .subscribe({
-        next: () => {
-          console.log('Activity updated in backend');
-          this.isUpdatingActivity = false; // Reset the flag on success
-        },
-        error: (error) => {
-          console.error('Error updating activity:', error);
-          this.isUpdatingActivity = false; // Reset the flag on error
-        }
+      .pipe(catchError(error => {
+        console.error('Error updating activity:', error);
+        return of(null);
+      }))
+      .subscribe(() => {
+        console.log('Activity updated in backend');
+        this.isUpdatingActivity = false;
       });
   }
-  
-  //for checkingActivity
+
+  private idleTimeoutCheck(): void {
+    timer(this.idleTimeLimit).subscribe(() => {
+      this.checkActivity();
+    });
+  }
+
   private checkActivity(): void {
     const token = this.getAuthToken();
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`
     });
-  
-    this.http.get(`${this.apiUrl}/check-activity`, { headers })
-      .subscribe({
-        next: (response) => {
-          // Handle the response here
-          console.log('Activity check response:', response);
-          // You can also update any state or perform additional logic based on the response
-        },
-        error: (error) => {
-          console.error('Error checking activity:', error);
-          // Handle error appropriately (e.g., show a notification, log out user, etc.)
+
+    this.http.get<CheckActivityResponse>(`${this.apiUrl}/check-activity`, { headers })
+      .pipe(catchError(error => {
+        console.error('Error checking activity:', error);
+        this.authService.logout().subscribe();
+        return of(null);
+      }))
+      .subscribe(response => {
+        if (response && response.error) {
+          console.error('Error in response:', response.error);
+          this.authService.logout().subscribe();
+        } else {
+          console.log('Last active at:', response?.last_active_at);
         }
       });
   }
 
-  // Method to retrieve auth token
   private getAuthToken(): string | null {
-    return sessionStorage.getItem('authToken'); // Replace 'authToken' with your actual token key
+    return sessionStorage.getItem('authToken');
   }
 
-  // Observable to notify about timeout
   onTimeout(): Observable<void> {
     return this.timeout$.asObservable();
   }
 
-  // Reset the idle timer manually (useful for actions like login)
   resetTimer(): void {
     this.startWatching();
   }
 
-  // Stop watching user activity
   stopWatching(): void {
     console.log('Idle timeout service stopped');
     if (this.activitySubscription) {
       this.activitySubscription.unsubscribe();
-      this.activitySubscription = null; // Clear the subscription
+      this.activitySubscription = null;
     }
   }
 }
