@@ -4,6 +4,9 @@ still on login phase still buggy
 
 i thought i finished the authentication on my Norvin-dev branch that i just realized it doesnt go iddle timeout when going other page that how I realized that I fucked up that project in order to not fuck up more I just made another branch with the globalized iddletimeout and session timeout hehe
 
+**10/17/24**
+in this branch Norvin-dev-3 Session is mainly handled by backend but i am not satisfied on its behavior so i will create another branch Norvin-dev4 and apply another approach of session management
+
 **10/08/24**
 i just added my first phase of mobile application for tenants though its still skeleton eheee
 
