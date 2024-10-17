@@ -9,15 +9,16 @@ class LoginScreen extends StatelessWidget {
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
+  LoginScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('')),
+      appBar: AppBar(title: const Text('')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Consumer<AuthProvider>(
-          builder: (context, authProvider, child) {
-            return Column(
+          builder: (  context, authProvider, child) => Column(
               children: [
                 CustomTextField(
                   label: 'Username',
@@ -28,7 +29,7 @@ class LoginScreen extends StatelessWidget {
                   controller: passwordController,
                   obscureText: true,
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 CustomButton(
                   label: 'Login',
                   onPressed: () async {
@@ -36,13 +37,13 @@ class LoginScreen extends StatelessWidget {
                       await authProvider.login(usernameController.text, passwordController.text);
                       // Navigate to the dashboard
                     } catch (e) {
+                      // ignore: use_build_context_synchronously
                       Helpers.showSnackbar(context, 'Login failed: $e');
                     }
                   },
                 ),
               ],
-            );
-          },
+            ),
         ),
       ),
     );
