@@ -37,7 +37,7 @@ class UserActivityMiddleware
             } else {
                 // Update last active time
                 $user->update(['last_active_at' => $now]);
-                Log::info('Away from keyboard detected, start counting on backend.');
+                Log::info('User activity updated.');
             }
         }
 

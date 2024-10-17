@@ -16,7 +16,7 @@ interface LoginResponse {
   providedIn: 'root'
 })
 export class AuthenticationService {
-  private apiURL = 'http://localhost:8000/api';
+  private apiURL = 'http://127.0.0.1:8000/api';
   private tokenKey = 'authToken';
   private userRole = 'userRole';
   private isLoggeIn = 'isLoggedIn';
@@ -50,7 +50,8 @@ export class AuthenticationService {
       tap(() => {
         this.clearToken();
         this.authStateService.setAuthenticated(false);
-        window.location.reload();
+        // window.location.href ='/login';
+        // window.location.reload();
       }),
       catchError((error) => {
         console.error('Logout failed', error);

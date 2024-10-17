@@ -4,6 +4,9 @@ still on login phase still buggy
 
 i thought i finished the authentication on my Norvin-dev branch that i just realized it doesnt go iddle timeout when going other page that how I realized that I fucked up that project in order to not fuck up more I just made another branch with the globalized iddletimeout and session timeout hehe
 
+**10/17/24**
+I think I solved the problem of duplicated/multiple request problem i faced on the branch 'Norvin-dev-3' although I still need to integrate here update-activity api from mybackend to my frontend its not much but still a milestone for me 
+
 **10/08/24**
 i just added my first phase of mobile application for tenants though its still skeleton eheee
 
