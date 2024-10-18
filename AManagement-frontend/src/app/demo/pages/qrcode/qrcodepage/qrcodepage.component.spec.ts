@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { QrcodepageComponent } from './qrcodepage.component';
+// Update this import statement to use the default import
+import QrcodepageComponent from '../qrcodepage/qrcodepage.component';
+import { QrcodeComponent } from '../qrcode/qrcode.component';
 
 describe('QrcodepageComponent', () => {
   let component: QrcodepageComponent;

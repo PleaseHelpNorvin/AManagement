@@ -1,7 +1,9 @@
 // src/app/theme/shared/services/idle-timeout/idle-timeout.service.ts
 
 import { Injectable, NgZone } from '@angular/core';
+import { throws } from 'assert';
 import { Subject } from 'rxjs';
+import { AuthStateService } from '../authentication/state/authe-state-service.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,8 +13,9 @@ export class IdleTimeoutService {
   private timeout: any;
   private readonly IDLE_LIMIT = 10000; // 1 minute
   private timeoutSubject = new Subject<void>();
+  private eventListenerAdded = false;
 
-  constructor(private ngZone: NgZone) {
+  constructor(private ngZone: NgZone, private authStateService: AuthStateService ) {
     this.startListening();
   }
 
@@ -25,21 +28,35 @@ export class IdleTimeoutService {
       // window.addEventListener('scroll', this.resetIdleTime.bind(this));
     });
   }
+  
+  private stopListening(): void {
+    if(!this.eventListenerAdded) return;
+    window.removeEventListener('keypress', this.resetIdleTime.bind(this));
+    window.removeEventListener('click', this.resetIdleTime.bind(this));
+
+    this.eventListenerAdded = false;
+  }
 
   private resetIdleTime(): void {
-    this.idleTime = 0; // Reset the idle time
+    if (!this.authStateService.isAuthenticated()) {
+      return; // Prevent idle time reset if the user is not authenticated
+    }
+    console.log('Resetting idle time for authenticated user');
 
-    // Clear previous timeout
-    clearTimeout(this.timeout);
+    clearTimeout(this.timeout); // Clear previous timeout
 
-    // Start a new timeout
     this.timeout = setTimeout(() => {
       this.onTimeout();
     }, this.IDLE_LIMIT);
   }
 
   private onTimeout(): void {
-    this.timeoutSubject.next(); // Notify subscribers
+    if (this.authStateService.isAuthenticated()) {
+      console.log('User is idle and authenticated, triggering timeout...');
+      this.timeoutSubject.next(); // Notify subscribers
+    } else {
+      console.log('User is not authenticated, ignoring idle timeout...');
+    }
   }
 
   public onTimeoutObservable() {
@@ -47,10 +64,12 @@ export class IdleTimeoutService {
   }
 
   public startWatching(): void {
+    console.log('start watching')
     this.resetIdleTime(); // Start tracking immediately
   }
 
   public stopWatching(): void {
+    this.stopListening();
     clearTimeout(this.timeout); // Stop tracking
     this.idleTime = 0;
   }

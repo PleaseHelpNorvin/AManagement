@@ -26,12 +26,17 @@ export class AppComponent implements OnInit, OnDestroy {
     console.log('AppComponent: ngOnInit called');
     this.initializeAuthState();
     
-    if (this.authService.getIsLogin()) {
-      console.log('User is logged in. Starting idle timeout service.');
-      this.idleTimeoutService.startWatching();
-    } else {
-      console.log('User is not logged in. Not starting idle timeout service.');
-    }
+    // Delay the idle timeout service start to ensure authentication state is set correctly
+    setTimeout(() => {
+      if (this.authStateService.isAuthenticated()) {
+        console.log('User is logged in. Starting idle timeout service.');
+        this.idleTimeoutService.startWatching();
+      } else {
+        console.log('User is not logged in. Not starting idle timeout service.');
+        this.idleTimeoutService.stopWatching();
+      }
+    }, 100); // Adjust the timeout delay as needed
+    
 
     this.idleTimeoutSubscription = this.idleTimeoutService.onTimeoutObservable().subscribe(() => {
       console.log('AppComponent: Idle timeout detected.');
@@ -68,6 +73,7 @@ export class AppComponent implements OnInit, OnDestroy {
           next: () => {
             console.log('Logout successful. Clearing token and redirecting to login.');
             this.authStateService.setAuthenticated(false); // Update authentication state
+            this.idleTimeoutService.stopWatching();
             window.location.href = '/login'; // Redirect to login after logout
           },
           error: (err) => {

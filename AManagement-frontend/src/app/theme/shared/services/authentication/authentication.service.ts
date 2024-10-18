@@ -3,6 +3,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { AuthStateService } from './state/authe-state-service.service';
+import { IdleTimeoutService } from '../iddle-timeout/iddle-timeout.service';
 
 interface LoginResponse {
   token: string;
@@ -21,7 +22,7 @@ export class AuthenticationService {
   private userRole = 'userRole';
   private isLoggeIn = 'isLoggedIn';
 
-  constructor(private http: HttpClient, private authStateService: AuthStateService) {}
+  constructor(private http: HttpClient, private authStateService: AuthStateService, private idleTimeoutService: IdleTimeoutService ) {}
 
   login(email: string, password: string, rememberMe: boolean): Observable<LoginResponse> {
     const body = { email, password, rememberMe };
@@ -50,6 +51,7 @@ export class AuthenticationService {
       tap(() => {
         this.clearToken();
         this.authStateService.setAuthenticated(false);
+        this.idleTimeoutService.stopWatching();
         // window.location.href ='/login';
         // window.location.reload();
       }),
@@ -78,5 +80,9 @@ export class AuthenticationService {
     sessionStorage.removeItem(this.tokenKey);
     sessionStorage.removeItem(this.userRole);
     sessionStorage.removeItem(this.isLoggeIn);
+  }
+
+  regirectToLoginPage(): void {
+    window.location.assign('/login')
   }
 }

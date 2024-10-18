@@ -76,7 +76,7 @@ export class LogoutComponent {
           next: () => {
             console.log('Logout successful. Clearing token and redirecting to login.');
             this.authState.setAuthenticated(false);
-            window.location.href = '/login';
+            this.authService.regirectToLoginPage();
           },
           error: (err) => {
             console.error('Logout failed:', err);
