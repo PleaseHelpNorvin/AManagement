@@ -11,6 +11,7 @@ class UserActivityController extends ApiController
 {
     public function updateActivity(Request $request)
     {
+        Log::info('updateactivity reached');
         $user = Auth::user();
         if ($user) {
             $now = Carbon::now('Asia/Manila');
@@ -42,6 +43,7 @@ class UserActivityController extends ApiController
                 'last_active_at' => $user->last_active_at,
                 'message' => 'Activity information retrieved successfully.'
             ]);
+            // Log::info('Activity information retrieved succesfully');
         }
 
         Log::warning('Activity information retrieval failed - user not authenticated.');

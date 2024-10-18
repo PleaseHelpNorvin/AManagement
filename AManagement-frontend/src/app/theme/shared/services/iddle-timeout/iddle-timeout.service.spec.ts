@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { IddleTimeoutService } from './iddle-timeout.service';
+import { IdleTimeoutService} from '../iddle-timeout/iddle-timeout.service';
 
 describe('IddleTimeoutService', () => {
-  let service: IddleTimeoutService;
+  let service: IdleTimeoutService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(IddleTimeoutService);
+    service = TestBed.inject(IdleTimeoutService);
   });
 
   it('should be created', () => {

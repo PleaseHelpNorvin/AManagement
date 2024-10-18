@@ -5,40 +5,48 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log; // Import Log facade
 use Carbon\Carbon;
-use Symfony\Component\HttpFoundation\Response;
-use Illuminate\Support\Facades\Log;
-use App\Http\Controllers\Auth\LogoutController;
 
 class UserActivityMiddleware
 {
-    protected $logoutController;
-
-    public function __construct(LogoutController $logoutController)
+    public function handle(Request $request, Closure $next)
     {
-        $this->logoutController = $logoutController;
-    }
+        // Get the allowed inactive time from environment or default to 30 minutes
+        $allowedInactiveTime = (int) env('SESSION_TIMEOUT', 30) * 60; // Convert minutes to seconds
 
-    public function handle(Request $request, Closure $next): Response
-    {
+        // Get the user's last activity time from the session or default to now
+        $lastActivityTime = session('last_activity_time', Carbon::now('Asia/Manila'));
+
+        // Log the last activity time for debugging
+        Log::info('Last Activity Time:', ['time' => $lastActivityTime]);
+
+        // Check if the user is authenticated
         if (Auth::check()) {
-            $user = Auth::user();
-            $now = Carbon::now('Asia/Manila');
-            $lastActiveAt = Carbon::parse($user->last_active_at)->setTimezone('Asia/Manila');
-            $inactiveDuration = $lastActiveAt->diffInMinutes($now);
+            // Get the current time
+            $currentTime = Carbon::now('Asia/Manila');
 
-            $allowedInactiveTime = 1; // In minutes
+            // Calculate the time difference since the last activity
+            $inactiveDuration = $currentTime->diffInSeconds($lastActivityTime);
 
+            // Log the inactive duration for debugging
+            Log::info('Inactive Duration:', ['duration' => $inactiveDuration]);
+
+            // Check if the user has been inactive for too long
             if ($inactiveDuration > $allowedInactiveTime) {
-                Log::info('User ID: ' . $user->id . ' has been logged out due to inactivity at ' . $now->format('g:i A'));
+                // Log out the user
+                Log::info('User logged out due to inactivity:', ['user_id' => Auth::id()]);
 
-                // Call the LogoutController's logout method
-                return app(LogoutController::class)->logout($request);
-            } else {
-                // Update last active time
-                $user->update(['last_active_at' => $now]);
-                Log::info('User activity updated.');
+                // Clear session data
+                session()->flush();
+
+                // Optionally redirect to login page
+                return redirect('/login')->with('message', 'You have been logged out due to inactivity.');
             }
+
+            // Update the last activity time to the current time
+            session(['last_activity_time' => $currentTime]);
+            Log::info('Updated Last Activity Time:', ['time' => $currentTime]);
         }
 
         return $next($request);
