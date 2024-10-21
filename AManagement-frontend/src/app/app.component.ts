@@ -1,5 +1,3 @@
-// src/app/app.component.ts
-
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AuthenticationService } from './theme/shared/services/authentication/authentication.service';
 import { AuthStateService } from './theme/shared/services/authentication/state/authe-state-service.service';
@@ -7,10 +5,8 @@ import { IdleTimeoutService } from './theme/shared/services/iddle-timeout/iddle-
 import { ActivityService } from './theme/shared/services/activity/user-acitivty.service';
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { UpdateAcitivtyService } from '../app/theme/shared/services/activity/emit/update-acitivty.service'; // Import the service
-
-// import { UserActivityService } from './theme/shared/services/activity/user-acitivty.service';
+import { HttpClient } from '@angular/common/http';
+import { UpdateAcitivtyService } from '../app/theme/shared/services/activity/emit/update-acitivty.service';
 
 @Component({
   selector: 'app-root',
@@ -33,7 +29,12 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     console.log('AppComponent: ngOnInit called');
     this.initializeAuthState();
-    
+
+    // Check if the session timeout alert should be shown
+    if (localStorage.getItem('sessionTimeoutAlertShown') === 'true') {
+      this.showSessionTimeoutAlert();
+    }
+
     // Delay the idle timeout service start to ensure authentication state is set correctly
     setTimeout(() => {
       if (this.authStateService.isAuthenticated()) {
@@ -44,7 +45,6 @@ export class AppComponent implements OnInit, OnDestroy {
         this.idleTimeoutService.stopWatching();
       }
     }, 100); // Adjust the timeout delay as needed
-    
 
     this.idleTimeoutSubscription = this.idleTimeoutService.onTimeoutObservable().subscribe(() => {
       console.log('AppComponent: Idle timeout detected.');
@@ -65,23 +65,29 @@ export class AppComponent implements OnInit, OnDestroy {
 
   private handleIdleTimeout(): void {
     console.log('Idle timeout detected, showing alert for logout...');
-  
+    localStorage.setItem('sessionTimeoutAlertShown', 'true');
+    // Show alert and set flag in local storage
+    this.showSessionTimeoutAlert();
+  }
+
+  private showSessionTimeoutAlert(): void {
     Swal.fire({
       title: 'Session Timeout',
       text: 'You have been logged out due to inactivity. Please log in again.',
       icon: 'warning',
-      showCancelButton: false, // Set to false for no cancel button during inactivity
+      showCancelButton: false,
       confirmButtonText: 'OK',
-      backdrop: true, // Disable interaction with the background
-      allowOutsideClick: false // Prevent closing the alert by clicking outside
+      backdrop: true,
+      allowOutsideClick: false
     }).then((result) => {
       if (result.isConfirmed) {
         console.log('Swal confirmed, logging out...');
         this.authService.logout().subscribe({
           next: () => {
             console.log('Logout successful. Clearing token and redirecting to login.');
-            this.authStateService.setAuthenticated(false); // Update authentication state
+            this.authStateService.setAuthenticated(false);
             this.idleTimeoutService.stopWatching();
+            localStorage.removeItem('sessionTimeoutAlertShown'); // Clear flag on successful logout
             window.location.href = '/login'; // Redirect to login after logout
           },
           error: (err) => {
@@ -93,38 +99,22 @@ export class AppComponent implements OnInit, OnDestroy {
               confirmButtonText: 'OK'
             }).then(() => {
               console.log('Swal confirmed after logout failure, reloading page.');
-              // this.authStateService.setAuthenticated(false); // Update authentication state
-              // window.location.href = '/login';
               this.reloadPage();
             });
           }
         });
       }
     });
+
+    console.log('Setting sessionTimeoutAlertShown in local storage.'); // Debugging statement
+
+    // Set the session timeout alert flag in local storage
   }
 
-  
-  
-  // private updateActivity() {
-  //   const token = this.authService.getToken();
-  //   const headers = new HttpHeaders({
-  //     Authorization: `Bearer ${token}`,
-  //   });
-
-  //   this.http.post(`${this.apiUrl}/check-activity`, {}, { headers }).subscribe({
-  //     next: () => {
-  //       console.log('Activity updated successfully.');
-  //     },
-  //     error: (err) => {
-  //       console.error('Error updating activity:', err);
-  //     }
-  //   });
-  // }
-  
   private reloadPage(): void {
     window.location.reload();
   }
-
+  
   private showAlert(title: string, text: string, icon: 'warning' | 'error' | 'info' | 'success' | 'question') {
     return Swal.fire({
       title,

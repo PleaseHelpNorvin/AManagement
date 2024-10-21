@@ -86,7 +86,7 @@ export class IdleTimeoutService {
   }
 
   public startWatching(): void {
-    if (this.watchingStarted) return; // Prevent multiple starts
+    if (this.watchingStarted) return; 
     console.log('Start watching');
     this.watchingStarted = true;
     this.resetIdleTime(); // Start tracking immediately

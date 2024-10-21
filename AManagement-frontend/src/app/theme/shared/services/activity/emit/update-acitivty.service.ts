@@ -9,5 +9,4 @@ import { ActivityService } from '../user-acitivty.service';
 export class UpdateAcitivtyService {
   private activityUpdatedSubject = new Subject<void>();
   activityUpdated$ = this.activityUpdatedSubject.asObservable();
-  // constructor (private userActivityService: UserActivtyService) {}
 }
