@@ -4,9 +4,12 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AuthenticationService } from './theme/shared/services/authentication/authentication.service';
 import { AuthStateService } from './theme/shared/services/authentication/state/authe-state-service.service';
 import { IdleTimeoutService } from './theme/shared/services/iddle-timeout/iddle-timeout.service';
-import { UserActivtyService } from './theme/shared/services/activity/user-acitivty.service';
+import { ActivityService } from './theme/shared/services/activity/user-acitivty.service';
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { UpdateAcitivtyService } from '../app/theme/shared/services/activity/emit/update-acitivty.service'; // Import the service
+
 // import { UserActivityService } from './theme/shared/services/activity/user-acitivty.service';
 
 @Component({
@@ -22,7 +25,9 @@ export class AppComponent implements OnInit, OnDestroy {
     private authService: AuthenticationService,
     private authStateService: AuthStateService,
     private idleTimeoutService: IdleTimeoutService,
-    private userActivityService: UserActivtyService
+    private updateActivityService: UpdateAcitivtyService,
+    private http: HttpClient,
+    private userActivityService: ActivityService
   ) {}
 
   ngOnInit(): void {
@@ -97,7 +102,24 @@ export class AppComponent implements OnInit, OnDestroy {
       }
     });
   }
+
   
+  
+  // private updateActivity() {
+  //   const token = this.authService.getToken();
+  //   const headers = new HttpHeaders({
+  //     Authorization: `Bearer ${token}`,
+  //   });
+
+  //   this.http.post(`${this.apiUrl}/check-activity`, {}, { headers }).subscribe({
+  //     next: () => {
+  //       console.log('Activity updated successfully.');
+  //     },
+  //     error: (err) => {
+  //       console.error('Error updating activity:', err);
+  //     }
+  //   });
+  // }
   
   private reloadPage(): void {
     window.location.reload();

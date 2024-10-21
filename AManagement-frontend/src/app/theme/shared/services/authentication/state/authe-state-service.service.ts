@@ -8,7 +8,7 @@ import { IdleTimeoutService } from '../../iddle-timeout/iddle-timeout.service';
 
 export class AuthStateService {
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
-  IdleTimeoutService 
+  // IdleTimeoutService 
   isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
 
   setAuthenticated(value: boolean) {

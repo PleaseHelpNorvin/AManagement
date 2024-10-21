@@ -1,13 +1,13 @@
-import { Injectable, EventEmitter  } from '@angular/core';
+// update-activity.service.ts
+import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
+import { ActivityService } from '../user-acitivty.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UpdateAcitivtyService {
-
-  activityUpdated = new EventEmitter<void>();
-
-  notifyActivityUpdate() {
-    this.activityUpdated.emit();
-  }
+  private activityUpdatedSubject = new Subject<void>();
+  activityUpdated$ = this.activityUpdatedSubject.asObservable();
+  // constructor (private userActivityService: UserActivtyService) {}
 }
