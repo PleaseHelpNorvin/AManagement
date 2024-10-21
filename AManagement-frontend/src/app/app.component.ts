@@ -16,6 +16,7 @@ import { UpdateAcitivtyService } from '../app/theme/shared/services/activity/emi
 export class AppComponent implements OnInit, OnDestroy {
   title = 'mantis-free-version';
   private idleTimeoutSubscription: Subscription;
+  private activityDelay = 10000; 
 
   constructor(
     private authService: AuthenticationService,
@@ -27,19 +28,19 @@ export class AppComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    console.log('AppComponent: ngOnInit called');
+    // console.log('AppComponent: ngOnInit called');
     this.initializeAuthState();
+    // if()
 
-    // Check if the session timeout alert should be shown
     if (localStorage.getItem('sessionTimeoutAlertShown') === 'true') {
       this.showSessionTimeoutAlert();
     }
 
-    // Delay the idle timeout service start to ensure authentication state is set correctly
     setTimeout(() => {
       if (this.authStateService.isAuthenticated()) {
         console.log('User is logged in. Starting idle timeout service.');
         this.idleTimeoutService.startWatching();
+        // this.idleTimeoutService.
       } else {
         console.log('User is not logged in. Not starting idle timeout service.');
         this.idleTimeoutService.stopWatching();

@@ -12,6 +12,7 @@ export class IdleTimeoutService {
   private idleTime = 0;
   private timeout: any;
   private countdownInterval: any;
+  private activityUpdateTimeout: any; 
   private readonly IDLE_LIMIT = 60000; // 1 minute
   private timeoutSubject = new Subject<void>();
   private eventListenerAdded = false; // Ensure this is correctly managed
@@ -45,7 +46,13 @@ export class IdleTimeoutService {
     clearTimeout(this.timeout); // Clear previous timeout
     clearInterval(this.countdownInterval); // Clear previous countdown
 
-    // Update user activity
+      // Debounce the activity update call
+  const updateDebounceTime = 5000; // Adjust as necessary
+  if (this.activityUpdateTimeout) {
+    clearTimeout(this.activityUpdateTimeout); // Clear the previous debounce timeout
+  }
+
+  this.activityUpdateTimeout = setTimeout(() => {
     this.activityService.updateActivity().subscribe({
       next: (response) => {
         console.log('User activity updated:', response);
@@ -54,6 +61,7 @@ export class IdleTimeoutService {
         console.error('Failed to update user activity:', error);
       },
     });
+  }, updateDebounceTime);
 
     let remainingTime = this.IDLE_LIMIT; // Initialize remaining time
 
@@ -89,6 +97,7 @@ export class IdleTimeoutService {
     if (this.watchingStarted) return; 
     console.log('Start watching');
     this.watchingStarted = true;
+    this.startListening();
     this.resetIdleTime(); // Start tracking immediately
   }
 
