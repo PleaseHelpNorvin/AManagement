@@ -13,7 +13,7 @@ export class IdleTimeoutService {
   private timeout: any;
   private countdownInterval: any;
   private activityUpdateTimeout: any; 
-  private readonly IDLE_LIMIT = 60000; // 1 minute
+  private readonly IDLE_LIMIT = 300000; // 1 minute
   private timeoutSubject = new Subject<void>();
   private eventListenerAdded = false; // Ensure this is correctly managed
   private watchingStarted = false; // Flag to prevent multiple starts

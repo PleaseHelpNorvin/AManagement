@@ -1,33 +1,27 @@
-<div class="modal" *ngIf="isVisible">
+<div class="coded-wrapper">
+<div class="modal fade show" tabindex="-1" *ngIf="isVisible" style="display: block; background-color: rgba(0, 0, 0, 0.5);">
+  <div class="modal-dialog modal-dialog-centered modal-lg"> <!-- Ensure modal-dialog-centered is present -->
     <div class="modal-content">
-      <span class="close" (click)="onCloseHandled()">&times;</span>
-      <h2>Add New Tenant</h2>
-      
-      <form (ngSubmit)="addNewTenant()">
-        <div class="form-group">
-          <label for="firstname">First Name:</label>
-          <input 
-            type="text" 
-            id="firstname" 
-            [(ngModel)]="tenantObj.firstname" 
-            name="firstname" 
-            required 
-          />
-        </div>
-    
-        <div class="form-group">
-          <label for="lastname">Last Name:</label>
-          <input 
-            type="text" 
-            id="lastname" 
-            [(ngModel)]="tenantObj.lastname" 
-            name="lastname" 
-            required 
-          />
-        </div>
-    
-        <button type="submit">Save Tenant</button>
-      </form>
+      <div class="modal-header">
+        <h5 class="modal-title">Add Tenant</h5>
+        <button type="button" class="btn-close" aria-label="Close" (click)="onCloseHandled()"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-3">
+            <label for="firstname" class="form-label">First Name</label>
+            <input type="text" class="form-control" id="firstname" [(ngModel)]="tenantObj.firstname" name="firstname">
+          </div>
+          <div class="mb-3">
+            <label for="lastname" class="form-label">Last Name</label>
+            <input type="text" class="form-control" id="lastname" [(ngModel)]="tenantObj.lastname" name="lastname">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="onCloseHandled()">Close</button>
+        <button type="button" class="btn btn-primary" (click)="addNewTenant()">Save changes</button>
+      </div>
     </div>
   </div>
-  
+</div>

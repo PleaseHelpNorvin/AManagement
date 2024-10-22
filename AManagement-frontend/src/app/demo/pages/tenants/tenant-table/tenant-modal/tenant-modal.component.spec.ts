@@ -12,6 +12,10 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./tenant-modal.component.scss'] // Fixed the typo
 })
 export default class TenantModalComponent {
+[x: string]: any;
+onAnimationEnd() {
+throw new Error('Method not implemented.');
+}
 
   tenantObj: { firstname: string; lastname: string } = { firstname: '', lastname: '' };
   // display: 'none';

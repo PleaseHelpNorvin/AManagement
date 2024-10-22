@@ -16,12 +16,18 @@ import { TenantModalComponent } from './tenant-modal/tenant-modal.component';
   styleUrls: ['./tenant-table.component.scss'],
 })
 export class TenantTableComponent implements OnInit {
-  display = 'none';
-  showNew: Boolean = false;
+  // display = 'none';
+  // showNew: Boolean = false;
   tenants = [];
-  isVisible = false;
+  // isVisible = false;
+  isModalVisible: boolean = false;  // Control modal visibility
+
 
   constructor(private tenantsService: TenantsService) {}
+  
+  ngOnInit(): void {
+    this.fetchData();
+  }
 
   fetchData(): void {
     this.tenants = [
@@ -43,22 +49,18 @@ export class TenantTableComponent implements OnInit {
     // );
   }
 
-  onCloseHandled(): void {
-    this.display = 'none';
-  }
-// Method to open the modal
-openModal(): void {
-  console.log('Opening modal'); // Debugging line
-  this.isVisible = true; // Update visibility status
-}
-
-
-  ngOnInit(): void {
-    this.fetchData();
+  showTenantModal(): void {
+    console.log('isModalVisible is true ')
+    this.isModalVisible = true;
   }
 
   // Method to be called when a tenant is added
   onTenantAdded(): void {
     this.fetchData(); // Refresh the tenant list when a new tenant is added
+  }
+
+  closeTenantModal(): void {
+    console.log('isModalVisible is false ');
+    this.isModalVisible = false;  // Close modal when close event is emitted
   }
 }
