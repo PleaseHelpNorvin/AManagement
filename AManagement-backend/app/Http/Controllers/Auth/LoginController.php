@@ -105,4 +105,77 @@ class LoginController extends ApiController
             // );
         }
     }
+
+    public function tenantLogin(Request $request)
+{
+    // Validate incoming request
+    $credentials = $request->validate([
+        'email' => 'required|email',
+        'password' => 'required',
+    ]);
+
+    try {
+        // Retrieve the user
+        $existingUser = User::where('email', $request->email)->first();
+
+        // Check if user exists
+        if (!$existingUser) {
+            return $this->errorResponse(
+                null, 
+                'User not found',
+                404
+            );
+        }
+
+        // Check if the user is a tenant
+        if (!$existingUser->isUser()) {
+            return $this->forbiddenResponse(
+                null,
+                'Access denied. Only for tenants.',
+                403
+            );
+        }
+
+        // Check if the user is already logged in
+        if ($existingUser->is_logged_in) {
+            return $this->forbiddenResponse(
+                null,
+                'User is already logged in.',
+                403
+            );
+        }
+
+        // Attempt login
+        if (Auth::attempt($credentials)) {
+            $user = Auth::user();
+            Log::info('Tenant User ID: ' . $user->id . ' has logged in successfully.');
+
+            // Mark the user as logged in
+            $user->update(['is_logged_in' => true]);
+
+            // Generate a token
+            $token = $user->createToken('Tenant Access Token')->plainTextToken;
+
+            return response()->json([
+                'token' => $token,
+                'role' => 'tenant',
+                'is_logged_in' => $user->is_logged_in,
+            ], 200);
+        }
+
+        return $this->errorResponse(
+            null, 
+            'Invalid credentials',
+            401
+        );
+    } catch (\Throwable $th) {
+        // Log::error('Tenant login error: ' . $th->getMessage());
+        // return $this->InternalServerErrorResponse(
+        //     null,
+        //     'An internal server error occurred. Please try again later.',
+        //     500
+        // );
+    }
+}
+
 }

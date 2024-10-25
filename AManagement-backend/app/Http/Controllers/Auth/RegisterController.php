@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Validator;
 class RegisterController extends ApiController
 {
     //
-    public function register(Request $request)
+    public function tenantRegister(Request $request)
     {
        // echo"register test";
              // Validate the request data
