@@ -1,13 +1,7 @@
-<div class="coded-wrapper">
-  <div class="container">
+<div class="row">
+  <div class="col-sm-12">
     <h2>Tenant List</h2>
-  
-    <!-- <button class="btn btn-primary mt-2 mb-1" (click)="openModal()">Add New Tenant</button> -->
-    <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-      Open Modal
-    </button> -->
     <button type="button" class="btn btn-primary mt-2 mb-1" (click)="showTenantModal()">Add Tenant</button>
-  
   
     <table class="table table-bordered table-striped">
       <thead>
@@ -17,22 +11,39 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let tenant of tenants">
+        <tr *ngFor="let tenant of tenants | stringFilter: filter | paginate: config">
           <td>{{ tenant.firstname }}</td>
           <td>{{ tenant.lastname }}</td>
         </tr>
       </tbody>
     </table>
-  
-    <!-- Modal for adding a new tenant -->
-    <!-- <app-tenant-modal 
-      [isVisible]="isVisible" 
-      (tenantAdded)="onTenantAdded()"></app-tenant-modal> -->
-      <app-tenant-modal 
+
+    <app-tenant-modal 
       [isVisible]="isModalVisible" 
       (tenantAdded)="onTenantAdded()"
       (closeModal)="closeTenantModal()">
-      ></app-tenant-modal>
-  
+    </app-tenant-modal>
+      
+    <app-pagination
+      [data]="tenants | stringFilter: filter" 
+      [filter]="filter">
+    </app-pagination>
+    
+    <div class="has-text-centered">
+      <pagination-controls [id]="config.id" 
+                           [maxSize]="maxSize"
+                           [directionLinks]="directionLinks"
+                           [autoHide]="autoHide"
+                           [responsive]="responsive"
+                           [previousLabel]="labels.previousLabel"
+                           [nextLabel]="labels.nextLabel"
+                           [screenReaderPaginationLabel]="labels.screenReaderPaginationLabel"
+                           [screenReaderPageLabel]="labels.screenReaderPageLabel"
+                           [screenReaderCurrentLabel]="labels.screenReaderCurrentLabel"
+                           (pageChange)="onPageChange($event)"
+                           (pageBoundsCorrection)="onPageBoundsCorrection($event)">
+      </pagination-controls>
+    </div>
   </div>
+  
 </div>
