@@ -21,7 +21,7 @@ class DashboardScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Dashboard'),
-        actions: [
+        actions: const [
           // IconButton(
           //   icon: Icon(Icons.logout),
           //   onPressed: () {
@@ -42,7 +42,7 @@ class DashboardScreen extends StatelessWidget {
             // Greeting Section
             Text(
               'Welcome, $name!',
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
               ),
@@ -61,7 +61,7 @@ class DashboardScreen extends StatelessWidget {
             Expanded(
               child: GridView.count(
                 crossAxisCount: 2,
-                children: [
+                children: const [
                   // DashboardCard(
                   //   icon: Icons.person,
                   //   title: 'Profile',
