@@ -3,10 +3,17 @@ class User {
   final String role;
   final bool isLoggedIn;
 
-  User({required this.token, required this.role, required this.isLoggedIn});
+  User({
+
+    required this.token, 
+    required this.role, 
+    required this.isLoggedIn
+
+    });
 
   // Factory method to create a User from JSON
   factory User.fromJson(Map<String, dynamic> json) {
+    // final data = json['data'] ?? {};
     return User(
       token: json['token'],
       role: json['role'],

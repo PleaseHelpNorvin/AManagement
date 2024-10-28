@@ -1,14 +1,20 @@
+import 'package:amanagement_mobile/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
+// import 'package:your_app_name/providers/auth_provider.dart'; // Adjust the import based on your project structure
+import 'package:provider/provider.dart';
 
 class DashboardScreen extends StatelessWidget {
-  final String userName;
-  final String role; // Assuming 'admin' or 'tenant' as roles
+  final String name;
+  final String role;
+  
+  final dynamic token;
 
   const DashboardScreen({
-    Key? key,
-    required this.userName,
-    required this.role,
-  }) : super(key: key);
+    super.key,
+    required this.token,
+    required this.role, 
+    required this.name,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -16,12 +22,16 @@ class DashboardScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text('Dashboard'),
         actions: [
-          IconButton(
-            icon: Icon(Icons.logout),
-            onPressed: () {
-              // TODO: Implement logout functionality
-            },
-          )
+          // IconButton(
+          //   icon: Icon(Icons.logout),
+          //   onPressed: () {
+          //     // Implement logout functionality
+          //     Provider.of<AuthProvider>(context, listen: false).logout();
+          //     Navigator.of(context).pushReplacement(
+          //       MaterialPageRoute(builder: (context) => LoginScreen()), // Navigate back to login screen
+          //     );
+          //   },
+          // ),
         ],
       ),
       body: Padding(
@@ -31,7 +41,7 @@ class DashboardScreen extends StatelessWidget {
           children: [
             // Greeting Section
             Text(
-              'Welcome, $userName!',
+              'Welcome, $name!',
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
@@ -52,36 +62,52 @@ class DashboardScreen extends StatelessWidget {
               child: GridView.count(
                 crossAxisCount: 2,
                 children: [
-                  DashboardCard(
-                    icon: Icons.person,
-                    title: 'Profile',
-                    onTap: () {
-                      // Navigate to Profile Page
-                    },
-                  ),
-                  DashboardCard(
-                    icon: Icons.payment,
-                    title: 'Payments',
-                    onTap: () {
-                      // Navigate to Payments Page
-                    },
-                  ),
-                  if (role == 'admin')
-                    DashboardCard(
-                      icon: Icons.supervised_user_circle,
-                      title: 'Manage Users',
-                      onTap: () {
-                        // Navigate to Manage Users Page
-                      },
-                    ),
-                  if (role == 'admin')
-                    DashboardCard(
-                      icon: Icons.notifications,
-                      title: 'Notifications',
-                      onTap: () {
-                        // Navigate to Notifications Page
-                      },
-                    ),
+                  // DashboardCard(
+                  //   icon: Icons.person,
+                  //   title: 'Profile',
+                  //   onTap: () {
+                  //     Navigator.of(context).push(
+                  //       MaterialPageRoute(
+                  //         builder: (context) => ProfileScreen(), // Navigate to Profile Page
+                  //       ),
+                  //     );
+                  //   },
+                  // ),
+                  // DashboardCard(
+                  //   icon: Icons.payment,
+                  //   title: 'Payments',
+                  //   onTap: () {
+                  //     Navigator.of(context).push(
+                  //       MaterialPageRoute(
+                  //         builder: (context) => PaymentsScreen(), // Navigate to Payments Page
+                  //       ),
+                  //     );
+                  //   },
+                  // ),
+                  // if (role == 'admin')
+                  //   DashboardCard(
+                  //     icon: Icons.supervised_user_circle,
+                  //     title: 'Manage Users',
+                  //     onTap: () {
+                  //       Navigator.of(context).push(
+                  //         MaterialPageRoute(
+                  //           builder: (context) => ManageUsersScreen(), // Navigate to Manage Users Page
+                  //         ),
+                  //       );
+                  //     },
+                  //   ),
+                  // if (role == 'admin')
+                  //   DashboardCard(
+                  //     icon: Icons.notifications,
+                  //     title: 'Notifications',
+                  //     onTap: () {
+                  //       Navigator.of(context).push(
+                  //         MaterialPageRoute(
+                  //           builder: (context) => NotificationsScreen(), // Navigate to Notifications Page
+                  //         ),
+                  //       );
+                  //     },
+                  //   ),
                   // Add more cards as needed
                 ],
               ),

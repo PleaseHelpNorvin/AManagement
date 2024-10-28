@@ -28,17 +28,15 @@ class ApiService {
     String nickName, 
     String middleName, 
     String lastName, 
-    String? gender, 
+    final gender, 
     String contactNumber, 
     String address, String gcashNumber) async {
-  final response = await http.post(
-    Uri.parse(Api.registerEndpoint),
-    headers: {'Content-Type': 'application/json'},
-    body: json.encode({
+
+    print('Registering user with data: ${json.encode({
       'name': name,
       'email': email,
       'password': password,
-      'role': 0, // Static role set to 0
+      'role': 0,
       'nickname': nickName,
       'middlename': middleName,
       'lastname': lastName,
@@ -46,15 +44,24 @@ class ApiService {
       'contact_number': contactNumber,
       'address': address,
       'gcash_number': gcashNumber,
-    }),
-  );
+    })}');
 
-
-    if (response.statusCode == 201) {
-      final data = json.decode(response.body);
-      return User.fromJson(data); // Assuming the response includes user data
-    } else {
-      throw Exception('Failed to register user: ${response.body}');
-    }
+    final response = await http.post(
+      Uri.parse(Api.registerEndpoint),
+      headers: {'Content-Type': 'application/json'},
+      body: json.encode({
+        'name': name,
+        'email': email,
+        'password': password,
+        'role': 0, // Static role set to 0
+        'nickname': nickName,
+        'middlename': middleName,
+        'lastname': lastName,
+        'gender': gender,
+        'contact_number': contactNumber,
+        'address': address,
+        'gcash_number': gcashNumber,
+      }),
+    );
   }
 }

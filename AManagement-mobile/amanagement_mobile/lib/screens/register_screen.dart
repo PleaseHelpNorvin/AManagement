@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:provider/provider.dart';
 import '../providers/auth_provider.dart';
+import './dashboard_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
   @override
@@ -127,7 +129,30 @@ class _RegisterScreenState extends State<RegisterScreen> {
   String gcashNumber = gcashNumberController.text;
 
   try {
+    // print('this is from register method  Name: $name, Email: $email, Password: $password, Nickname: $nickName, MiddleName: $middleName, LastName: $lastName, Gender: $_selectedGender, ContactNumber: $contactNumber, Address: $address, GCashNumber: $gcashNumber');
+
     await authProvider.register(name, email, password, nickName, middleName, lastName, _selectedGender ?? '', contactNumber, address, gcashNumber);
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text('Registration Success'),
+        content: Text('You have successfully registered!'),
+        actions: <Widget>[
+          TextButton(
+            child: Text('Okay'),
+            onPressed: () {
+              Navigator.of(ctx).pop(); // Close the dialog
+              Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                builder: (context) => const DashboardScreen(token: null, role: '', name: ''),
+              ),
+            );
+              // Redirect to the dashboard
+            },
+          ),
+        ],
+      ),
+    );
     // Navigate to another screen or show a success message
   } catch (error) {
     // Show error message to the user
