@@ -59,38 +59,37 @@ export default class LoginComponent {
       const { email, password, rememberMe } = this.loginForm.value;
       this.authService.login(email, password, rememberMe).subscribe({
         next: (response) => {
-          if (response && response.success === false) {
-            this.notificationService.showNotification(response.message);
-          } else if (response) {            
-            // Show SweetAlert for successful login
+          if (response && response.token) {
             Swal.fire({
-              title: 'Login Successful',
+              title: `Login successful`,
               text: 'Welcome back!',
               icon: 'success',
               confirmButtonText: 'OK'
             }).then(() => {
-              // Redirect to the dashboard after the alert is closed
               this.router.navigate(['/dashboard/default']);
+            });
+          } else {
+            // This is where you check the error message
+            Swal.fire({
+              title: `${response.message}`,
+              text: 'Wrong Credentials, Please Try login again',
+              icon: 'error',
+              confirmButtonText: 'OK'
             });
           }
         },
-        error: (error: HttpErrorResponse) => {
-          // Handle errors in the component
-          let errorMessage = error.error.message;
-  
-          if (error.error && error.error.message) {
-            errorMessage = error.error.message;
-          } else if (error.status === 403) {
-            errorMessage = 'Forbidden: You do not have permission to access this resource.';
-          } else if (error.status === 500) {
-            errorMessage = 'Internal server error. Please try again later.';
-          } else if (error.status === 0) {
-            errorMessage = 'Network error: Unable to reach the server.';
-          }
-          this.notificationService.showNotification(errorMessage); 
+        error: (error) => {
+          // Handle any additional errors if needed
+          Swal.fire({
+            title: 'asdasd',
+            text: error.message || 'An unknown error occurred. Please try again.',
+            icon: 'error',
+            confirmButtonText: 'OK'
+          });
         },
       });
     }
   }
+  
   
 }

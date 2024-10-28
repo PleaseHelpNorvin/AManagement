@@ -1,18 +1,16 @@
 class User {
-  final String name;
-  final String email;
   final String token;
-  final int role;
+  final String role;
+  final bool isLoggedIn;
 
-  User({required this.name, required this.email, required this.token, required this.role});
+  User({required this.token, required this.role, required this.isLoggedIn});
 
   // Factory method to create a User from JSON
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
-      name: json['name'],
-      email: json['email'],
       token: json['token'],
       role: json['role'],
+      isLoggedIn: json['is_logged_in'], // Changed to match your API response
     );
   }
 }

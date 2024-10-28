@@ -26,7 +26,7 @@ export class AuthenticationService {
 
   login(email: string, password: string, rememberMe: boolean): Observable<LoginResponse> {
     const body = { email, password, rememberMe };
-    return this.http.post<LoginResponse>(`${this.apiURL}/login`, body).pipe(
+    return this.http.post<LoginResponse>(`${this.apiURL}/admin-login`, body).pipe(
       map((response: LoginResponse) => {
         this.storeToken(response.token);
         this.authStateService.setAuthenticated(true);
@@ -36,7 +36,20 @@ export class AuthenticationService {
       }),
       catchError((error: HttpErrorResponse) => {
         console.error('Login failed', error);
+         // Handle specific error cases
+         let errorMessage = 'Login failed';
+      if (error.status === 401) {
+        errorMessage = 'Unauthorized: Incorrect email or password.';
+      } else if (error.status === 403) {
+        
+        errorMessage = 'Forbidden: You do not have permission to access this resource.';
+      } else if (error.status === 500) {
+        errorMessage = 'Internal server error. Please try again later.';
+      } else if (error.status === 0) {
+        errorMessage = 'Network error: Unable to reach the server.';
+      }
         return of({ token: '', role: '', is_logged_in: false, message: 'Login failed' });
+        
       })
     );
   }

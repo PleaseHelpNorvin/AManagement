@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Log; // Add this import
 class LoginController extends ApiController
 {
     //
-    public function login(Request $request)
+    public function adminlogin(Request $request)
     {
         // Validate incoming request
         $credentials = $request->validate([

@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 // Authentication routes
-Route::post('/login',[LoginController::class, 'login'])->name('login');
+Route::post('/admin-login',[LoginController::class, 'adminlogin'])->name('adminlogin');
 Route::post('/tenant-login', [LoginController::class, 'tenantLogin'])->name('tenantlogin');
 Route::post('/tenant-register',[RegisterController::class, 'tenantRegister'])->name('tenantregister');
 
