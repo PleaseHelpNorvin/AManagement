@@ -9,7 +9,7 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Access the AuthProvider using Provider.of or context.read()
-    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    // final authProvider = Provider.of<AuthProvider>(context, listen: false);
 
     return Scaffold(
       appBar: AppBar(title: const Text('Login')),
@@ -29,7 +29,7 @@ class LoginScreen extends StatelessWidget {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                _login(context);
+                // _login(context);
               },
               child: const Text('Login'),
             ),
@@ -39,12 +39,12 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
-  void _login(BuildContext context) {
-    final authProvider = Provider.of<AuthProvider>(context, listen: false);
-    String email = emailController.text;
-    String password = passwordController.text;
+  // void _login(BuildContext context) {
+  //   final authProvider = Provider.of<AuthProvider>(context, listen: false);
+  //   String email = emailController.text;
+  //   String password = passwordController.text;
 
-    authProvider.login(email, password);
-    // Navigate or update UI after login if needed
-  }
+  //   authProvider.login(email, password);
+  //   // Navigate or update UI after login if needed
+  // }
 }

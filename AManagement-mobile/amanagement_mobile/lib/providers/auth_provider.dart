@@ -1,41 +1,40 @@
-// import 'services/api_service.dart';
 import 'package:flutter/material.dart';
-
 import '../services/api_service.dart';
 import '../models/user.dart';
 
 class AuthProvider extends ChangeNotifier {
   final ApiService apiService;
+
   AuthProvider(this.apiService);
 
   User? _user;
-  String get token => _user?.token ?? ''; // Get token from User
-  bool get isLoggedIn => _user?.isLoggedIn ?? false; // Check login status
+  String _token = '';
+  bool _isLoggedIn = false;
 
   User? get user => _user;
+  String get token => _token;
+  bool get isLoggedIn => _isLoggedIn;
 
-  Future<void> register(String name, String email, String password) async {
+  Future<void> register(String name, String email, String password, String nickName, String middleName, String lastName, String selectedGender, String contactNumber, String address, String gcashNumber ) async {
     try {
-      _user = await apiService.registerUser(name, email, password);
+      _user = await apiService.registerUser( name, email,
+        password,
+        nickName,
+        middleName,
+        lastName,
+        selectedGender,
+        contactNumber,
+        address,
+        gcashNumber,
+      );
       if (_user != null) {
-        notifyListeners(); // Notify listeners
+        _token = _user!.token;  // Save the token
+        _isLoggedIn = true;      // Update logged-in status
+        notifyListeners();       // Notify listeners
       }
     } catch (e) {
       print("Registration Error: $e");
-    }
-  }
-
-  Future<void> login(String username, String password) async {
-    try {
-      _user = await apiService.login(username, password);
-      if (_user != null) {
-        notifyListeners(); // Notify listeners
-      } else {
-        _user = null; // Reset user if login failed
-        notifyListeners(); // Notify listeners
-      }
-    } catch (e) {
-      print("Login Error: $e");
+      throw e;  // Rethrow the error for handling in the UI
     }
   }
 }

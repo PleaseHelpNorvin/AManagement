@@ -13,4 +13,5 @@ class User {
       isLoggedIn: json['is_logged_in'], // Changed to match your API response
     );
   }
+  
 }
