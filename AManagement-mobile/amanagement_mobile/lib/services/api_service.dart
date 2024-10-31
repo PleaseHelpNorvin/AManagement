@@ -33,18 +33,20 @@ class ApiService {
     String address, String gcashNumber) async {
 
     print('Registering user with data: ${json.encode({
-      'name': name,
-      'email': email,
-      'password': password,
-      'role': 0,
-      'nickname': nickName,
-      'middlename': middleName,
-      'lastname': lastName,
-      'gender': gender,
-      'contact_number': contactNumber,
-      'address': address,
-      'gcash_number': gcashNumber,
-    })}');
+        'name': name,
+        'email': email,
+        'password': password,
+        'role': 0,
+        'nickname': nickName,
+        'middlename': middleName,
+        'lastname': lastName,
+        'gender': gender,
+        'contact_number': contactNumber,
+        'address': address,
+        'gcash_number': gcashNumber,
+        }
+      )
+    }');
 
     final response = await http.post(
       Uri.parse(Api.registerEndpoint),
@@ -53,7 +55,7 @@ class ApiService {
         'name': name,
         'email': email,
         'password': password,
-        'role': 0, // Static role set to 0
+        'role': 0, 
         'nickname': nickName,
         'middlename': middleName,
         'lastname': lastName,

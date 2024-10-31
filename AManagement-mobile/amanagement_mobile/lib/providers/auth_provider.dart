@@ -76,4 +76,6 @@ class AuthProvider extends ChangeNotifier {
     // throw e;  // Rethrow the error for handling in the UI
   }
 }
+
+  void logout() {}
 }
