@@ -172,6 +172,7 @@ class _ClientSignupState extends State<ClientDataSignup> {
       'user_id': widget.userId,
       'token': storedToken,
     };
+    
 
     try {
       // Make the API call

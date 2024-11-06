@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import '../pages/home.dart';  // Update this import based on your project structure
+import '../pages/home.dart'; // Update this import based on your project structure
 import '../utils/httpmethods.dart'; // Assuming this contains the method for making the API call
-import '../pages/signup.dart';  // Assuming you have a signup page
+import '../pages/signup.dart'; // Assuming you have a signup page
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -28,11 +28,18 @@ class _LoginState extends State<Login> {
   void initState() {
     super.initState();
 
-    // Retrieve the stored token and userId from Hive box (if exists)
+    // Initialize Hive and retrieve the stored token and userId
+    _initializeHive();
+  }
+
+  Future<void> _initializeHive() async {
+    await Hive.initFlutter();
+    await Hive.openBox('accounts'); // Open the 'accounts' box
+
     final Box box = Hive.box('accounts');
     storedToken = box.get('token', defaultValue: '');
     storedUserId = box.get('userId', defaultValue: '');
-    
+
     // Debugging: print stored token and userId
     print('Stored Token: $storedToken');
     print('Stored UserId: $storedUserId');
@@ -49,15 +56,14 @@ class _LoginState extends State<Login> {
 
       // Assuming login API is defined in your httpmethods.dart
       try {
-        final response = await loginUser(username, password);  // Make your login request here
+        final response = await loginUser(username, password); // Make your login request here
+        final responseBody = json.decode(response.body);
+        print('Login response body: $responseBody'); // Debugging: print the response body
+
         if (response.statusCode == 200) {
-          final responseBody = json.decode(response.body);
-
-          print('login response body $responseBody');
-
           // Extract token and user info from the response
           final authToken = responseBody['token'] ?? '';
-          final userId = responseBody['user_id'] ?? '';
+          final userId = responseBody['client_info']['user_id'] ?? '';
 
           // Store token and user info in Hive
           await Hive.box('accounts').put('token', authToken);
@@ -68,11 +74,34 @@ class _LoginState extends State<Login> {
             context,
             MaterialPageRoute(
               builder: (context) => Home(
-                username: '',
+                username: username,
                 clientData: json.encode({
                   'username': username,
                   'token': authToken,
-                  'userId': userId,
+                  'user_id': userId,
+                  'user_info': {
+                    'id': userId,
+                    'username': username,
+                    'email': responseBody['email'].toString(),
+                    'email_verified_at': responseBody['email_verified_at'].toString(),
+                    'created_at': responseBody['created_at'].toString(),
+                    'updated_at': responseBody['updated_at'].toString(),
+                    'role': responseBody['role'].toString(),
+                    'is_logged_in': 1,
+                    'last_active_at': responseBody['last_active_at'].toString(),
+                  },
+                  'client_info': {
+                    'id': responseBody['client_info']['id'].toString(),
+                    'user_id': userId,
+                    'name': responseBody['client_info']['name'].toString(),
+                    'middlename': responseBody['client_info']['middlename'].toString(),
+                    'lastname': responseBody['client_info']['lastname'].toString(),
+                    'gender': responseBody['client_info']['gender'].toString(),
+                    'address': responseBody['client_info']['address'].toString(),
+                    'contact_number': responseBody['client_info']['contact_number'].toString(),
+                    'created_at': responseBody['client_info']['created_at'].toString(),
+                    'updated_at': responseBody['client_info']['updated_at'].toString(),
+                  },
                 }),
               ),
             ),
@@ -168,7 +197,7 @@ class _LoginState extends State<Login> {
               ),
               const SizedBox(height: 50),
               _isLoading
-                  ? const CircularProgressIndicator()
+                  ? const Center(child: CircularProgressIndicator())
                   : ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         minimumSize: const Size.fromHeight(50),
@@ -177,7 +206,9 @@ class _LoginState extends State<Login> {
                         ),
                       ),
                       onPressed: _submitLogin,
-                      child: const Text("Login"),
+                      child: _isLoading
+                          ? const CircularProgressIndicator()
+                          : const Text("Login"),
                     ),
               const SizedBox(height: 20),
               GestureDetector(

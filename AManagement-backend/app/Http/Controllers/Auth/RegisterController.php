@@ -124,6 +124,7 @@ class RegisterController extends ApiController
             'message' => 'Client information updated successfully',
             'token' => $token, // Returning the token back in the response
             'client_info' => $updatedClientInfo,
+            
         ]);
     }
 }
