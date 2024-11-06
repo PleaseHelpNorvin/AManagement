@@ -12,65 +12,118 @@ use App\Models\ClientInformation;
 
 class RegisterController extends ApiController
 {
-    //
     public function tenantRegister(Request $request)
     {
         \Log::info('Registering user with data:', $request->all());
 
         // Validate the request data
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
+            'username' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string',
-            'nickname' => 'nullable|string|max:255',
+            'name' => 'nullable|string|max:255',
             'middlename' => 'nullable|string|max:255',
             'lastname' => 'nullable|string|max:255',
             'gender' => 'nullable|string|max:10',
             'address' => 'nullable|string|max:255',
             'contact_number' => 'nullable|string|max:15',
-            'gcash_number' => 'nullable|string|max:20',
         ]);
-    
+
         // Check if validation fails
         if ($validator->fails()) {
             \Log::error('Validation failed', $validator->errors()->toArray());
 
-            // return $this->errorResponse('Validation error', $validator->errors(), 422);
+            return response()->json([
+                'message' => 'Validation error',
+                'errors' => $validator->errors()->toArray(),
+            ], 422);
+        }
+
+        // Create a new user
+        $user = User::create([
+            'username' => $request->username,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'role' => 0, // Set role (0 for user, 1 for admin, etc.)
+        ]);
+
+        // Create associated client information if provided
+        ClientInformation::create([
+            'user_id' => $user->id,
+            'name' => $request->name,
+            'middlename' => $request->middlename,
+            'lastname' => $request->lastname,
+            'gender' => $request->gender,
+            'address' => $request->address,
+            'contact_number' => $request->contact_number,
+        ]);
+
+        // Mark user as logged in and create a token
+        $user->is_logged_in = true;
+        $user->save();
+        $token = $user->createToken('Personal Access Token')->plainTextToken;
+
+        return $this->successResponse([
+            'token' => $token,
+            // 'user_id' => $user->id,
+            'user_info' => $user,
+        ], 'Registration and authentication successful');
+    }
+
+    public function updateClientInformation(Request $request, $userId)
+    {
+        // Check if the token is provided in the Authorization header
+        $token = $request->bearerToken();
+        if (!$token) {
+            return response()->json(['message' => 'Token not provided'], 401);
+        }
+
+        // Get the authenticated user
+        $authenticatedUser = auth()->user();
+
+        // Ensure the authenticated user is the same as the user attempting to update the information
+        if ($authenticatedUser->id !== (int)$userId) {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
+
+        // Validate the request data
+        $validator = Validator::make($request->all(), [
+            'name' => 'nullable|string|max:255',
+            'middlename' => 'nullable|string|max:255',
+            'lastname' => 'nullable|string|max:255',
+            'gender' => 'nullable|string|max:10',
+            'address' => 'nullable|string|max:255',
+            'contact_number' => 'nullable|string|max:15',
+        ]);
+
+        // Return validation errors if any
+        if ($validator->fails()) {
             return response()->json([
                 'message' => 'Validation error',
                 'errors' => $validator->errors(),
             ], 422);
         }
 
-        // Create a new user
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password), // Ensure password is hashed
-            'role' => 0, // Set role here as needed (0 for user, 1 for admin, etc.)
-        ]);
-    
-        // Create associated client information if provided
-        ClientInformation::create([
-            'user_id' => $user->id, // Associate with the created user
-            'nickname' => $request->nickname,
-            'middlename' => $request->middlename,
-            'lastname' => $request->lastname,
-            'gender' => $request->gender,
-            'address' => $request->address,
-            'contact_number' => $request->contact_number,
-            'gcash_number' => $request->gcash_number,
-        ]);
-    
-        // Generate a token for the new user
-        $token = $user->createToken($user->role)->plainTextToken;
-    
-        // Return a successful response with the token
-        return $this->successResponse(['token' => $token], 'Registration successful');
+        // Find the client information associated with the user
+        $clientInfo = ClientInformation::where('user_id', $userId)->first();
 
-        if (!$user) {
-            \Log::error('User creation failed');
-            return $this->errorResponse('User creation failed', [], 500);
+        if (!$clientInfo) {
+            return response()->json(['message' => 'Client information not found'], 404);
         }
+
+        // Update client information with the request data
+        $clientInfo->update($request->only([
+            'name', 'middlename', 'lastname', 'gender', 'address', 'contact_number'
+        ]));
+
+        // Retrieve the updated client information
+        $updatedClientInfo = ClientInformation::where('user_id', $userId)->first();
+
+        // Return response with updated information and token
+        return response()->json([
+            'message' => 'Client information updated successfully',
+            'token' => $token, // Returning the token back in the response
+            'client_info' => $updatedClientInfo,
+        ]);
     }
 }

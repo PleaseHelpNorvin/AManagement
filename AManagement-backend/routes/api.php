@@ -26,6 +26,8 @@ Route::middleware('auth:sanctum', 'check.user.activity')->group(function() {
 
     Route::middleware('user')->group(function() {
         Route::get('/home/user', [HomeController::class, 'userHome']);
+        Route::put('/client-info/{userId}', [RegisterController::class, 'updateClientInformation']);
+
     });
     
     Route::middleware('admin')->group(function() {

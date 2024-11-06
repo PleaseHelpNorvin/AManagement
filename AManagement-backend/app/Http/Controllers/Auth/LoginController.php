@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
+use App\Models\ClientInformation;
 use App\Http\Controllers\ApiController;
 // use App\Http\Controllers\Controller;
 use Illuminate\Support\Str;
@@ -107,75 +108,74 @@ class LoginController extends ApiController
     }
 
     public function tenantLogin(Request $request)
-{
-    // Validate incoming request
-    $credentials = $request->validate([
-        'email' => 'required|email',
-        'password' => 'required',
-    ]);
+    {
+        $credentials = $request->validate([
+            'username' => 'required',
+            'password' => 'required',
+        ]);
+    
+        try {
+            $existingUser = User::where('username', $request->username)->first();
+    
+            if (!$existingUser) {
+                return $this->errorResponse(
+                    null, 
+                    'User not found',
+                    404
+                );
+            }
+    
+            if (!$existingUser->isUser()) {
+                return $this->forbiddenResponse(
+                    null,
+                    'Access denied. Only for tenants.',
+                    403
+                );
+            }
+    
+            if ($existingUser->is_logged_in) {
+                return $this->forbiddenResponse(
+                    null,
+                    'User is already logged in.',
+                    403
+                );
+            }
+    
+            if (Auth::attempt($credentials)) {
+                $user = Auth::user();
+                Log::info('Tenant User ID: ' . $user->id . ' has logged in successfully.');
+    
+                $user->update(['is_logged_in' => true]);
+    
+                $token = $user->createToken('Tenant Access Token')->plainTextToken;
 
-    try {
-        // Retrieve the user
-        $existingUser = User::where('email', $request->email)->first();
-
-        // Check if user exists
-        if (!$existingUser) {
+                $clientInfo = $user->clientInformation;
+                $userInfo = User::find($user->id);
+    
+                return response()->json([
+                    'token' => $token,
+                    'role' => 'tenant',
+                    // 'user_id' => $user->id,
+                    'is_logged_in' => $user->is_logged_in,
+                    'user_info' => $userInfo,
+                    'client_info' => $clientInfo,
+                ], 200);
+            }
+    
             return $this->errorResponse(
                 null, 
-                'User not found',
-                404
+                'Invalid credentials',
+                401
             );
-        }
-
-        // Check if the user is a tenant
-        if (!$existingUser->isUser()) {
-            return $this->forbiddenResponse(
+        } catch (\Throwable $th) {
+            Log::error('Tenant login error: ' . $th->getMessage());
+            return $this->InternalServerErrorResponse(
                 null,
-                'Access denied. Only for tenants.',
-                403
+                'An internal server error occurred. Please try again later.',
+                500
             );
         }
-
-        // Check if the user is already logged in
-        if ($existingUser->is_logged_in) {
-            return $this->forbiddenResponse(
-                null,
-                'User is already logged in.',
-                403
-            );
-        }
-
-        // Attempt login
-        if (Auth::attempt($credentials)) {
-            $user = Auth::user();
-            Log::info('Tenant User ID: ' . $user->id . ' has logged in successfully.');
-
-            // Mark the user as logged in
-            $user->update(['is_logged_in' => true]);
-
-            // Generate a token
-            $token = $user->createToken('Tenant Access Token')->plainTextToken;
-
-            return response()->json([
-                'token' => $token,
-                'role' => 'tenant',
-                'is_logged_in' => $user->is_logged_in,
-            ], 200);
-        }
-
-        return $this->errorResponse(
-            null, 
-            'Invalid credentials',
-            401
-        );
-    } catch (\Throwable $th) {
-        // Log::error('Tenant login error: ' . $th->getMessage());
-        // return $this->InternalServerErrorResponse(
-        //     null,
-        //     'An internal server error occurred. Please try again later.',
-        //     500
-        // );
     }
-}
+    
 
 }

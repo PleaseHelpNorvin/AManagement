@@ -13,13 +13,13 @@ class ClientInformation extends Model
 
     protected $fillable = [
         'user_id',
-        'nickname',
+        'name',
         'middlename',
         'lastname',
         'gender',
         'address',
         'contact_number',
-        'gcash_number',
+        // 'gcash_number',
     ];
 
     public function user()

@@ -17,16 +17,16 @@ class DatabaseSeeder extends Seeder
         //php artisan db:seed
 
         User::factory()->create([
-            'name' => 'User',
+            'username' => 'User',
             'email' => 'test@test.com',
         ]);
         User::factory()->create([
-            'name' => 'admin',
+            'username' => 'admin',
             'email' => 'admin@admin.com',
             'role' => 1
         ]);
         User::factory()->create([
-            'name' => 'admin1',
+            'username' => 'admin1',
             'email' => 'admin1@admin.com',
             'role' => 1
         ]);

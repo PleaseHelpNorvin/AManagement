@@ -14,13 +14,13 @@ return new class extends Migration
         Schema::create('client_information', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->string('nickname')->nullable();
+            $table->string('name')->nullable();
             $table->string('middlename')->nullable();
             $table->string('lastname')->nullable();
             $table->string('gender')->nullable();
             $table->string('address')->nullable();
             $table->string('contact_number')->nullable();
-            $table->string('gcash_number')->nullable();
+            // $table->string('gcash_number')->nullable();
             $table->timestamps();
         });
     }
