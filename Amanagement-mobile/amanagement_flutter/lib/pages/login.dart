@@ -36,11 +36,14 @@ class _LoginState extends State<Login> {
         final response = await loginUser(username, password);
 
         if (response.token.isNotEmpty) {
+          final userId = response.userInfo.id;
+
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
               builder: (context) => Home(
                 // username: username,
+                userId: userId,
                 clientData: json.encode({
                   'username': username,
                   'token': response.token,
