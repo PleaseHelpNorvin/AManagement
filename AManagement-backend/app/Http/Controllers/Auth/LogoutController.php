@@ -43,7 +43,8 @@ class LogoutController extends ApiController
             // $request->user()->revokeAdminToken();
 
             return $this->successResponse(
-                $user->is_logged_in,
+                null,
+                // $user->is_logged_in,
                 'Successfully logged out.'
             );
                 

@@ -20,8 +20,9 @@ class UserMiddleware
             return response()->json([
                 'message' => 'Unauthorized'
             ], 403);
-        }
-        
+        }        
         return $next($request);
     }
+
+    
 }

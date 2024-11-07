@@ -4,8 +4,11 @@ namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
 use App\Models\ClientInformation;
+
+use App\Http\Requests\TenantLoginRequest;
+
 use App\Http\Controllers\ApiController;
-// use App\Http\Controllers\Controller;
+
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -107,16 +110,11 @@ class LoginController extends ApiController
         }
     }
 
-    public function tenantLogin(Request $request)
+    public function tenantLogin(TenantLoginRequest $request)
     {
-        $credentials = $request->validate([
-            'username' => 'required',
-            'password' => 'required',
-        ]);
-    
         try {
             $existingUser = User::where('username', $request->username)->first();
-    
+
             if (!$existingUser) {
                 return $this->errorResponse(
                     null, 
@@ -124,7 +122,7 @@ class LoginController extends ApiController
                     404
                 );
             }
-    
+
             if (!$existingUser->isUser()) {
                 return $this->forbiddenResponse(
                     null,
@@ -132,7 +130,7 @@ class LoginController extends ApiController
                     403
                 );
             }
-    
+
             if ($existingUser->is_logged_in) {
                 return $this->forbiddenResponse(
                     null,
@@ -140,28 +138,34 @@ class LoginController extends ApiController
                     403
                 );
             }
-    
-            if (Auth::attempt($credentials)) {
+
+            if (Auth::attempt($request->only('username', 'password'))) {
                 $user = Auth::user();
                 Log::info('Tenant User ID: ' . $user->id . ' has logged in successfully.');
-    
-                $user->update(['is_logged_in' => true]);
-    
-                $token = $user->createToken('Tenant Access Token')->plainTextToken;
 
+                $user->update(['is_logged_in' => true]);
+
+                $token = $user->createToken('Tenant Access Token')->plainTextToken;
                 $clientInfo = $user->clientInformation;
                 $userInfo = User::find($user->id);
-    
-                return response()->json([
+
+                // return response()->json([
+                //     'token' => $token,
+                //     'role' => 'tenant',
+                //     'is_logged_in' => $user->is_logged_in,
+                //     'user_info' => $userInfo,
+                //     'client_info' => $clientInfo,
+                // ], 200);
+
+                return $this->successResponse([
                     'token' => $token,
                     'role' => 'tenant',
-                    // 'user_id' => $user->id,
                     'is_logged_in' => $user->is_logged_in,
                     'user_info' => $userInfo,
                     'client_info' => $clientInfo,
-                ], 200);
+                ],'tenant logged in successufully');
             }
-    
+
             return $this->errorResponse(
                 null, 
                 'Invalid credentials',
@@ -176,6 +180,5 @@ class LoginController extends ApiController
             );
         }
     }
-    
 
 }

@@ -30,10 +30,23 @@ class CorsMiddleware
     
      protected function getCorsHeaders(): array
      {
-         return [
-             'Access-Control-Allow-Origin' => '*',
-             'Access-Control-Allow-Methods' => 'GET, POST, PUT, DELETE, OPTIONS',
-             'Access-Control-Allow-Headers' => 'X-Requested-With, Content-Type, Authorization',
-         ];
+        // return [
+        //     'paths' => ['api/*'],
+        //     'allowed_methods' => ['*'], // Allow all HTTP methods (GET, POST, PUT, DELETE, etc.)
+        //     'allowed_origins' => ['*'], // Allow all origins
+        //     'allowed_headers' => ['*'], // Allow all headers
+        //     'exposed_headers' => [],
+        //     'max_age' => 0,
+        //     'supports_credentials' => true,
+        // ];
+        // return [
+             $response = $next($request);
+             $response->headers->set('Access-Control-Allow-Origin', '*'); // Change '*' to your specific front-end URL for security
+             $response->headers->set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+             $response->headers->set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+             $response->headers->set('Access-Control-Allow-Credentials', 'true');
+        // ];
+
+        return $response;
      }
 }

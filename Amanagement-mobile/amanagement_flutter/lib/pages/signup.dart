@@ -1,13 +1,14 @@
-import 'package:amanagement_flutter/pages/Clientdatasignup.dart';
 import 'package:flutter/material.dart';
-import '../pages/home.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import '../utils/httpmethods.dart';
-import 'package:http/http.dart' as http;
+// import 'package:http/http.dart' as http;
 import 'dart:convert';
+import '../utils/httpmethods.dart'; // Ensure this import is correct
+import '../pages/Clientdatasignup.dart';
+import '../pages/home.dart';
 
 class Signup extends StatefulWidget {
   const Signup({super.key});
+
 
   @override
   State<Signup> createState() => _SignupState();
@@ -27,33 +28,32 @@ class _SignupState extends State<Signup> {
   bool _obscurePassword = true;
 
   void _registerUser() async {
+    
     if (_formKey.currentState?.validate() ?? false) {
+      
       print("Username: ${_controllerUsername.text}");
       print("Email: ${_controllerEmail.text}");
       print("Password: ${_controllerPassword.text}");
 
-      final response = await registerUser(
-        _controllerUsername.text,
-        _controllerEmail.text,
-        _controllerPassword.text,
-      );
-
-      print("Response status: ${response.statusCode}");
-      print("Response body: ${response.body}");
-
       try {
-        if (response.statusCode == 200) {
-          final data = json.decode(response.body);
-          print(data);
-          final token = data['data']['token'] ?? '';
-          final userId = data['data']['user_info']['id'].toString(); // Adjusted here to retrieve user ID from user_info
+        // Call the registerUser method from httpmethods.dart
+        final response = await registerUser(
+          _controllerUsername.text,
+          _controllerEmail.text,
+          _controllerPassword.text,
+        );
 
-          print(userId);
-          print(token);
+        // Check if registration was successful
+        if (response != null && response.token.isNotEmpty ) {
+          final token = response.token;
+          final userId = response.userInfo.id;
 
-          await _boxAccounts.put('userId', userId);
-          await _boxAccounts.put('token', token);
-          print('stored token account signup: $token');
+          print('signup userId: $userId');
+          print('sign up token: $token');
+
+          // await _boxAccounts.put('userId', userId);
+          // await _boxAccounts.put('token', token);
+          print('Stored token account signup: $token');
 
           Navigator.push(
             context,
@@ -61,17 +61,21 @@ class _SignupState extends State<Signup> {
               builder: (context) => ClientDataSignup(
                 username: _controllerUsername.text,
                 token: token,
-                userId: userId,
+                userId: userId,   
               ),
             ),
           );
         } else {
-          final errorData = json.decode(response.body);
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(errorData['message'])));
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Failed to register user.')),
+          );
         }
       } catch (e) {
-        print("Error decoding JSON: $e");
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Error: ${response.body}")));
+        // Handle any errors that occur during registration
+        print("Error during registration: $e");
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error: $e')),
+        );
       }
     }
   }

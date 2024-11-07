@@ -1,10 +1,8 @@
+import 'package:amanagement_flutter/pages/signup.dart';
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../pages/home.dart'; // Update this import based on your project structure
 import '../utils/httpmethods.dart'; // Assuming this contains the method for making the API call
-import '../pages/signup.dart'; // Assuming you have a signup page
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -15,34 +13,14 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   final GlobalKey<FormState> _formKey = GlobalKey();
-  final FocusNode _focusNodePassword = FocusNode();
   final TextEditingController _controllerUsername = TextEditingController();
   final TextEditingController _controllerPassword = TextEditingController();
   bool _obscurePassword = true;
   bool _isLoading = false; // Loading state variable
 
-  late String storedToken;
-  late String storedUserId;
-
   @override
   void initState() {
     super.initState();
-
-    // Initialize Hive and retrieve the stored token and userId
-    _initializeHive();
-  }
-
-  Future<void> _initializeHive() async {
-    await Hive.initFlutter();
-    await Hive.openBox('accounts'); // Open the 'accounts' box
-
-    final Box box = Hive.box('accounts');
-    storedToken = box.get('token', defaultValue: '');
-    storedUserId = box.get('userId', defaultValue: '');
-
-    // Debugging: print stored token and userId
-    print('Stored Token: $storedToken');
-    print('Stored UserId: $storedUserId');
   }
 
   Future<void> _submitLogin() async {
@@ -54,65 +32,47 @@ class _LoginState extends State<Login> {
       final username = _controllerUsername.text;
       final password = _controllerPassword.text;
 
-      // Assuming login API is defined in your httpmethods.dart
       try {
-        final response = await loginUser(username, password); // Make your login request here
-        final responseBody = json.decode(response.body);
-        print('Login response body: $responseBody'); // Debugging: print the response body
+        final response = await loginUser(username, password);
 
-        if (response.statusCode == 200) {
-          // Extract token and user info from the response
-          final authToken = responseBody['token'] ?? '';
-          final userId = responseBody['client_info']['user_id'] ?? '';
-
-          // Store token and user info in Hive
-          await Hive.box('accounts').put('token', authToken);
-          await Hive.box('accounts').put('userId', userId);
-
-          // Navigate to the Home page after successful login
+        if (response.token.isNotEmpty) {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
               builder: (context) => Home(
-                username: username,
+                // username: username,
                 clientData: json.encode({
                   'username': username,
-                  'token': authToken,
-                  'user_id': userId,
+                  'token': response.token,
+                  'user_id': response.userInfo.id.toString(),
                   'user_info': {
-                    'id': userId,
-                    'username': username,
-                    'email': responseBody['email'].toString(),
-                    'email_verified_at': responseBody['email_verified_at'].toString(),
-                    'created_at': responseBody['created_at'].toString(),
-                    'updated_at': responseBody['updated_at'].toString(),
-                    'role': responseBody['role'].toString(),
+                    'id': response.userInfo.id,
+                    'username': response.userInfo.username,
+                    'email': response.userInfo.email,
+                    'email_verified_at': response.userInfo.emailVerifiedAt ?? '',
+                    'created_at': response.userInfo.createdAt,
+                    'updated_at': response.userInfo.updatedAt,
+                    'role': response.userInfo.role,
                     'is_logged_in': 1,
-                    'last_active_at': responseBody['last_active_at'].toString(),
+                    'last_active_at': response.userInfo.lastActiveAt ?? '',
                   },
                   'client_info': {
-                    'id': responseBody['client_info']['id'].toString(),
-                    'user_id': userId,
-                    'name': responseBody['client_info']['name'].toString(),
-                    'middlename': responseBody['client_info']['middlename'].toString(),
-                    'lastname': responseBody['client_info']['lastname'].toString(),
-                    'gender': responseBody['client_info']['gender'].toString(),
-                    'address': responseBody['client_info']['address'].toString(),
-                    'contact_number': responseBody['client_info']['contact_number'].toString(),
-                    'created_at': responseBody['client_info']['created_at'].toString(),
-                    'updated_at': responseBody['client_info']['updated_at'].toString(),
-                  },
+                    'id': response.clientInfo.id,
+                    'name': response.clientInfo.name,
+                    'gender': response.clientInfo.gender ?? '',
+                    'address': response.clientInfo.address ?? '',
+                    'contact_number': response.clientInfo.contactNumber ?? '',
+                  }
                 }),
               ),
             ),
           );
         } else {
-          _showErrorSnackBar('Login failed: ${response.body}');
+          print('Error during login: ${response.token}');
+          throw Exception('Failed to log in');
         }
       } catch (e) {
-        // Handle any errors here
-        _showErrorSnackBar("An error occurred: $e");
-        print('Login error: $e');
+        print('Error during login: $e');
       } finally {
         setState(() {
           _isLoading = false;
@@ -121,113 +81,79 @@ class _LoginState extends State<Login> {
     }
   }
 
-  void _showErrorSnackBar(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message)),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-      body: Form(
-        key: _formKey,
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(30.0),
-          child: Column(
-            children: [
-              const SizedBox(height: 150),
-              Text(
-                "Welcome back",
-                style: Theme.of(context).textTheme.headlineLarge,
-              ),
-              const SizedBox(height: 10),
-              Text(
-                "Login to your account",
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-              const SizedBox(height: 60),
-              TextFormField(
-                controller: _controllerUsername,
-                keyboardType: TextInputType.name,
-                decoration: InputDecoration(
-                  labelText: "Username",
-                  prefixIcon: const Icon(Icons.person_outline),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
+      appBar: AppBar(
+        title: const Text('Login'),
+      ),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                TextFormField(
+                  controller: _controllerUsername,
+                  decoration: const InputDecoration(labelText: 'Username'),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your username';
+                    }
+                    return null;
+                  },
                 ),
-                onEditingComplete: () => _focusNodePassword.requestFocus(),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "Please enter username.";
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 10),
-              TextFormField(
-                controller: _controllerPassword,
-                focusNode: _focusNodePassword,
-                obscureText: _obscurePassword,
-                decoration: InputDecoration(
-                  labelText: "Password",
-                  prefixIcon: const Icon(Icons.password_outlined),
-                  suffixIcon: IconButton(
-                    onPressed: () {
-                      setState(() {
-                        _obscurePassword = !_obscurePassword;
-                      });
-                    },
-                    icon: _obscurePassword
-                        ? const Icon(Icons.visibility_outlined)
-                        : const Icon(Icons.visibility_off_outlined),
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "Please enter password.";
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 50),
-              _isLoading
-                  ? const Center(child: CircularProgressIndicator())
-                  : ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: const Size.fromHeight(50),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
+                TextFormField(
+                  controller: _controllerPassword,
+                  obscureText: _obscurePassword,
+                  decoration: InputDecoration(
+                    labelText: 'Password',
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _obscurePassword ? Icons.visibility_off : Icons.visibility,
                       ),
-                      onPressed: _submitLogin,
-                      child: _isLoading
-                          ? const CircularProgressIndicator()
-                          : const Text("Login"),
+                      onPressed: () {
+                        setState(() {
+                          _obscurePassword = !_obscurePassword;
+                        });
+                      },
                     ),
-              const SizedBox(height: 20),
-              GestureDetector(
-                onTap: () {
-                  // Navigate to the signup page
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const Signup()),
-                  );
-                },
-                child: Text(
-                  "Don't have an account? Sign up here.",
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: Theme.of(context).colorScheme.secondary,
-                        fontWeight: FontWeight.bold,
-                      ),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your password';
+                    }
+                    return null;
+                  },
                 ),
+                const SizedBox(height: 20),
+                _isLoading
+                ? CircularProgressIndicator()
+                : ElevatedButton(
+                    onPressed: _submitLogin,
+                    child: const Text('Login'),
+                  ),
+                const SizedBox(height: 30),
+                  Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text("Don't have an account? "),
+                  TextButton(
+                    onPressed: () {
+                      // Navigate to the Signup page
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => Signup()),
+                      );
+                    },
+                    child: const Text("Sign Up Here"),
+                  ),
+                ],
               ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

@@ -1,14 +1,17 @@
+// import 'dart:ffi';
+
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:http/http.dart';
+// import 'package:hive_flutter/hive_flutter.dart';
+// import 'package:http/http.dart';
 import 'dart:convert';
 import '../utils/httpmethods.dart'; // Assumed API method
 import '../pages/home.dart';
+// import '../model/authmodels/auth_response.dart';
 
 class ClientDataSignup extends StatefulWidget {
   final String username;
   final String token;
-  final String userId;
+  final int userId;
 
   const ClientDataSignup({
     Key? key,
@@ -30,73 +33,36 @@ class _ClientSignupState extends State<ClientDataSignup> {
   final TextEditingController _controllerContactNumber = TextEditingController();
   String? _selectedGender;
 
-  late String storedToken;
-  late String storedUserId;
-
-  @override
-  void initState() {
-    super.initState();
-    // Retrieve the stored token and userId from Hive
-    final Box box = Hive.box('accounts');
-    storedToken = box.get('token', defaultValue: '');
-    storedUserId = box.get('userId', defaultValue: '');
-    // Debugging stored token and user ID
-    print('Stored Token: $storedToken');
-    print('Stored UserId: $storedUserId');
-  }
-
   bool hasNullValues() {
-    final clientData = {
-      'username': widget.username,
-      'name': _controllerName.text,
-      'middlename': _controllerMiddleName.text,
-      'lastname': _controllerLastName.text,
-      'gender': _selectedGender,
-      'address': _controllerAddress.text,
-      'contact_number': _controllerContactNumber.text,
-      'user_id': widget.userId,
-    };
-    // Check for empty or null fields
-    return clientData.values.any((value) => value == null || value.isEmpty);
+    return
+      _controllerName.text.isEmpty ||
+      _controllerMiddleName.text.isEmpty ||
+      _controllerLastName.text.isEmpty ||
+      _controllerAddress.text.isEmpty ||
+      _controllerContactNumber.text.isEmpty ||
+      _selectedGender == null;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-      body: Form(
-        key: _formKey,
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 30.0),
-          child: Column(
+      appBar: AppBar(
+        title: const Text("Client Data Signup"),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Form(
+          key: _formKey,
+          child: ListView(
             children: [
-              const SizedBox(height: 100),
-              Text(
-                "Client Information",
-                style: Theme.of(context).textTheme.headlineLarge,
-              ),
-              Text(
-                  'Welcome, ${widget.username}! Token: ${widget.token}, User ID: ${widget.userId}'),
-              const SizedBox(height: 35),
-              _buildTextField(_controllerName, "First Name", "Please enter your first name"),
-              const SizedBox(height: 10),
-              _buildTextField(_controllerMiddleName, "Middle Name", null),
-              const SizedBox(height: 10),
-              _buildTextField(_controllerLastName, "Last Name", "Please enter your last name"),
-              const SizedBox(height: 10),
+              _buildTextField("First Name", _controllerName),
+              _buildTextField("Middle Name", _controllerMiddleName),
+              _buildTextField("Last Name", _controllerLastName),
               _buildGenderDropdown(),
-              const SizedBox(height: 10),
-              _buildTextField(_controllerAddress, "Address", null),
-              const SizedBox(height: 10),
-              _buildTextField(_controllerContactNumber, "Contact Number", "Please enter your contact number"),
-              const SizedBox(height: 50),
+              _buildTextField("Address", _controllerAddress),
+              _buildTextField("Contact Number", _controllerContactNumber),
+              const SizedBox(height: 20),
               ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  minimumSize: const Size.fromHeight(50),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                ),
                 onPressed: _submitClientData,
                 child: const Text("Submit"),
               ),
@@ -107,109 +73,177 @@ class _ClientSignupState extends State<ClientDataSignup> {
     );
   }
 
-  Widget _buildTextField(
-      TextEditingController controller, String label, String? errorText) {
-    return TextFormField(
-      controller: controller,
-      decoration: InputDecoration(
-        labelText: label,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
+  Widget _buildTextField(String label, TextEditingController controller) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10.0),
+      child: TextFormField(
+        controller: controller,
+        decoration: InputDecoration(
+          labelText: label,
+          border: OutlineInputBorder(),
         ),
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return "Please enter $label.";
+          }
+          return null;
+        },
       ),
-      validator: (value) => (value == null || value.isEmpty) && errorText != null
-          ? errorText
-          : null,
     );
   }
 
   Widget _buildGenderDropdown() {
-    return DropdownButtonFormField<String>(
-      value: _selectedGender,
-      decoration: InputDecoration(
-        labelText: "Gender",
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10.0),
+      child: DropdownButtonFormField<String>(
+        value: _selectedGender,
+        items: ['Male', 'Female', 'Other']
+            .map((gender) => DropdownMenuItem(
+                  value: gender,
+                  child: Text(gender),
+                ))
+            .toList(),
+        onChanged: (value) {
+          setState(() {
+            _selectedGender = value;
+          });
+        },
+        decoration: InputDecoration(
+          labelText: "Gender",
+          border: OutlineInputBorder(),
         ),
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return "Please select gender.";
+          }
+          return null;
+        },
       ),
-      items: ['Male', 'Female', 'Other'].map((gender) {
-        return DropdownMenuItem(
-          value: gender,
-          child: Text(gender),
-        );
-      }).toList(),
-      onChanged: (value) {
-        setState(() {
-          _selectedGender = value;
-        });
-      },
-      validator: (value) => value == null ? 'Please select your gender' : null,
     );
   }
 
-  Future<void> _submitClientData() async {
+  void _submitClientData() async {
+    print(widget.userId);
   if (_formKey.currentState?.validate() ?? false) {
-    // Print values for debugging
-    print('Submitting with:');
-    print('First Name: ${_controllerName.text}');
-    print('Middle Name: ${_controllerMiddleName.text}');
-    print('Last Name: ${_controllerLastName.text}');
-    print('Gender: $_selectedGender');
-    print('Address: ${_controllerAddress.text}');
-    print('Contact Number: ${_controllerContactNumber.text}');
-    print('User ID: ${widget.userId}');
-    print('Token: $storedToken');
+    if (hasNullValues()) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please fill in all the fields.')),
+      );
+      return;
+    }
 
-    // Collect client data for API call
-    final clientData = {
-      'username': widget.username,
-      'name': _controllerName.text,
-      'middlename': _controllerMiddleName.text,
-      'lastname': _controllerLastName.text,
-      'gender': _selectedGender,
-      'address': _controllerAddress.text,
-      'contact_number': _controllerContactNumber.text,
-      'user_id': widget.userId,
-      'token': storedToken,
-    };
-    
+   try {
+    print('Initial widget.userId: ${widget.userId}');  // Debugging line
 
-    try {
-      // Make the API call
-      await updateClientInfo(clientData, widget.token, widget.userId);
-      // Assuming the function doesn't return anything, handle success by navigating or updating the UI
-      print('Client data updated successfully');
-      // Navigate to the Home page or perform other actions
-      Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => Home(clientData: json.encode(clientData), username: '',),  // Pass the data to Home
-      ),
+    // int userId = int.tryParse(widget.userId ?? '') ?? 0;
+    // print('Parsed int userId: $userId');  // Debugging line
+
+    final response = await updateClientInfo(
+      {
+        'first_name': _controllerName.text,
+        'middle_name': _controllerMiddleName.text,
+        'last_name': _controllerLastName.text,
+        'gender': _selectedGender,
+        'address': _controllerAddress.text,
+        'contact_number': _controllerContactNumber.text,
+      },
+      widget.token,
+widget.userId,
+      // userId,
     );
+    print("client data response: $response");
+        Map<String, dynamic> clientData = {
+        'client_info': {
+          'name': _controllerName.text.isEmpty ? "" : _controllerName.text,  // Fallback to empty string if null
+          'middlename': _controllerMiddleName.text.isEmpty ? "" : _controllerMiddleName.text,
+          'lastname': _controllerLastName.text.isEmpty ? "" : _controllerLastName.text,
+          'gender': _selectedGender ?? "",  // Fallback to empty string if null
+          'address': _controllerAddress.text.isEmpty ? "" : _controllerAddress.text,
+          'contact_number': _controllerContactNumber.text.isEmpty ? "" : _controllerContactNumber.text,
+        },
+        'token': widget.token,
+        
+      };
 
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Client data submitted successfully!')),
+      );
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => Home(userId: widget.userId, clientData: '',),
+        ),
+      );
     } catch (e) {
-      _showErrorSnackBar("Failed to update client info: $e");
-      print('Error: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: $e')),
+      );
     }
   }
 }
 
+// void _submitClientData() async {
+//   if (_formKey.currentState?.validate() ?? false) {
+//     if (hasNullValues()) {
+//       ScaffoldMessenger.of(context).showSnackBar(
+//         const SnackBar(content: Text('Please fill in all the fields.')),
+//       );
+//       return;
+//     }
 
-  void _clearFormFields() {
-    _controllerName.clear();
-    _controllerMiddleName.clear();
-    _controllerLastName.clear();
-    _controllerAddress.clear();
-    _controllerContactNumber.clear();
-  }
+//     try {
+//       // Get the userId from the response (ensure it's not null)
+//       int userId = responseData['data']['client_info']['user_id'] ?? 0;
+      
+//       if (userId == 0) {
+//         // Handle the case where userId is 0 (or handle null case accordingly)
+//         ScaffoldMessenger.of(context).showSnackBar(
+//           const SnackBar(content: Text('Error: Invalid user ID')),
+//         );
+//         return;
+//       }
 
-  void _showErrorSnackBar(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
-  }
+//       final response = await updateClientInfo(
+//         {
+//           'first_name': _controllerName.text,
+//           'middle_name': _controllerMiddleName.text,
+//           'last_name': _controllerLastName.text,
+//           'gender': _selectedGender,
+//           'address': _controllerAddress.text,
+//           'contact_number': _controllerContactNumber.text.toString(),
+//         },
+//         widget.token,
+//         userId,
+//       );
 
-  @override
-  void dispose() {
-    _clearFormFields();
-    super.dispose();
-  }
+//       Map<String, dynamic> clientData = {
+//         'client_info': {
+//           'name': _controllerName.text.isEmpty ? "" : _controllerName.text,
+//           'middlename': _controllerMiddleName.text.isEmpty ? "" : _controllerMiddleName.text,
+//           'lastname': _controllerLastName.text.isEmpty ? "" : _controllerLastName.text,
+//           'gender': _selectedGender ?? "",
+//           'address': _controllerAddress.text.isEmpty ? "" : _controllerAddress.text,
+//           'contact_number': _controllerContactNumber.text.isEmpty ? "" : _controllerContactNumber.text,
+//         },
+//         'token': widget.token,
+//       };
+
+//       ScaffoldMessenger.of(context).showSnackBar(
+//         const SnackBar(content: Text('Client data submitted successfully!')),
+//       );
+//       Navigator.pushReplacement(
+//         context,
+//         MaterialPageRoute(
+//           builder: (context) => Home(clientData: json.encode(clientData)),
+//         ),
+//       );
+//     } catch (e) {
+//       ScaffoldMessenger.of(context).showSnackBar(
+//         SnackBar(content: Text('Error: $e')),
+//       );
+//     }
+//   }
+// }
+
+
 }
