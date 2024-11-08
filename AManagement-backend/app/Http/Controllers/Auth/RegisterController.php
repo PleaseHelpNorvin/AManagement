@@ -58,12 +58,38 @@ class RegisterController extends ApiController
         \Log::info('User registered successfully with token:', ['token' => $token]);
 
         // Return response with user data and token
+        // return $this->successResponse([
+        //     'token' => $token,
+        //     'role' => 'tenant',
+        //     'is_logged_in' => $user->is_logged_in,
+        //     'user_info' => $user->toArray(),
+        //     'client_info' => $clientInfo->toArray(),
+        // ], 'Tenant created successfully');
+
         return $this->successResponse([
             'token' => $token,
             'role' => 'tenant',
             'is_logged_in' => $user->is_logged_in,
-            'user_info' => $user,
-            'client_info' => $clientInfo,
+            'user_info' => [
+                'id' => $user->id,
+                'username' => $user->username,
+                'email' => $user->email,
+                'updated_at' => $user->updated_at,
+                'created_at' => $user->created_at,
+                'is_logged_in' => $user->is_logged_in
+            ],
+            'client_info' => [
+                'id' => $clientInfo->id,
+                'user_id' => $clientInfo->user_id,
+                'name' => $clientInfo->name,
+                'middlename' => $clientInfo->middlename,
+                'lastname' => $clientInfo->lastname,
+                'gender' => $clientInfo->gender,
+                'address' => $clientInfo->address,
+                'contact_number' => $clientInfo->contact_number,
+                'updated_at' => $clientInfo->updated_at,
+                'created_at' => $clientInfo->created_at,
+            ]
         ], 'Tenant created successfully');
     }
 
@@ -98,14 +124,33 @@ class RegisterController extends ApiController
         $updatedClientInfo = ClientInformation::where('user_id', $userId)->first();
         $role = $authenticatedUser->role === 1 ? 'admin' : 'tenant'; 
         $islogin = $authenticatedUser->is_logged_in === 1;
+        // $islogin = (bool) $authenticatedUser->is_logged_in;
 
         // Return response with updated information and token
         return $this->successResponse([
             'token' => $request->bearerToken(), // Returning the token back in the response
             'role' => $role,
             'is_logged_in' => $islogin,
-            'user_info' => $authenticatedUser,
-            'client_info' => $updatedClientInfo,
+            'user_info' => [
+                'id' => $authenticatedUser->id,
+                'username' => $authenticatedUser->username,
+                'email' => $authenticatedUser->email,
+                'updated_at' => $authenticatedUser->updated_at,
+                'created_at' => $authenticatedUser->created_at,
+                'is_logged_in' => $authenticatedUser->is_logged_in
+            ],
+            'client_info' => [
+                'id' => $updatedClientInfo->id,
+                'user_id' => $updatedClientInfo->user_id,
+                'name' => $updatedClientInfo->name,
+                'middlename' => $updatedClientInfo->middlename,
+                'lastname' => $updatedClientInfo->lastname,
+                'gender' => $updatedClientInfo->gender,
+                'address' => $updatedClientInfo->address,
+                'contact_number' => $updatedClientInfo->contact_number,
+                'updated_at' => $updatedClientInfo->updated_at,
+                'created_at' => $updatedClientInfo->created_at,
+            ]
         ], 'Client information updated successfully');
     }
 }

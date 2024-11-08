@@ -1,12 +1,6 @@
-// import 'dart:ffi';
-
 import 'package:flutter/material.dart';
-// import 'package:hive_flutter/hive_flutter.dart';
-// import 'package:http/http.dart';
-import 'dart:convert';
-import '../utils/httpmethods.dart'; // Assumed API method
+import '../utils/httpmethods.dart'; // Assuming API method
 import '../pages/home.dart';
-// import '../model/authmodels/auth_response.dart';
 
 class ClientDataSignup extends StatefulWidget {
   final String username;
@@ -34,13 +28,54 @@ class _ClientSignupState extends State<ClientDataSignup> {
   String? _selectedGender;
 
   bool hasNullValues() {
-    return
-      _controllerName.text.isEmpty ||
-      _controllerMiddleName.text.isEmpty ||
-      _controllerLastName.text.isEmpty ||
-      _controllerAddress.text.isEmpty ||
-      _controllerContactNumber.text.isEmpty ||
-      _selectedGender == null;
+    return _controllerName.text.isEmpty ||
+        _controllerMiddleName.text.isEmpty ||
+        _controllerLastName.text.isEmpty ||
+        _controllerAddress.text.isEmpty ||
+        _controllerContactNumber.text.isEmpty ||
+        _selectedGender == null;
+  }
+
+  void _submitClientData() async {
+    if (_formKey.currentState?.validate() ?? false) {
+      try {
+        Map<String, dynamic> clientData = {
+          'name': _controllerName.text,
+          'middlename': _controllerMiddleName.text,
+          'lastname': _controllerLastName.text,
+          'gender': _selectedGender,
+          'address': _controllerAddress.text,
+          'contact_number': _controllerContactNumber.text,
+        };
+
+        final response = await updateClientInfo(clientData, widget.token, widget.userId);
+
+        if (response.message == 'Client information updated successfully') {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Client data submitted successfully!')),
+          );
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => Home(
+                userId: widget.userId,
+                token: widget.token,
+                userInfo: response.userInfo,
+                clientInfo: response.clientInfo,
+              ),
+            ),
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Error: ${response.message}')),
+          );
+        }
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error: $e')),
+        );
+      }
+    }
   }
 
   @override
@@ -97,8 +132,9 @@ class _ClientSignupState extends State<ClientDataSignup> {
       padding: const EdgeInsets.only(bottom: 10.0),
       child: DropdownButtonFormField<String>(
         value: _selectedGender,
+        hint: const Text("Select Gender"),
         items: ['Male', 'Female', 'Other']
-            .map((gender) => DropdownMenuItem(
+            .map((gender) => DropdownMenuItem<String>(
                   value: gender,
                   child: Text(gender),
                 ))
@@ -113,7 +149,7 @@ class _ClientSignupState extends State<ClientDataSignup> {
           border: OutlineInputBorder(),
         ),
         validator: (value) {
-          if (value == null || value.isEmpty) {
+          if (value == null) {
             return "Please select gender.";
           }
           return null;
@@ -121,129 +157,4 @@ class _ClientSignupState extends State<ClientDataSignup> {
       ),
     );
   }
-
-  void _submitClientData() async {
-    print(widget.userId);
-  if (_formKey.currentState?.validate() ?? false) {
-    if (hasNullValues()) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please fill in all the fields.')),
-      );
-      return;
-    }
-
-   try {
-    print('Initial widget.userId: ${widget.userId}');  // Debugging line
-
-    // int userId = int.tryParse(widget.userId ?? '') ?? 0;
-    // print('Parsed int userId: $userId');  // Debugging line
-
-    final response = await updateClientInfo(
-      {
-        'first_name': _controllerName.text,
-        'middle_name': _controllerMiddleName.text,
-        'last_name': _controllerLastName.text,
-        'gender': _selectedGender,
-        'address': _controllerAddress.text,
-        'contact_number': _controllerContactNumber.text,
-      },
-      widget.token,
-      widget.userId,
-      // userId,
-    );
-    print("client data response: $response");
-        Map<String, dynamic> clientData = {
-        'client_info': {
-          'name': _controllerName.text.isEmpty ? "" : _controllerName.text,  // Fallback to empty string if null
-          'middlename': _controllerMiddleName.text.isEmpty ? "" : _controllerMiddleName.text,
-          'lastname': _controllerLastName.text.isEmpty ? "" : _controllerLastName.text,
-          'gender': _selectedGender ?? "",  // Fallback to empty string if null
-          'address': _controllerAddress.text.isEmpty ? "" : _controllerAddress.text,
-          'contact_number': _controllerContactNumber.text.isEmpty ? "" : _controllerContactNumber.text,
-        },
-        'token': widget.token,
-        
-      };
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Client data submitted successfully!')),
-      );
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => Home(userId: widget.userId, clientData: '',),
-        ),
-      );
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error: $e')),
-      );
-    }
-  }
-}
-
-// void _submitClientData() async {
-//   if (_formKey.currentState?.validate() ?? false) {
-//     if (hasNullValues()) {
-//       ScaffoldMessenger.of(context).showSnackBar(
-//         const SnackBar(content: Text('Please fill in all the fields.')),
-//       );
-//       return;
-//     }
-
-//     try {
-//       // Get the userId from the response (ensure it's not null)
-//       int userId = responseData['data']['client_info']['user_id'] ?? 0;
-      
-//       if (userId == 0) {
-//         // Handle the case where userId is 0 (or handle null case accordingly)
-//         ScaffoldMessenger.of(context).showSnackBar(
-//           const SnackBar(content: Text('Error: Invalid user ID')),
-//         );
-//         return;
-//       }
-
-//       final response = await updateClientInfo(
-//         {
-//           'first_name': _controllerName.text,
-//           'middle_name': _controllerMiddleName.text,
-//           'last_name': _controllerLastName.text,
-//           'gender': _selectedGender,
-//           'address': _controllerAddress.text,
-//           'contact_number': _controllerContactNumber.text.toString(),
-//         },
-//         widget.token,
-//         userId,
-//       );
-
-//       Map<String, dynamic> clientData = {
-//         'client_info': {
-//           'name': _controllerName.text.isEmpty ? "" : _controllerName.text,
-//           'middlename': _controllerMiddleName.text.isEmpty ? "" : _controllerMiddleName.text,
-//           'lastname': _controllerLastName.text.isEmpty ? "" : _controllerLastName.text,
-//           'gender': _selectedGender ?? "",
-//           'address': _controllerAddress.text.isEmpty ? "" : _controllerAddress.text,
-//           'contact_number': _controllerContactNumber.text.isEmpty ? "" : _controllerContactNumber.text,
-//         },
-//         'token': widget.token,
-//       };
-
-//       ScaffoldMessenger.of(context).showSnackBar(
-//         const SnackBar(content: Text('Client data submitted successfully!')),
-//       );
-//       Navigator.pushReplacement(
-//         context,
-//         MaterialPageRoute(
-//           builder: (context) => Home(clientData: json.encode(clientData)),
-//         ),
-//       );
-//     } catch (e) {
-//       ScaffoldMessenger.of(context).showSnackBar(
-//         SnackBar(content: Text('Error: $e')),
-//       );
-//     }
-//   }
-// }
-
-
 }

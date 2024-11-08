@@ -1,95 +1,78 @@
+// import 'package:amanagement_flutter/model/authmodels/update_client_response.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert'; // Import for jsonEncode
 import '../pages/clientdatasignup.dart';
 import '../api/api.dart';
 
+
 //models import
-import '../model/authmodels/auth_response.dart';
-import '../model/authmodels/client_info.dart';
-import '../model/authmodels/user_info.dart';
+import '../model/authmodels/register_response.dart';
 
+Future<RegisterResponse?> registerUser(
+    String username,
+    String email,
+    String password,
+) async {
+  try {
+    final response = await http.post(
+      Uri.parse(Api.registerEndpoint),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode({
+        'username': username,
+        'email': email,
+        'password': password,
+      }),
+    );
 
-Future<AuthResponse> registerUser(String username, String email, String password) async {
-  final response = await http.post(
-    Uri.parse(Api.registerEndpoint),
-    headers: {
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin' : '*'
-    },
-    body: jsonEncode({
-      'username': username,
-      'email': email,
-      'password': password,
-    }),
-  );
-
-  if (response.statusCode == 200) {
-    final data = json.decode(response.body);
-    print(" this is register user response: $data");
-    return AuthResponse.fromJson(data['data'] );
-  } else {
-    throw Exception('Failed to register user. Status code: ${response.statusCode}');
+    if (response.statusCode == 200) {
+      // If the server returns a 200 OK response, parse the JSON
+      final Map<String, dynamic> responseBody = jsonDecode(response.body);
+      
+      // Return the parsed response as a RegisterResponse object
+      return RegisterResponse.fromJson(responseBody);
+    } else {
+      // Handle non-200 responses
+      print('Failed to register: ${response.body}');
+      return null;
+    }
+  } catch (e) {
+    print('Error during registration: $e');
+    return null;
   }
 }
 
-// Future<AuthResponse> registerUser(String username, String email, String password) async {
+
+
+// Future<AuthResponse> loginUser(String username, String password) async {
 //   final response = await http.post(
-//     Uri.parse(Api.registerEndpoint),
+//     Uri.parse(Api.loginEndpoint),
 //     headers: {
 //       'Content-Type': 'application/json',
+//       'Access-Control-Allow-Origin' : '*'
 //     },
+    
 //     body: jsonEncode({
 //       'username': username,
-//       'email': email,
 //       'password': password,
 //     }),
 //   );
 
 //   if (response.statusCode == 200) {
 //     final data = json.decode(response.body);
-//     print("This is register user response: $data");
-
-//     // Convert the userId to an integer before passing it to the API
-//     final userId = int.parse(data['data']['user_info']['id'].toString());
-
-//     // Return the AuthResponse while still passing userId as String
-//     return AuthResponse.fromJson({
-//       'data': {
-//         'user_info': {'id': userId.toString()} // Store as String for later use
-//       }
-//     });
+//     return AuthResponse.fromJson(data['data']); // Return parsed AuthResponse directly
 //   } else {
-//     throw Exception('Failed to register user. Status code: ${response.statusCode}');
+//     final errorMessage = json.decode(response.body)['message'] ?? 'Login failed';
+//     throw Exception(errorMessage); // Use the error message from the response
 //   }
 // }
 
-
-Future<AuthResponse> loginUser(String username, String password) async {
-  final response = await http.post(
-    Uri.parse(Api.loginEndpoint),
-    headers: {
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin' : '*'
-    },
-    
-    body: jsonEncode({
-      'username': username,
-      'password': password,
-    }),
-  );
-
-  if (response.statusCode == 200) {
-    final data = json.decode(response.body);
-    return AuthResponse.fromJson(data['data']); // Return parsed AuthResponse directly
-  } else {
-    final errorMessage = json.decode(response.body)['message'] ?? 'Login failed';
-    throw Exception(errorMessage); // Use the error message from the response
-  }
-}
-
-
-Future<ClientInfo> updateClientInfo(
-    Map<String, dynamic> clientData, String token, int userId) async {
+Future<RegisterResponse> updateClientInfo(
+  Map<String, dynamic> clientData, 
+  String token, 
+  int userId,
+) async {
   try {
     final response = await http.post(
       Uri.parse('${Api.tenantInfoUpdateEndpoint}/$userId'),
@@ -108,21 +91,90 @@ Future<ClientInfo> updateClientInfo(
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
 
-      // Check if the 'data' key is present and log the contents
-      if (data.containsKey('data')) {
-        print('Parsed client data: ${data['data']}');
-        return ClientInfo.fromJson(data['data']);
-      } else {
-        throw Exception('Failed to parse the response, missing "data" field');
-      }
+      // Assuming the response structure matches what RegisterResponse expects
+      return RegisterResponse.fromJson(data);
     } else {
       throw Exception('Failed to update client info. Status code: ${response.statusCode}');
     }
   } catch (e) {
     print('Error updating client info: $e');
-    rethrow;
+    rethrow; // Propagate the error
   }
 }
+
+
+
+// Future<UpdateClientResponse> updateClientInfo(
+//     Map<String, dynamic> clientData, String token, int userId) async {
+//   try {
+//     final response = await http.post(
+//       Uri.parse('${Api.tenantInfoUpdateEndpoint}/$userId'),
+//       headers: {
+//         'Content-Type': 'application/json',
+//         'Authorization': 'Bearer $token',
+//         'Access-Control-Allow-Origin': '*',
+//       },
+//       body: jsonEncode(clientData),
+//     );
+
+//     print('Response Status Code: ${response.statusCode}');
+//     print('Response Body: ${response.body}');
+
+//     if (response.statusCode == 200) {
+//       final data = json.decode(response.body);
+
+//       if (data.containsKey('data') && 
+//           data['data'].containsKey('client_info') && 
+//           data['data'].containsKey('user_info')) {
+//         return UpdateClientResponse.fromJson(data['data']);
+//       } else {
+//         throw Exception('Missing "client_info" or "user_info" field in response');
+//       }
+//     } else {
+//       throw Exception('Failed to update client info. Status code: ${response.statusCode}');
+//     }
+//   } catch (e) {
+//     print('Error updating client info: $e');
+//     rethrow;
+//   }
+// }
+
+
+// Future<ClientInfo> updateClientInfo(
+//     Map<String, dynamic> clientData, String token, int userId) async {
+//   try {
+//     final response = await http.post(
+//       Uri.parse('${Api.tenantInfoUpdateEndpoint}/$userId'),
+//       headers: {
+//         'Content-Type': 'application/json',
+//         'Authorization': 'Bearer $token',
+//         'Access-Control-Allow-Origin': '*',
+//       },
+//       body: jsonEncode(clientData),
+//     );
+
+//     // Log the response status and body for debugging
+//     print('Response Status Code: ${response.statusCode}');
+//     print('Response Body: ${response.body}');
+
+//     if (response.statusCode == 200) {
+//       final data = json.decode(response.body);
+
+//       // Check if the 'data' key is present and log the contents
+//       if (data.containsKey('data')) {
+//         print('Parsed client data: ${data['data']}');
+//         return ClientInfo.fromJson(data['data']);
+//       } else {
+//         throw Exception('Failed to parse the response, missing "data" field');
+//       }
+//     } else {
+//       throw Exception('Failed to update client info. Status code: ${response.statusCode}');
+//     }
+//   } catch (e) {
+//     print('Error updating client info: $e');
+//     rethrow;
+//   }
+// }
 
 
 

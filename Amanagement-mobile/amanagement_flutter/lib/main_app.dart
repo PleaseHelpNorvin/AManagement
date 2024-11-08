@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'pages/login.dart';  // Your login page
+import 'pages/signup.dart';
 
 class MainApp extends StatelessWidget {
   const MainApp({super.key});
@@ -12,7 +13,7 @@ class MainApp extends StatelessWidget {
           seedColor: const Color.fromRGBO(32, 63, 129, 1.0),
         ),
       ),
-      home: const Login(),  // Navigate directly to the Login screen
+      home: const Signup(),  // Navigate directly to the Login screen
     );
   }
 }
