@@ -19,7 +19,7 @@ class RegisterResponse {
   factory RegisterResponse.fromJson(Map<String, dynamic> json) {
     return RegisterResponse(
       token: json['data']['token'],
-      role: json['data']['role'],
+      role: json['data']['role'], 
       // isLoggedIn: json['data']['is_logged_in'],
       message: json['message'],
       userInfo: UserInfo.fromJson(json['data']['user_info']),
@@ -28,13 +28,41 @@ class RegisterResponse {
   }
 }
 
+class LoginResponse {
+  final String token;
+  final String role;
+  final String message;
+  final UserInfo userInfo;
+  final ClientInfo clientInfo;
+
+  LoginResponse({
+    required this.token,
+    required this.role,
+    required this.message,
+    required this.userInfo,
+    required this.clientInfo,
+  });
+
+  // Factory method to parse the JSON response into a RegisterResponse object
+  factory LoginResponse.fromJson(Map<String, dynamic> json) {
+    return LoginResponse(
+      token: json['data']['token'],
+      role: json['data']['role'], 
+      message: json['message'],
+      userInfo: UserInfo.fromJson(json['data']['user_info']),
+      clientInfo: ClientInfo.fromJson(json['data']['client_info']),
+    );
+  }
+
+}
+
 class UserInfo {
   final int id;
   final String username;
   final String email;
   final String createdAt;
   final String updatedAt;
-  // final bool isLoggedIn;
+  final bool isLoggedIn;
 
   UserInfo({
     required this.id,
@@ -42,7 +70,7 @@ class UserInfo {
     required this.email,
     required this.createdAt,
     required this.updatedAt,
-    // required this.isLoggedIn,
+    required this.isLoggedIn,
   });
 
   // Factory method to parse user info from JSON
@@ -53,7 +81,7 @@ class UserInfo {
       email: json['email'],
       createdAt: json['created_at'],
       updatedAt: json['updated_at'],
-      // isLoggedIn: json['is_logged_in'],
+      isLoggedIn: json['is_logged_in'],
     );
   }
 }

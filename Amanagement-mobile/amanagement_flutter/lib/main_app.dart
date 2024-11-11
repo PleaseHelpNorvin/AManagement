@@ -13,7 +13,7 @@ class MainApp extends StatelessWidget {
           seedColor: const Color.fromRGBO(32, 63, 129, 1.0),
         ),
       ),
-      home: const Signup(),  // Navigate directly to the Login screen
+      home: const Login(),  // Navigate directly to the Login screen
     );
   }
 }

@@ -69,7 +69,7 @@ class RegisterController extends ApiController
         return $this->successResponse([
             'token' => $token,
             'role' => 'tenant',
-            'is_logged_in' => $user->is_logged_in,
+            // 'is_logged_in' => $user->is_logged_in,
             'user_info' => [
                 'id' => $user->id,
                 'username' => $user->username,
@@ -123,21 +123,21 @@ class RegisterController extends ApiController
         // Retrieve the updated client information
         $updatedClientInfo = ClientInformation::where('user_id', $userId)->first();
         $role = $authenticatedUser->role === 1 ? 'admin' : 'tenant'; 
-        $islogin = $authenticatedUser->is_logged_in === 1;
-        // $islogin = (bool) $authenticatedUser->is_logged_in;
+        // the data being pass is a int ex. 1:0 so i convert into bool true:false
+        $islogin = (bool) $authenticatedUser->is_logged_in;
 
         // Return response with updated information and token
         return $this->successResponse([
             'token' => $request->bearerToken(), // Returning the token back in the response
             'role' => $role,
-            'is_logged_in' => $islogin,
+            // 'is_logged_in' => $islogin,
             'user_info' => [
                 'id' => $authenticatedUser->id,
                 'username' => $authenticatedUser->username,
                 'email' => $authenticatedUser->email,
                 'updated_at' => $authenticatedUser->updated_at,
                 'created_at' => $authenticatedUser->created_at,
-                'is_logged_in' => $authenticatedUser->is_logged_in
+                'is_logged_in' => $islogin
             ],
             'client_info' => [
                 'id' => $updatedClientInfo->id,

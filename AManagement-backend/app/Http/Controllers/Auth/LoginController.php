@@ -149,6 +149,32 @@ class LoginController extends ApiController
                 $clientInfo = $user->clientInformation;
                 $userInfo = User::find($user->id);
 
+                return $this->successResponse([
+                    'token' => $token,
+                    'role' => 'tenant',
+                    'user_info' => [
+                        'id' => $user->id,
+                        'username' => $user->username,
+                        'email' => $user->email,
+                        'is_logged_in' => $user->is_logged_in,
+                        'updated_at' => $user->updated_at,
+                        'created_at' => $user->created_at,
+                    ],
+                    'client_info' => [
+                        'id' => $clientInfo->id,
+                        'user_id' => $clientInfo->user_id,
+                        'name' => $clientInfo->name,
+                        'middlename' => $clientInfo->middlename,
+                        'lastname' => $clientInfo->lastname,
+                        'gender' => $clientInfo->gender,
+                        'address' => $clientInfo->address,
+                        'contact_number' => $clientInfo->contact_number,
+                        'updated_at' => $clientInfo->updated_at,
+                        'created_at' => $clientInfo->created_at,
+                    ]
+                ], 'tenant logged in successfully');
+
+
                 // return response()->json([
                 //     'token' => $token,
                 //     'role' => 'tenant',
@@ -156,14 +182,14 @@ class LoginController extends ApiController
                 //     'user_info' => $userInfo,
                 //     'client_info' => $clientInfo,
                 // ], 200);
-
-                return $this->successResponse([
-                    'token' => $token,
-                    'role' => 'tenant',
-                    'is_logged_in' => $user->is_logged_in,
-                    'user_info' => $userInfo,
-                    'client_info' => $clientInfo,
-                ],'tenant logged in successufully');
+                    
+                // return $this->successResponse([
+                //     'token' => $token,
+                //     'role' => 'tenant',
+                //     'is_logged_in' => $user->is_logged_in,
+                //     'user_info' => $userInfo,
+                //     'client_info' => $clientInfo,
+                // ],'tenant logged in successufully');
             }
 
             return $this->errorResponse(
