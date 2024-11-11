@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 // Authentication routes
 Route::post('/admin-login',[LoginController::class, 'adminlogin'])->name('adminlogin');
 Route::post('/tenant-login', [LoginController::class, 'tenantLogin'])->name('tenantlogin');
-Route::post('/tenant-register',[RegisterController::class, 'tenantRegister'])->name('tenenatregister');
+Route::post('/tenant-register',[RegisterController::class, 'tenantRegister'])->name('tenantregister');
 
 Route::middleware('auth:sanctum', 'check.user.activity')->group(function() {
     Route::get('/check-activity', [UserActivityController::class, 'getActivityInfo']); // Adjusted method name
