@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:amanagement_flutter/model/authmodels/user.dart';
+import 'package:amanagement_flutter/pages/clientdatasignup.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'pages/login.dart';
@@ -28,10 +29,15 @@ class _MainAppState extends State<MainApp> {
     final prefs = await SharedPreferences.getInstance();
     final isFirstTimeUser = prefs.getBool('isFirstTimeUser') ?? true;
     final isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
+    final isFinishCreatingAccount = prefs.getBool('createdAccount')?? false;
 
     // If it's the user's first time, show the FirstTimePage
     if (isFirstTimeUser) {
       return const FirstTimePage();
+    }
+
+    if(isFinishCreatingAccount) {
+      // return const ClientDataSignup();
     }
 
     // If the user is logged in, navigate to the Home page
