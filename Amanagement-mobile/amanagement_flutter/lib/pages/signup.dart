@@ -1,3 +1,5 @@
+import 'package:amanagement_flutter/model/authmodels/user.dart';
+import 'package:amanagement_flutter/utils/sharedpreferenceservice.dart';
 import 'package:flutter/material.dart';
 import '../utils/httpmethods.dart'; // Assumed API method
 import '../pages/Clientdatasignup.dart'; // Ensure this import is correct
@@ -17,6 +19,9 @@ class _SignupState extends State<Signup> {
   final TextEditingController _controllerConFirmPassword = TextEditingController();
   bool _obscurePassword = true;
 
+  final SharedPreferencesService _prefsService = SharedPreferencesService();
+
+
   void _registerUser() async {
     if (_formKey.currentState?.validate() ?? false) {
       try {
@@ -30,6 +35,8 @@ class _SignupState extends State<Signup> {
           // If the registration was successful, navigate to the next page
           final token = response.token;
           final userId = response.userInfo.id;
+
+          await _prefsService.saveUserDataToPrefs(response.token, response.userInfo, response.clientInfo);
 
           Navigator.push(
             context,

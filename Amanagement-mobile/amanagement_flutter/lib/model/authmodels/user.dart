@@ -54,6 +54,8 @@ class LoginResponse {
     );
   }
 
+  
+
 }
 
 class UserInfo {
@@ -84,6 +86,19 @@ class UserInfo {
       isLoggedIn: json['is_logged_in'],
     );
   }
+
+  //back to json strings for sharedpreferenceservice
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'username': username,
+      'email': email,
+      'created_at': createdAt,
+      'updated_at': updatedAt,
+      'is_logged_in': isLoggedIn,
+    };
+  }
+
 }
 
 class ClientInfo {
@@ -126,4 +141,21 @@ class ClientInfo {
       updatedAt: json['updated_at'],
     );
   }
+  //back to json strings for sharedpreferenceservice
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'user_id': userId,
+      'name': name,
+      'middlename': middlename,
+      'lastname': lastname,
+      'gender': gender,
+      'address': address,
+      'contact_number': contactNumber,
+      'created_at': createdAt,
+      'updated_at': updatedAt,
+    };
+  }
+
+
 }

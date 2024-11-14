@@ -30,7 +30,9 @@ class LogoutController extends ApiController
 
             $user = Auth::user();
             $now = Carbon::now();
+            $token = $request->user()->currentAccessToken()->get();
             Log::info('user UD: ' . $user->id . ' successfuly log out');
+            Log::info('logged out with token'. $token);
 
             $user->update([
                 'is_logged_in' => false,

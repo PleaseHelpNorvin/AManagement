@@ -1,6 +1,8 @@
+import 'package:amanagement_flutter/pages/isfirsttime.dart';
 import 'package:amanagement_flutter/pages/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import '../pages/home.dart'; // Update this import based on your project structure
 import '../utils/httpmethods.dart'; // Assuming this contains the method for making the API call
@@ -18,6 +20,19 @@ class _LoginState extends State<Login> {
   final TextEditingController _controllerPassword = TextEditingController();
   bool _obscurePassword = true;
   bool _isLoading = false; // Loading state variable
+
+  Future<void> _checkFirstTimeUser() async {
+    final prefs = await SharedPreferences.getInstance();
+    final isFirstTimeUser = prefs.getBool('isFirstTimeUser') ?? true;
+
+    if (isFirstTimeUser) {
+      // If it's the first time, show the FirstTimePage
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const FirstTimePage()),
+      );
+    }
+  }
 
   @override
   void initState() {
@@ -43,10 +58,7 @@ class _LoginState extends State<Login> {
             context, 
             MaterialPageRoute
             (builder: (context) => Home(
-                //final int userId;
-                // final String token;
-                // final UserInfo userInfo;
-                // final ClientInfo clientInfo;
+               
               userId: response.clientInfo.userId,
               token: response.token,
               userInfo: userInfo,

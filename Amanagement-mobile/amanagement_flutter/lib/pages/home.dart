@@ -1,4 +1,5 @@
 import 'package:amanagement_flutter/model/authmodels/user.dart';
+import 'package:amanagement_flutter/pages/isfirsttime.dart';
 import 'package:amanagement_flutter/pages/login.dart';
 import 'package:amanagement_flutter/pages/adminmessage.dart';
 import 'package:amanagement_flutter/pages/paydue.dart';
@@ -7,8 +8,12 @@ import 'package:amanagement_flutter/pages/secondpage.dart';
 import 'package:amanagement_flutter/utils/httpmethods.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../utils/sharedpreferenceservice.dart';
 
 class Home extends StatefulWidget {
+  // final int id;
   final int userId;
   final String token;
   final UserInfo userInfo;
@@ -16,6 +21,7 @@ class Home extends StatefulWidget {
 
   const Home({
     Key? key,
+    // required this.id,
     required this.userId,
     required this.token,
     required this.userInfo,
@@ -28,6 +34,27 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int currentPageIndex = 0; // Track selected page
+
+  
+
+   @override
+  void initState() {
+    super.initState();
+    _checkFirstTime();
+  }
+
+  Future<void> _checkFirstTime() async {
+    final prefs = await SharedPreferences.getInstance();
+    bool isFirstTimeUser = prefs.getBool('isFirstTimeUser') ?? true;
+
+    if (isFirstTimeUser) {
+      // If it's the first time, navigate to the FirstTimePage
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const FirstTimePage()),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -223,41 +250,6 @@ Widget _buildCard(String title, String content, Widget page) {
   );
 }
 
-
-
-//   Widget _buildCard(String title, String content, VoidCallback onPressed) {
-//   return Container(
-//     width: (MediaQuery.of(context).size.width - 40) / 2, // Half the width of the screen minus padding
-//     height: 200, 
-//     child: Card(
-//       elevation: 4,
-//       shape: RoundedRectangleBorder(
-//         borderRadius: BorderRadius.circular(12),
-//       ),
-//       child: Padding(
-//         padding: const EdgeInsets.all(10.0),
-//         child: Column(
-//           crossAxisAlignment: CrossAxisAlignment.start,
-//           children: [
-//             Text(title, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-//             const Divider(),
-//             Text(content, style: const TextStyle(fontSize: 16)),
-//             const Spacer(), // Add spacer to push the button to the bottom
-//             TextButton(
-//               onPressed: onPressed, // Action for button press
-//               child: const Text('Go to Page', style: TextStyle(fontSize: 16)),
-//               style: TextButton.styleFrom(
-//                 foregroundColor: Colors.white, backgroundColor: Colors.blue, // Button background color
-//               ),
-//             ),
-//           ],
-//         ),
-//       ),
-//     ),
-//   );
-// }
-
-
   Widget _buildMessage(int index) {
     return Align(
       alignment: index == 0 ? Alignment.centerRight : Alignment.centerLeft,
@@ -276,24 +268,44 @@ Widget _buildCard(String title, String content, Widget page) {
     );
   }
 
+  // void _logout() async {
+  //   try {
+  //     await logoutUser(widget.token, widget.userId);
+
+  //     final box = await Hive.openBox('accounts');
+  //     await box.delete('token');
+  //     await box.delete('userId');
+
+  //     // After successful logout, navigate to the login screen
+  //     Navigator.pushReplacement(
+  //       context,
+  //       MaterialPageRoute(builder: (context) => const Login()),
+  //     );
+  //   } catch (e) {
+  //     print("Error: $e");
+  //     _showErrorDialog("Failed to log out. Please try again.");
+  //   }
+  // }
   void _logout() async {
     try {
+      SharedPreferencesService prefsService = SharedPreferencesService();
       await logoutUser(widget.token, widget.userId);
-
+      await prefsService.clearUserDataFromPrefs();
+        
       final box = await Hive.openBox('accounts');
-      await box.delete('token');
-      await box.delete('userId');
-
-      // After successful logout, navigate to the login screen
+        await box.delete('token');
+        await box.delete('userId');
+        
+      // Navigate back to Login page after logout
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const Login()),
+        MaterialPageRoute(builder: (context) => Login()),
       );
     } catch (e) {
-      print("Error: $e");
       _showErrorDialog("Failed to log out. Please try again.");
-    }
+    };
   }
+
 
   void _showErrorDialog(String message) {
     showDialog(

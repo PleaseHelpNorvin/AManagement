@@ -17,3 +17,4 @@ Future<void> _initHive() async{
     await Hive.openBox('accounts');
   // }
 }
+

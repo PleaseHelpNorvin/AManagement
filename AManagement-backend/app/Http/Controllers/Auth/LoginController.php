@@ -86,6 +86,7 @@ class LoginController extends ApiController
                     }
 
                     $token = $user->createToken('Personal Access Token')->plainTextToken;
+                    \Log::info("User logged in successfully with token ['token' => $token]");
                     // dd($user);
 
                     return response()->json([
@@ -143,9 +144,13 @@ class LoginController extends ApiController
                 $user = Auth::user();
                 Log::info('Tenant User ID: ' . $user->id . ' has logged in successfully.');
 
-                $user->update(['is_logged_in' => true]);
+                $user->update([
+                'is_logged_in' => true
+                // 'last_used_at' => now()
+            ]);
 
                 $token = $user->createToken('Tenant Access Token')->plainTextToken;
+                \Log::info("User logged in successfully with token ['token' => $token]");
                 $clientInfo = $user->clientInformation;
                 $userInfo = User::find($user->id);
 
@@ -173,23 +178,6 @@ class LoginController extends ApiController
                         'created_at' => $clientInfo->created_at,
                     ]
                 ], 'tenant logged in successfully');
-
-
-                // return response()->json([
-                //     'token' => $token,
-                //     'role' => 'tenant',
-                //     'is_logged_in' => $user->is_logged_in,
-                //     'user_info' => $userInfo,
-                //     'client_info' => $clientInfo,
-                // ], 200);
-                    
-                // return $this->successResponse([
-                //     'token' => $token,
-                //     'role' => 'tenant',
-                //     'is_logged_in' => $user->is_logged_in,
-                //     'user_info' => $userInfo,
-                //     'client_info' => $clientInfo,
-                // ],'tenant logged in successufully');
             }
 
             return $this->errorResponse(

@@ -19,11 +19,12 @@ class UserActivityMiddleware
         Log::info('Last Activity Time:', ['time' => $lastActivityTime]);
 
         if (Auth::check()) {
+            $user = $request->user();
             $currentTime = Carbon::now('Asia/Manila');
             $inactiveDuration = $currentTime->diffInSeconds($lastActivityTime);
             
             Log::info('Inactive Duration:', ['duration' => $inactiveDuration]);
-
+            
             // Check against SESSION_LIFETIME
             if ($inactiveDuration >= $allowedInactiveTime) {
                 Log::info('User logged out due to inactivity:', ['user_id' => Auth::id()]);

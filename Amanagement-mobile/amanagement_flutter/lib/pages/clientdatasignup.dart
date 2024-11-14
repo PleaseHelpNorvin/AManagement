@@ -1,3 +1,4 @@
+import 'package:amanagement_flutter/utils/sharedpreferenceservice.dart';
 import 'package:flutter/material.dart';
 import '../utils/httpmethods.dart'; // Assuming API method
 import '../pages/home.dart';
@@ -27,6 +28,9 @@ class _ClientSignupState extends State<ClientDataSignup> {
   final TextEditingController _controllerContactNumber = TextEditingController();
   String? _selectedGender;
 
+  final SharedPreferencesService _prefsService = SharedPreferencesService();
+
+
   bool hasNullValues() {
     return _controllerName.text.isEmpty ||
         _controllerMiddleName.text.isEmpty ||
@@ -54,6 +58,9 @@ class _ClientSignupState extends State<ClientDataSignup> {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Client data submitted successfully!')),
           );
+
+          await _prefsService.saveUserDataToPrefs(widget.token, response.userInfo, response.clientInfo);
+
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(

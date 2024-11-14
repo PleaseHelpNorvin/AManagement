@@ -9,25 +9,10 @@ import '../api/api.dart';
 //models import
 import '../model/authmodels/user.dart';
 
-// Future<void> _getToken() async {
-//   SharedPreferences localStorage = await SharedPreferences.getInstance();
-//   var token = localStorage.getString('token');
-//   if (token != null) {
-//     setState(() {
-//       isAuth = true;
-//     });
-//   }
-// }
-
-// _loadUserData() async{
-//   SharedPreferences localStorage = await SharedPreferences.getInstance();
-//   var user = jsonDecode(localStorage.getString('user'));
-
-//   if(user != null) {
-//     setState(() {
-//       name = user['fname'];
-//     });
-//   }
+// Future<void> _saveUserInfo(String token) async {
+//   final prefs = await SharedPreferences.getInstance();
+//   prefs.setString('authToken', token);  // Save the token to SharedPreferences
+//   prefs.setBool('isLoggedIn', true);    // Set the user as logged in
 // }
 
 Future<RegisterResponse?> registerUser(

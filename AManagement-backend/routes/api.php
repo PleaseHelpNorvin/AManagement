@@ -16,7 +16,7 @@ Route::post('/admin-login',[LoginController::class, 'adminlogin'])->name('adminl
 Route::post('/tenant-login', [LoginController::class, 'tenantLogin'])->name('tenantlogin');
 Route::post('/tenant-register',[RegisterController::class, 'tenantRegister'])->name('tenantregister');
 
-Route::middleware('auth:sanctum', 'check.user.activity')->group(function() {
+Route::middleware('auth:sanctum', 'check.activity')->group(function() {
     Route::get('/check-activity', [UserActivityController::class, 'getActivityInfo']); // Adjusted method name
     Route::post('/update-activity', [UserActivityController::class, 'updateActivity']);
     
@@ -33,7 +33,6 @@ Route::middleware('auth:sanctum', 'check.user.activity')->group(function() {
     Route::middleware('admin')->group(function() {
         Route::get('/home/admin', [HomeController::class, 'adminHome']);
     });
-
 });
 
 

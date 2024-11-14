@@ -28,7 +28,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'cors' => CorsMiddleware::class,
             'admin' => AdminMiddleware::class,
             'user' => UserMiddleware::class,
-            'check.user.activity' => \App\Http\Middleware\UserActivityMiddleware::class // Register your CheckUserActivity middleware
+            'check.activity' => \App\Http\Middleware\UserActivityMiddleware::class, // Register your CheckUserActivity middleware
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
