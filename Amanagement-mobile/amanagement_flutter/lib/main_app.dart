@@ -5,7 +5,7 @@ import 'package:amanagement_flutter/pages/clientdatasignup.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'pages/login.dart';
-import 'pages/signup.dart';
+// import 'pages/signup.dart';
 import 'pages/isfirsttime.dart';
 import 'pages/home.dart';
 
@@ -30,6 +30,8 @@ class _MainAppState extends State<MainApp> {
     final isFirstTimeUser = prefs.getBool('isFirstTimeUser') ?? true;
     final isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
     final isFinishCreatingAccount = prefs.getBool('createdAccount')?? false;
+    //
+  
 
     // If it's the user's first time, show the FirstTimePage
     if (isFirstTimeUser) {
@@ -37,25 +39,42 @@ class _MainAppState extends State<MainApp> {
     }
 
     if(isFinishCreatingAccount) {
-      // return const ClientDataSignup();
+     final userId = prefs.getInt('userId') ?? 0;
+      final token = prefs.getString('Token') ?? '';
+      final userInfoString = prefs.getString('userInfo') ?? '{}';
+      final clientInfoString = prefs.getString('clientInfo') ?? '{}';
+      final username = prefs.getString('username')?? '';
+
+      // Deserialize userInfo and clientInfo
+      final userInfo = UserInfo.fromJson(jsonDecode(userInfoString));
+      final clientInfo = ClientInfo.fromJson(jsonDecode(clientInfoString));  
+
+      // final userId = preds
+      return ClientDataSignup(
+        username: username,
+        token: token,
+        userId: userId,
+        // isLoggedIn: isLoggedIn,
+      );
     }
 
     // If the user is logged in, navigate to the Home page
     if (isLoggedIn) {
       final userId = prefs.getInt('userId') ?? 0;
-      final token = prefs.getString('token') ?? '';
+      final token = prefs.getString('Token') ?? '';
       final userInfoString = prefs.getString('userInfo') ?? '{}';
       final clientInfoString = prefs.getString('clientInfo') ?? '{}';
+      // final username = prefs.getString('username')?? '';
 
       // Deserialize userInfo and clientInfo
       final userInfo = UserInfo.fromJson(jsonDecode(userInfoString));
-      final clientInfo = ClientInfo.fromJson(jsonDecode(clientInfoString));
-
+      final clientInfo = ClientInfo.fromJson(jsonDecode(clientInfoString));  
       return Home(
         userId: userId,
         token: token,
         userInfo: userInfo,
         clientInfo: clientInfo,
+        isLoggedIn: userInfo.isLoggedIn
       );
     }
     // If not logged in, navigate to the login page

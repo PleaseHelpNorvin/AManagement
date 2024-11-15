@@ -1,3 +1,4 @@
+import 'package:amanagement_flutter/model/authmodels/user.dart';
 import 'package:amanagement_flutter/utils/sharedpreferenceservice.dart';
 import 'package:flutter/material.dart';
 import '../utils/httpmethods.dart'; // Assuming API method
@@ -8,11 +9,14 @@ class ClientDataSignup extends StatefulWidget {
   final String token;
   final int userId;
 
+
   const ClientDataSignup({
     Key? key,
     required this.username,
-    required this.token,
+    required this.token, 
+    // required this.isLoggedIn, 
     required this.userId,
+    // required this.isLoggedIn,
   }) : super(key: key);
 
   @override
@@ -50,6 +54,7 @@ class _ClientSignupState extends State<ClientDataSignup> {
           'gender': _selectedGender,
           'address': _controllerAddress.text,
           'contact_number': _controllerContactNumber.text,
+          // 'is_logged_in': widget.isLoggedIn
         };
 
         final response = await updateClientInfo(clientData, widget.token, widget.userId);
@@ -59,7 +64,7 @@ class _ClientSignupState extends State<ClientDataSignup> {
             const SnackBar(content: Text('Client data submitted successfully!')),
           );
 
-          await _prefsService.saveUserDataToPrefs(widget.token, response.userInfo, response.clientInfo);
+          await _prefsService.saveUserDataToPrefs(widget.token, response.userInfo, response.clientInfo, response.userInfo.isLoggedIn);
 
           Navigator.pushReplacement(
             context,
@@ -69,6 +74,7 @@ class _ClientSignupState extends State<ClientDataSignup> {
                 token: widget.token,
                 userInfo: response.userInfo,
                 clientInfo: response.clientInfo,
+                isLoggedIn: response.userInfo.isLoggedIn,
               ),
             ),
           );

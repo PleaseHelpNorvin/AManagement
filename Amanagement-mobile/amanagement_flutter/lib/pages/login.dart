@@ -1,5 +1,6 @@
 import 'package:amanagement_flutter/pages/isfirsttime.dart';
 import 'package:amanagement_flutter/pages/signup.dart';
+import 'package:amanagement_flutter/utils/sharedpreferenceservice.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -26,7 +27,6 @@ class _LoginState extends State<Login> {
     final isFirstTimeUser = prefs.getBool('isFirstTimeUser') ?? true;
 
     if (isFirstTimeUser) {
-      // If it's the first time, show the FirstTimePage
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => const FirstTimePage()),
@@ -51,8 +51,16 @@ class _LoginState extends State<Login> {
           final token = response.token;
           final userInfo = response.userInfo;
           final clientInfo = response.clientInfo;
+          // final/
 
           print('Logged in successfully with token: $token');
+
+            SharedPreferencesService().saveUserDataToPrefs(
+              token,
+              userInfo,
+              clientInfo,
+              userInfo.isLoggedIn, // Assuming isLoggedIn is a field in userInfo
+            );
 
           Navigator.pushReplacement(
             context, 
@@ -63,11 +71,11 @@ class _LoginState extends State<Login> {
               token: response.token,
               userInfo: userInfo,
               clientInfo: clientInfo,
-
+              isLoggedIn: userInfo.isLoggedIn
             )),
           );
         }else{
-          
+          print('no token ');
         }
        
 

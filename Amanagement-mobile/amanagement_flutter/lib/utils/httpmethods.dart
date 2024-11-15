@@ -54,6 +54,7 @@ Future<RegisterResponse> updateClientInfo(
   Map<String, dynamic> clientData,
   String token,
   int userId,
+  // bool isLoggedIn,
 ) async {
   try {
     final response = await http.post(
@@ -103,7 +104,7 @@ Future<LoginResponse?> loginUser(
     if(response.statusCode == 200) {
       final Map<String, dynamic> responseBody = jsonDecode(response.body);
       return LoginResponse.fromJson(responseBody);
-    }else{
+    }else if(response.statusCode == 403){
       print('Failed to login ${response.body}');
       return null;
     }

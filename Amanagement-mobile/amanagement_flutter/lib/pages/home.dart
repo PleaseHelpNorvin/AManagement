@@ -1,7 +1,7 @@
 import 'package:amanagement_flutter/model/authmodels/user.dart';
 import 'package:amanagement_flutter/pages/isfirsttime.dart';
 import 'package:amanagement_flutter/pages/login.dart';
-import 'package:amanagement_flutter/pages/adminmessage.dart';
+// import 'package:amanagement_flutter/pages/adminmessage.dart';
 import 'package:amanagement_flutter/pages/paydue.dart';
 import 'package:amanagement_flutter/pages/secondpage.dart';
 
@@ -18,6 +18,8 @@ class Home extends StatefulWidget {
   final String token;
   final UserInfo userInfo;
   final ClientInfo clientInfo;
+  final bool isLoggedIn;
+
 
   const Home({
     Key? key,
@@ -26,6 +28,7 @@ class Home extends StatefulWidget {
     required this.token,
     required this.userInfo,
     required this.clientInfo,
+    required this.isLoggedIn
   }) : super(key: key);
 
   @override
@@ -55,6 +58,8 @@ class _HomeState extends State<Home> {
       );
     }
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -287,10 +292,15 @@ Widget _buildCard(String title, String content, Widget page) {
   //   }
   // }
   void _logout() async {
+    var token = widget.token;
+    var userId = widget.userId;
     try {
-      SharedPreferencesService prefsService = SharedPreferencesService();
-      await logoutUser(widget.token, widget.userId);
-      await prefsService.clearUserDataFromPrefs();
+      SharedPreferencesService prefs = SharedPreferencesService();
+      await logoutUser(
+          token, 
+          userId
+        );
+      await prefs.clearUserDataFromPrefs();
         
       final box = await Hive.openBox('accounts');
         await box.delete('token');

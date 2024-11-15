@@ -3,6 +3,7 @@ import 'package:amanagement_flutter/utils/sharedpreferenceservice.dart';
 import 'package:flutter/material.dart';
 import '../utils/httpmethods.dart'; // Assumed API method
 import '../pages/Clientdatasignup.dart'; // Ensure this import is correct
+import '../main_app.dart';
 
 class Signup extends StatefulWidget {
   const Signup({super.key});
@@ -20,6 +21,8 @@ class _SignupState extends State<Signup> {
   bool _obscurePassword = true;
 
   final SharedPreferencesService _prefsService = SharedPreferencesService();
+ 
+  
 
 
   void _registerUser() async {
@@ -35,9 +38,10 @@ class _SignupState extends State<Signup> {
           // If the registration was successful, navigate to the next page
           final token = response.token;
           final userId = response.userInfo.id;
-
-          await _prefsService.saveUserDataToPrefs(response.token, response.userInfo, response.clientInfo);
-
+          final islogin = response.userInfo.isLoggedIn;
+          // saving the value of token,userInfo,clientInfo, and isLoggedIn
+          await _prefsService.saveUserDataToPrefs(response.token, response.userInfo, response.clientInfo, true);
+          
           Navigator.push(
             context,
             MaterialPageRoute(
