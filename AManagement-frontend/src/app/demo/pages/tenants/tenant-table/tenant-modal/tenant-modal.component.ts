@@ -22,18 +22,18 @@ export class TenantModalComponent {
   constructor(private tenantsService: TenantsService) {}
 
   // Method to add a new tenant
-  addNewTenant(): void {
-    this.tenantsService.addTenant(this.tenantObj).subscribe(
-      (response) => {
-        console.log('Tenant added successfully:', response);
-        this.tenantAdded.emit();  // Emit to parent
-        this.onCloseHandled();    // Close modal after adding tenant
-      },
-      (error) => {
-        console.error('Error adding tenant:', error);
-      }
-    );
-  }
+  // addNewTenant(): void {
+  //   this.tenantsService.addTenant(this.tenantObj).subscribe(
+  //     (response) => {
+  //       console.log('Tenant added successfully:', response);
+  //       this.tenantAdded.emit();  // Emit to parent
+  //       this.onCloseHandled();    // Close modal after adding tenant
+  //     },
+  //     (error) => {
+  //       console.error('Error adding tenant:', error);
+  //     }
+  //   );
+  // }
 
   // Close the modal and notify the parent component
 onCloseHandled(): void {

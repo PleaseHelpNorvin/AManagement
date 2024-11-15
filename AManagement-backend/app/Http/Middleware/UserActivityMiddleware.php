@@ -29,7 +29,7 @@ class UserActivityMiddleware
             if ($inactiveDuration >= $allowedInactiveTime) {
                 Log::info('User logged out due to inactivity:', ['user_id' => Auth::id()]);
                 session()->flush();
-                return redirect('/login')->with('message', 'You have been logged out due to inactivity.');
+                return redirect('/admin-login')->with('message', 'You have been logged out due to inactivity.');
             }
 
             session(['last_activity_time' => $currentTime]);

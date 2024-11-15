@@ -11,10 +11,13 @@ use App\Http\Middleware\CheckUserActivity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+//tenantsimports
+use App\Http\Controllers\pages\tenants\TenantController;
+
 // Authentication routes
-Route::post('/admin-login',[LoginController::class, 'adminlogin'])->name('adminlogin');
-Route::post('/tenant-login', [LoginController::class, 'tenantLogin'])->name('tenantlogin');
-Route::post('/tenant-register',[RegisterController::class, 'tenantRegister'])->name('tenantregister');
+Route::post('/admin-login',[LoginController::class, 'adminlogin']);
+Route::post('/tenant-login', [LoginController::class, 'tenantLogin']);
+Route::post('/tenant-register',[RegisterController::class, 'tenantRegister']);
 
 Route::middleware('auth:sanctum', 'check.activity')->group(function() {
     Route::get('/check-activity', [UserActivityController::class, 'getActivityInfo']); // Adjusted method name
@@ -32,6 +35,8 @@ Route::middleware('auth:sanctum', 'check.activity')->group(function() {
     
     Route::middleware('admin')->group(function() {
         Route::get('/home/admin', [HomeController::class, 'adminHome']);
+        //for fetching tenants data //Display,edit,and delete
+        Route::get('/admin/tenants', [TenantController::class, 'getTenants']);
     });
 });
 
