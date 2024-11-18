@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class TenantsService {
   private tenantBaseUrl = 'http://127.0.0.1:8000/api/admin/tenants';
+  // private tenantFetchedByIdUrl = 'http://127.0.0.1:8000/api/admin/get-tenants-by'
 
   constructor(private http: HttpClient) { }
 
@@ -26,16 +27,33 @@ export class TenantsService {
     return this.http.get<any>(this.tenantBaseUrl, { headers });
   }
 
-  // Delete tenant by ID with Authorization header
-  deleteTenant(id: number): Observable<any> {
+  fetchTenantById(tenantId: number): Observable<any> {
     const headers = this.createAuthorizationHeader();
-    return this.http.delete<any>(`${this.tenantBaseUrl}/${id}`, { headers });
+    return this.http.get<any>(`${this.tenantBaseUrl}/${tenantId}`, { headers });
   }
+  
+
+  // Fetch tenant by ID
+  // fetchTenantById(tenantId: number): Observable<any> {
+  //   const headers = this.createAuthorizationHeader();
+  //   return this.http.get<any>(`${this.tenantBaseUrl}/${tenantId}`, { headers });
+  // }
+
+  // Delete tenant by ID with Authorization header
+  deleteTenant(tenantId: number): Observable<any> {
+    const headers = this.createAuthorizationHeader();
+    return this.http.delete<any>(`${this.tenantBaseUrl}/delete/${tenantId}`, { headers });
+  }
+  
 
   // Update tenant by ID with Authorization header
-  updateTenant(id: number, updatedTenant: { firstname?: string; lastname?: string }): Observable<any> {
-    const headers = this.createAuthorizationHeader();
-    return this.http.put<any>(`${this.tenantBaseUrl}/${id}`, updatedTenant, { headers });
+  updateTenant(tenantId: number, tenantData: any): Observable<any> {
+    console.log(tenantId);
+    console.log(tenantData);
+    const headers = this.createAuthorizationHeader();  // Make sure to add auth headers
+    return this.http.put(`${this.tenantBaseUrl}/update/${tenantId}`, tenantData, { headers });
   }
+  
+  
 
 }

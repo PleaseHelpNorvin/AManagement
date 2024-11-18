@@ -1,0 +1,23 @@
+<div class="modal-header">
+    <h5 class="modal-title">
+        View Tenant: {{ firstName + ' ' + middleName + ' ' + lastName || 'Unknown' }}
+      </h5>
+    <!-- <button type="button" class="close" (click)="closeModalHandler()">
+      <span aria-hidden="true">&times;</span>
+    </button> -->
+  </div>
+  <div class="modal-body">
+    <div class="tenant-details">
+      <p><strong>First Name:</strong> {{ firstName }}</p>
+      <p><strong>Middle Name:</strong> {{ middleName }}</p>
+      <p><strong>Last Name:</strong> {{ lastName }}</p>
+      <p><strong>Gender:</strong> {{ gender }}</p>
+      <p><strong>Email:</strong> {{ email }}</p>
+      <p><strong>Address:</strong> {{ address }}</p>
+      <p><strong>Username:</strong> {{ username }}</p>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="closeModalHandler()">Close</button>
+  </div>
+  

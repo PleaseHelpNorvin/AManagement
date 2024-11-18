@@ -13,7 +13,7 @@ export class IdleTimeoutService {
   private timeout: any;
   private countdownInterval: any;
   private activityUpdateTimeout: any; 
-  private readonly IDLE_LIMIT = 300000; // 1 minute
+  private readonly IDLE_LIMIT = 600000; 
   private timeoutSubject = new Subject<void>();
   private eventListenerAdded = false; // Ensure this is correctly managed
   private watchingStarted = false; // Flag to prevent multiple starts
@@ -73,7 +73,7 @@ export class IdleTimeoutService {
       if (remainingTime <= 0) {
         clearInterval(this.countdownInterval); // Stop the countdown when it reaches zero
       }
-    }, 1000); // Update every second
+    }, 10000); // Update every second
 
     this.timeout = setTimeout(() => {
       this.onTimeout();

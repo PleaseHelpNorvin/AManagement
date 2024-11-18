@@ -1,49 +1,50 @@
-<div class="row">
-  <div class="col-sm-12">
-    <h2>Tenant List</h2>
-    <button type="button" class="btn btn-primary mt-2 mb-1" (click)="showTenantModal()">Add Tenant</button>
-  
-    <table class="table table-bordered table-striped">
-      <thead>
-        <tr>
-          <th>First Name</th>
-          <th>Last Name</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let tenant of tenants | stringFilter: filter | paginate: config">
-          <td>{{ tenant.firstname }}</td>
-          <td>{{ tenant.lastname }}</td>
-        </tr>
-      </tbody>
-    </table>
-
-    <app-tenant-modal 
-      [isVisible]="isModalVisible" 
-      (tenantAdded)="onTenantAdded()"
-      (closeModal)="closeTenantModal()">
-    </app-tenant-modal>
-      
-    <app-pagination
-      [data]="tenants | stringFilter: filter" 
-      [filter]="filter">
-    </app-pagination>
-    
-    <div class="has-text-centered">
-      <pagination-controls [id]="config.id" 
-                           [maxSize]="maxSize"
-                           [directionLinks]="directionLinks"
-                           [autoHide]="autoHide"
-                           [responsive]="responsive"
-                           [previousLabel]="labels.previousLabel"
-                           [nextLabel]="labels.nextLabel"
-                           [screenReaderPaginationLabel]="labels.screenReaderPaginationLabel"
-                           [screenReaderPageLabel]="labels.screenReaderPageLabel"
-                           [screenReaderCurrentLabel]="labels.screenReaderCurrentLabel"
-                           (pageChange)="onPageChange($event)"
-                           (pageBoundsCorrection)="onPageBoundsCorrection($event)">
-      </pagination-controls>
-    </div>
-  </div>
-  
+<div class="table-container">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>User Id</th>
+        <th>First Name</th>
+        <th>Middle Name</th>
+        <th>Last Name</th>
+        <th>Gender</th>
+        <th>Email</th>
+        <th>Status</th>
+        <th style="width: 300px;">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let tenant of tenants | paginate: config; let i = index">
+        <td>{{ tenant.id }}</td>
+        <td>{{ tenant.client_information?.user_id }}</td>
+        <td>{{ tenant.client_information?.name }}</td>
+        <td>{{ tenant.client_information?.middlename }}</td>
+        <td>{{ tenant.client_information?.lastname }}</td>
+        <td>{{ tenant.client_information?.gender }}</td>
+        <td>{{ tenant.email }}</td>
+        <!-- <td>{{ tenant.is_logged_in }}</td> -->
+        <td>
+          <span [ngClass]="{'text-success': tenant.is_logged_in === 1, 'text-muted': tenant.is_logged_in === 0}">
+            <i class="fas" [ngClass]="tenant.is_logged_in === 1 ? 'fa-circle' : 'fa-circle-notch'"></i>
+            {{ tenant.is_logged_in === 1 ? 'Online' : 'Offline' }}
+          </span>
+        </td>
+        <td class="d-flex justify-content-between" style="max-width: 300px;">
+          <button (click)="viewTenant(tenant.id)" class="btn btn-success">View Tenant</button>
+          <button (click)="editTenant(tenant.id)" class="btn btn-primary">Edit</button>
+          <button (click)="deleteTenant(tenant.id)" class="btn btn-danger">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </div>
+
+
+
+<pagination-controls  
+  id="advanced"
+  (pageChange)="onPageChange($event)"
+  [maxSize]="5"
+  [directionLinks]="true"
+  [autoHide]="true">
+</pagination-controls>

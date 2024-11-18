@@ -37,6 +37,9 @@ Route::middleware('auth:sanctum', 'check.activity')->group(function() {
         Route::get('/home/admin', [HomeController::class, 'adminHome']);
         //for fetching tenants data //Display,edit,and delete
         Route::get('/admin/tenants', [TenantController::class, 'getTenants']);
+        Route::get('/admin/tenants/{tenantId}', [TenantController::class, 'getTenantById']);
+        Route::put('/admin/tenants/update/{tenantId}', [TenantController::class, 'updateTenant']);
+        Route::delete('/admin/tenants/delete/{tenantId}', [TenantController::class, 'deleteTenantById']);
     });
 });
 

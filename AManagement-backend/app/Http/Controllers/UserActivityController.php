@@ -17,10 +17,10 @@ class UserActivityController extends ApiController
             $now = Carbon::now('Asia/Manila');
             $user->update(['last_active_at' => $now]);
 
-            Log::info('User activity updated.', [
-                'user_id' => $user->id,
-                'last_active_at' => $now->toDateTimeString()
-            ]);
+            // Log::info('User activity updated.', [
+            //     'user_id' => $user->id,
+            //     'last_active_at' => $now->toDateTimeString()
+            // ]);
 
             return response()->json(['message' => 'User activity updated successfully.', 'last_active_at' => $now]);
         }

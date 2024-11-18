@@ -13,7 +13,8 @@ class UserActivityMiddleware
     public function handle(Request $request, Closure $next)
     {
         // Use SESSION_LIFETIME from .env
-        $allowedInactiveTime = (int) env('SESSION_LIFETIME', 1) * 60; // Convert to seconds
+        $allowedInactiveTime = (int) env('SESSION_LIFETIME', 10) * 60; // Convert to seconds
+
         $lastActivityTime = session('last_activity_time', Carbon::now('Asia/Manila'));
         
         Log::info('Last Activity Time:', ['time' => $lastActivityTime]);

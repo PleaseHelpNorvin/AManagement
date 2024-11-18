@@ -1,5 +1,6 @@
-.has-text-centered{
-    display: flex;
-    justify-items: center;
-    
-}
+.button-column {
+    display: flex; /* Enable flexbox */
+    justify-content: space-between; /* Distribute buttons with space between them */
+    text-align: right; /* Keep buttons aligned to the right */
+  }
+  
