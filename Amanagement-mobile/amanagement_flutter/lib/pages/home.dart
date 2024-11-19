@@ -306,8 +306,7 @@ Widget _buildCard(String title, String content, Widget page) {
         await box.delete('token');
         await box.delete('userId');
         
-      // Navigate back to Login page after logout
-      Navigator.pushReplacement(
+        Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => Login()),
       );
