@@ -10,9 +10,13 @@ class Message extends Model
 {
     //
     use HasFactory;
+    protected $table = 'messages';  
 
     protected $fillable = [
-        'message','sender_id','receiver_id','is_read'
+        'message', // Match the column name in the migration
+        'sender_id',
+        'receiver_id',
+        'is_read',
     ];
 
     public function sender()

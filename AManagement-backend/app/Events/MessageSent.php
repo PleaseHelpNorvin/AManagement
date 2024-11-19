@@ -33,8 +33,9 @@ class MessageSent implements ShouldBroadcast
     public function broadcastWith(): array
     {
         return [
-            'message' => $this->message->content,
+            'message' => $this->message->message, // Updated to match the migration
             'sender_id' => $this->message->sender_id,
+            'receiver_id' => $this->message->receiver_id,
         ];
     }
 

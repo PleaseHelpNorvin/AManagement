@@ -5265,6 +5265,11 @@ kind-of@^6.0.2:
   resolved "https://registry.npmjs.org/kind-of/-/kind-of-6.0.3.tgz"
   integrity sha512-dcS1ul+9tmeD95T+x28/ehLgd9mENa3LsvDTtzm3vyBEO7RPptvAD+t44WVXaUjTBRcrpFeFlC8WCruUR456hw==
 
+laravel-echo@^1.17.0:
+  version "1.17.0"
+  resolved "https://registry.npmjs.org/laravel-echo/-/laravel-echo-1.17.0.tgz"
+  integrity sha512-uf+BVZMkXc7+pzxS2dG5v1P+MT3yWS+/9oDSJUcQ4KqnDKLYfM1lc7yUmnxvLtwPksGuQJv6XBtzvWLHSEheNQ==
+
 launch-editor@^2.6.1:
   version "2.8.0"
   resolved "https://registry.npmjs.org/launch-editor/-/launch-editor-2.8.0.tgz"
@@ -6497,6 +6502,13 @@ punycode@^2.1.0:
   version "2.3.1"
   resolved "https://registry.npmjs.org/punycode/-/punycode-2.3.1.tgz"
   integrity sha512-vYt7UD1U9Wg6138shLtLOvdAu+8DsC/ilFtEVHcH+wydcSpNE20AfSOduf6MkRFahL5FY7X1oU7nKVZFtfq8Fg==
+
+pusher-js@^8.4.0-rc2:
+  version "8.4.0-rc2"
+  resolved "https://registry.npmjs.org/pusher-js/-/pusher-js-8.4.0-rc2.tgz"
+  integrity sha512-d87GjOEEl9QgO5BWmViSqW0LOzPvybvX6WA9zLUstNdB57jVJuR27zHkRnrav2a3+zAMlHbP2Og8wug+rG8T+g==
+  dependencies:
+    tweetnacl "^1.0.3"
 
 qjobs@^1.2.0:
   version "1.2.0"
@@ -7946,6 +7958,11 @@ tuf-js@^2.2.1:
     "@tufjs/models" "2.0.1"
     debug "^4.3.4"
     make-fetch-happen "^13.0.1"
+
+tweetnacl@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.npmjs.org/tweetnacl/-/tweetnacl-1.0.3.tgz"
+  integrity sha512-6rt+RN7aOi1nGMyC4Xa5DdYiukl2UWCbcJft7YhxReBGQD7OAM8Pbxw6YMo4r2diNEA8FEmu32YOn9rhaiE5yw==
 
 type-check@^0.4.0, type-check@~0.4.0:
   version "0.4.0"
