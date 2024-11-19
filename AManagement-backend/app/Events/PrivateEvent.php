@@ -10,18 +10,20 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class MessageSent implements ShouldBroadcast
+class PrivateEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
-    
-    public $message;
+
+    public $data;
+    public $userID;
     /**
      * Create a new event instance.
      */
-    public function __construct($message)
+    public function __construct($data, $userID)
     {
         //
-        $this->message = $message;
+        $this->data = $data;
+        $this->userID = $userID;
     }
 
     /**
@@ -29,19 +31,17 @@ class MessageSent implements ShouldBroadcast
      *
      * @return array<int, \Illuminate\Broadcasting\Channel>
      */
-
     public function broadcastWith(): array
     {
         return [
-            'message' => $this->message->content,
-            'sender_id' => $this->message->sender_id,
+            'message' => $this->data,
         ];
     }
 
     public function broadcastOn(): array
     {
         return [
-            new PrivateChannel('private-channel.user.' . $this->message->receiver_id),  // Broadcasting to the receiver's private channel
+            new PrivateChannel('private-channel.user.' . $this->userID),  // Broadcasting to a specific user's private channel
         ];
     }
 }
