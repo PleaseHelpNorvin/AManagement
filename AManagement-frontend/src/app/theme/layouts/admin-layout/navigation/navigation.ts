@@ -63,6 +63,14 @@ export const NavigationItems: NavigationItem[] = [
         breadcrumbs: false
       },
       {
+        id: 'chat',
+        title: 'Chat',
+        type: 'item',
+        url: '/pages/chat',
+        icon: 'dashboard',
+        breadcrumbs: false,
+      },
+      {
         id: 'qr-code',
         title: 'Qr-Code',
         type: 'item',

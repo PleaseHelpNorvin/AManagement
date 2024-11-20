@@ -6,6 +6,9 @@ use Illuminate\Foundation\Configuration\Middleware;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\UserMiddleware;
 use App\Http\Middleware\CorsMiddleware;
+// use App\Providsers\BroadcastServiceProvider; // Add this line
+
+
 // use App\Http\Middleware\UserActivityMiddleware;
 // use App\Http\Middleware\CheckUserActivity;
 
@@ -34,12 +37,6 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withExceptions(function (Exceptions $exceptions) {
         
-        //
-        // $exceptions->reportUsing(function ($exception) {
-        //     // Custom reporting logic
-        // });
+    })
+    ->create();
 
-        // $exceptions->renderUsing(function ($request, $exception) {
-        //     return response()->json(['error' => $exception->getMessage()], $exception->getStatusCode());
-        // });
-    })->create();
