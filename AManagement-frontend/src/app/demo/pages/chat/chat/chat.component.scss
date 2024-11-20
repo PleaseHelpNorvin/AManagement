@@ -82,14 +82,23 @@
 
   .chat-box {
         border: 1px solid red;
-        height: 95%;
+        height: 90%;
         display: flex;
         flex-direction: column-reverse; /* Enable vertical scrolling */
         padding-bottom: 10px;
     }
+    .chat-box-header{
+        border: 1px dotted rebeccapurple;
+    }
 
     .chat-box-container{
         //...
+        // max-height: 660px;
+        flex-grow: 1;
+        max-height: 100%;
+        overflow-y: auto;
+        // gap: 5px;
+        border: 1px solid black;
     }
 
   .message{
@@ -112,9 +121,14 @@
     }
     .container .box:nth-child(2) {
         width: 100%; /* Second box takes up 100% on medium screens */
+        
     }
     .container.sidebar-visible .box:first-child {
         display: flex; /* Show the sidebar when toggled */
+    }
+    .chat-box{
+        padding: 10px;
+        height: 85%;
     }
 }
 
@@ -134,11 +148,16 @@
     .burger-menu {
         display: block; /* Hide burger menu on medium screens */
     }
+    .chat-box{
+        padding: 10px;
+        height: 85%;
+    }
 }
 
 @media (min-width: 1025px) {
     .burger-menu {
         display: none; /* Keep burger menu hidden on larger screens */
     }
+
 }
   
