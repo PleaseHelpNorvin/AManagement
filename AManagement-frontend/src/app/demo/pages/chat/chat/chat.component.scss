@@ -108,10 +108,13 @@
         display: none; /* Hide the sidebar on smaller devices */
         float: left; /* Make the first box float to the left */
         width: 100%; /* Adjust width as needed */
-        margin-right: 10px; 
+        // margin-right: 10px; 
     }
     .container .box:nth-child(2) {
         width: 100%; /* Second box takes up 100% on medium screens */
+    }
+    .container.sidebar-visible .box:first-child {
+        display: flex; /* Show the sidebar when toggled */
     }
 }
 
