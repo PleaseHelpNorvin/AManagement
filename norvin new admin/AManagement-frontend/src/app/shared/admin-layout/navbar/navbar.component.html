@@ -1,0 +1,28 @@
+<mat-toolbar>
+  <!-- Render projected content -->
+
+  <ng-content></ng-content>
+  <div class="example-spacer-20px"></div>
+  <!-- Title on the left -->
+ <div class="nav-container">
+    <span>Admin Dashboard</span>
+
+    <!-- Spacer to push the button to the right -->
+    <span class="example-spacer"></span>
+
+    <!-- Account Button with dropdown toggle -->
+    <button (click)="toggleMenu()" class="account-btn">
+      <span><mat-icon>account_circle</mat-icon></span>
+    </button>
+ </div>
+
+  <!-- Custom Dropdown Menu -->
+  <div *ngIf="menuOpen" class="dropdown-menu">
+    <button (click)="profile()" class="dropdown-item">
+      Profile
+    </button>
+    <button (click)="logout()" class="dropdown-item">
+      Logout
+    </button>
+  </div>
+</mat-toolbar>

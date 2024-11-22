@@ -1,0 +1,173 @@
+.router-div{
+  /* border: 1px solid black; */
+  background-color: white;
+  border-radius: 5px;
+  margin: 0px;
+  padding: 0px;
+}
+/* Style for the burger icon */
+.burger-icon {
+  display: none;
+  }
+  
+  .burger-line {
+    width: 100%;
+    height: 5px;
+    background-color: #333;
+    border-radius: 5px;
+  }
+  
+  /* Ensure the whole layout takes full height of the viewport */
+  .admin-layout {
+    display: flex;
+    flex-direction: column;
+    height: 100vh; /* Full viewport height */
+  }
+  
+  /* Navbar fixed at the top */
+  app-navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    width: 100%;
+    height: 64px;
+  }
+  
+  /* Wrapper for the sidebar and main content */
+  .content-wrapper {
+    display: flex;
+    margin-top: 64px; /* Space for the fixed navbar */
+    height: calc(100vh - 64px); /* Full height minus navbar height */
+    overflow: hidden; /* Prevent content from scrolling here */
+  }
+  
+  /* Sidebar default styles */
+  app-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 250px;
+    background-color: #f4f4f4;
+    z-index: 5;
+    border-right: 1px solid #ddd;
+    transform: translateX(-250px); 
+    transition: transform 0.1s ease-in-out;
+  }
+  
+  /* Main content */
+  .main-content {
+    margin-left: 0; /* Default margin */
+    padding: 20px;
+    height: calc(100vh - 64px);
+    overflow-y: auto;
+    background-color: rgb(237,247,252);
+    flex-grow: 1; /* Take remaining space */
+    transition: margin-left 0.2s ease-in-out;
+  }
+  
+  /* Sidebar visible */
+  .sidebar-shown app-sidebar {
+    transform: translateX(0); /* Sidebar slides in */
+  }
+  
+  
+  /* Media Queries */
+  
+  /* Phone screens (max-width: 600px) */
+  @media (max-width: 600px) {
+    .burger-icon {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 30px;
+        height: 25px;
+        cursor: pointer;
+      }
+      
+    app-sidebar {
+      width: 100%; /* Sidebar takes full width */
+      transform: translateX(-100%); /* Hidden by default */
+    }
+    .sidebar-shown app-sidebar {
+      transform: translateX(0); /* Slide in */
+    }
+  
+    .main-content {
+      margin-left: 0; /* No margin for sidebar */
+    }
+  }
+  
+  /* Tablets and small laptops (601px - 1024px) */
+  @media (min-width: 601px) and (max-width: 1024px) {
+    .burger-icon {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 30px;
+        height: 25px;
+        cursor: pointer;
+      }
+    app-sidebar {
+      width: 250px;
+      transform: translateX(-250px); 
+    }
+  
+    .sidebar-shown app-sidebar {
+      transform: translateX(0); /* Slide in */
+    }
+  
+    .main-content {
+      margin-left: 0; /* Adjust margin */
+    }
+  
+    .sidebar-shown .main-content {
+      margin-left: 250px;
+    }
+  }
+  
+  /* Laptops and small desktops (1025px - 1200px) */
+  @media (min-width: 1025px) and (max-width: 1200px) {
+    .burger-icon {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 30px;
+        height: 25px;
+        cursor: pointer;
+      }
+      app-sidebar {
+        width: 250px; /* Sidebar width */
+        /* transform: translateX(0); Sidebar should be visible */
+      }
+      .main-content {
+        margin-left: 0px; /* Add margin for sidebar */
+      }
+      
+      /* .admin-layout .sidebar-shown{
+        width: 250px;
+      } */
+      
+  }
+  
+
+ /* Desktops and large laptops (1201px and up) */
+@media (min-width: 1201px) {
+    .burger-icon {
+      display: none; /* Hide the burger icon */
+    }
+    
+    app-sidebar {
+      width: 250px; /* Sidebar takes default width */
+      transform: none; 
+    }
+  
+    .main-content {
+      margin-left: 0px;
+
+    }
+    
+  }
+  

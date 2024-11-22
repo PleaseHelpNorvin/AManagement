@@ -1,0 +1,73 @@
+/* Styling for mat-toolbar */
+mat-toolbar {
+    background-color: #1976d2; /* Background color */
+    color: white; /* Text color */
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    padding: 10px;
+    height: 64px;
+  }
+  .nav-container {
+    display: flex;
+    justify-content: space-between; /* Distributes space between items */
+    align-items: center; /* Vertically centers the items */
+    width: 100%;
+}
+  .example-spacer-20px{
+    width: 10px;
+  }
+  
+  /* Styling for the account button */
+  .account-btn {
+    background-color: #1976d2;
+    border: none;
+    color: white;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 4px;
+  }
+  
+  .account-btn:hover {
+    background-color: #1565c0;
+  }
+  
+  /* Dropdown menu styles */
+  .dropdown-menu {
+    position: absolute;
+    background-color: #ffffff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    top: 50px; /* Adjust this based on your toolbar height */
+    right: 20px;
+    z-index: 1000;
+    display: flex; /* Use flexbox for vertical alignment */
+    flex-direction: column; /* Ensure the items are stacked vertically */
+    width: 150px; 
+    /* border: 1px solid black; */
+  }
+  
+  /* Styling for each dropdown item */
+  .dropdown-item {
+    background-color: white;
+    color: #333;
+    padding: 10px;
+    text-align: left;
+    cursor: pointer;
+    border: none;
+    
+    width: 100%; /* Ensure items fill the container */
+    /* border: 1px solid black; */
+    border-radius: 5px;
+  }
+  
+  .dropdown-item:hover {
+    background-color: #007bff;
+  }
+  
+  /* Add some spacing between menu items */
+  .dropdown-item + .dropdown-item {
+    /* border-top: 1px solid #ccc; */
+  }
+  

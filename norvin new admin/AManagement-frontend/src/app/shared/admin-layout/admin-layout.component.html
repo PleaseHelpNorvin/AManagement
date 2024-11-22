@@ -1,0 +1,24 @@
+<div class="admin-layout" [class.sidebar-shown]="showSidebar">
+      <app-navbar>
+        <!-- Burger Icon for toggling Sidebar -->
+        <div class="burger-icon" (click)="toggleSidebar()">
+          <div class="burger-line"></div>
+          <div class="burger-line"></div>
+          <div class="burger-line"></div>
+        </div>
+      </app-navbar>
+    <!-- </div> -->
+  
+    <div class="content-wrapper">
+      <app-sidebar></app-sidebar> <!-- Sidebar component -->
+  
+      <div class="main-content">
+        <div class="router-div">
+          <div class="breadcrumb-container">
+            
+          </div>
+          <router-outlet></router-outlet> <!-- Main content that will be scrollable -->
+        </div>
+      </div>
+    </div>
+  </div>
