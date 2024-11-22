@@ -31,7 +31,7 @@ import { FallOutline, GiftOutline, MessageOutline, RiseOutline, SettingOutline }
 export class DefaultComponent {
   // constructor
   constructor(private iconService: IconService) {
-    this.iconService.addIcon(...[RiseOutline, FallOutline, SettingOutline, GiftOutline, MessageOutline]);
+    // this.iconService.addIcon(...[RiseOutline, FallOutline, SettingOutline, GiftOutline, MessageOutline]);
   }
 
   recentOrder = tableData;

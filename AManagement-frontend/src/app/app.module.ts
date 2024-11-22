@@ -14,7 +14,7 @@ import { IdleTimeoutService } from './theme/shared/services/iddle-timeout/iddle-
 import { HttpClientModule } from '@angular/common/http'; // Import HttpClientModule
 // import { CommonModule } from '@angular/common';
 // import { FormsModule } from '@angular/forms';
-import { QRCodeModule }  from 'angularx-qrcode'; 
+// import { QRCodeModule }  from 'angularx-qrcode'; 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 // import { faCircle, faCircleNotch } from '@fortawesome/free-solid-svg-icons';  // Import specific icons
 
@@ -26,7 +26,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [FontAwesomeModule,BrowserModule, AppRoutingModule, SharedModule, BrowserAnimationsModule, HttpClientModule, QRCodeModule ],
+  imports: [FontAwesomeModule,BrowserModule, AppRoutingModule, SharedModule, BrowserAnimationsModule, HttpClientModule ],
   providers: [ AuthenticationService, IdleTimeoutService ],
   bootstrap: [AppComponent]
 })

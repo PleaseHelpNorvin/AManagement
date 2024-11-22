@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
@@ -11,16 +11,28 @@ export class ChatService {
 
   constructor(private http: HttpClient) {}
 
+  private getAuthToken(): string | null {
+    return sessionStorage.getItem('authToken'); // Adjust this if your token is stored elsewhere
+  }
+
+  private createAuthorizationHeader(): HttpHeaders {
+    const token = this.getAuthToken();
+    return new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+    });
+  }
+
   // Fetch tenants from backend (example endpoint)
   getTenants(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/tenants`).pipe(
+    const headers = this.createAuthorizationHeader();
+    return this.http.get<any[]>(`${this.apiUrl}/admin/tenants`,{headers}).pipe(
       catchError(this.handleError<any[]>('getTenants', []))
     );
   }
 
   // Fetch messages for a specific tenant (example endpoint)
   getMessages(tenantId: number): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/tenants/${tenantId}/messages`).pipe(
+    return this.http.get<any[]>(`${this.apiUrl}/admin/tenants/${tenantId}/messages`).pipe(
       catchError(this.handleError<any[]>('getMessages', []))
     );
   }

@@ -12,8 +12,11 @@ class CorsMiddleware
     {
         $origins = [
             '*' ,
+            //mobile
             'http://localhost:51907',
-            'http://localhost:49294'
+            'http://localhost:49294',
+            //admin
+            'http://localhost:4200/'
         ];
 
         $headers = [

@@ -15,6 +15,7 @@ class MessageSent implements ShouldBroadcast
     use Dispatchable, InteractsWithSockets, SerializesModels;
     
     public $message;
+    public $userID;
     /**
      * Create a new event instance.
      */
@@ -22,6 +23,8 @@ class MessageSent implements ShouldBroadcast
     {
         //
         $this->message = $message;
+        $this->userID = $message->receiver_id;
+        
     }
 
     /**
@@ -42,7 +45,7 @@ class MessageSent implements ShouldBroadcast
     public function broadcastOn(): array
     {
         return [
-            new PrivateChannel('private-channel.user.' . $this->message->receiver_id),  // Broadcasting to the receiver's private channel
+            new PrivateChannel('private-channel.user.' . $this->userID),  // Broadcasting to the receiver's private channel
         ];
     }
 }

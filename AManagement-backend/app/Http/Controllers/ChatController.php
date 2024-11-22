@@ -27,6 +27,17 @@ class ChatController extends ApiController
             'receiver_id' => $validated['receiver_id'],
         ]);
 
+        // for testing
+
+        // $sender = App\Models\User::find(1); // Use the correct user ID
+
+        // Create a message (simulating a user sending a message)
+        // $message = App\Models\Message::create([
+        //     'message' => 'Hello, this is a test message!',
+        //     'sender_id' => $sender->id,
+        //     'receiver_id' => 2,  // Make sure this is a valid receiver's ID
+        // ]);
+
         // Broadcast the message to other users (except the sender)
         broadcast(new MessageSent($message))->toOthers();
 

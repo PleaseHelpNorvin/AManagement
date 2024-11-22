@@ -1,9 +1,6 @@
 // angular import
 import { Component, ViewChild } from '@angular/core';
 
-// project import
-import { SharedModule } from 'src/app/theme/shared/shared.module';
-
 // third party
 import {
   NgApexchartsModule,
@@ -20,6 +17,7 @@ import {
   ApexDataLabels
 } from 'ng-apexcharts';
 
+// Define ChartOptions Type
 export type ChartOptions = {
   series: ApexAxisChartSeries;
   chart: ApexChart;
@@ -37,82 +35,85 @@ export type ChartOptions = {
 @Component({
   selector: 'app-sales-report-chart',
   standalone: true,
-  imports: [SharedModule, NgApexchartsModule],
+  imports: [NgApexchartsModule],
   templateUrl: './sales-report-chart.component.html',
-  styleUrl: './sales-report-chart.component.scss'
+  styleUrls: ['./sales-report-chart.component.scss']
 })
 export class SalesReportChartComponent {
   @ViewChild('chart') chart!: ChartComponent;
   chartOptions!: Partial<ChartOptions>;
 
   constructor() {
+    // Chart options configuration
     this.chartOptions = {
       chart: {
-        type: 'bar',
-        height: 430,
+        type: 'bar',  // Type of chart (Bar Chart)
+        height: 430,  // Height of the chart
         toolbar: {
-          show: false
+          show: false  // Hide toolbar
         },
-        background: 'transparent'
+        background: 'transparent'  // Set chart background to transparent
       },
       plotOptions: {
         bar: {
-          columnWidth: '30%',
-          borderRadius: 4
+          columnWidth: '30%',  // Set width for bar columns
+          borderRadius: 4  // Round the corners of bars
         }
       },
       stroke: {
-        show: true,
-        width: 8,
-        colors: ['transparent']
+        show: true,  // Enable stroke
+        width: 8,  // Set stroke width
+        colors: ['transparent']  // Set stroke color to transparent
       },
       dataLabels: {
-        enabled: false
+        enabled: false  // Disable data labels on bars
       },
       legend: {
-        position: 'top',
-        horizontalAlign: 'right',
-        show: true,
-        fontFamily: `'Public Sans', sans-serif`,
-        offsetX: 10,
-        offsetY: 10,
+        position: 'top',  // Place legend at the top
+        horizontalAlign: 'right',  // Align legend to the right
+        show: true,  // Show legend
+        fontFamily: `'Public Sans', sans-serif`,  // Set font for legend
+        offsetX: 10,  // Horizontal offset for the legend
+        offsetY: 10,  // Vertical offset for the legend
         labels: {
-          useSeriesColors: false
+          useSeriesColors: false  // Disable series color usage for labels
         },
         markers: {
-          width: 10,
-          height: 10,
-          radius: 50
+          shape: 'circle',  // Set marker shape to circle
+          // width: 12,  // Set marker width
+          // height: 12,  // Set marker height
+          strokeWidth: 2,  // Set marker border width
+          fillColors: ['#faad14', '#1677ff'],  // Marker colors
         },
         itemMargin: {
-          horizontal: 15,
-          vertical: 5
+          horizontal: 15,  // Set horizontal margin for items in the legend
+          vertical: 5  // Set vertical margin for items in the legend
         }
       },
       series: [
         {
-          name: 'Net Profit',
-          data: [180, 90, 135, 114, 120, 145]
+          name: 'Net Profit',  // First series name
+          data: [180, 90, 135, 114, 120, 145]  // Data for the first series (Net Profit)
         },
         {
-          name: 'Revenue',
-          data: [120, 45, 78, 150, 168, 99]
+          name: 'Revenue',  // Second series name
+          data: [120, 45, 78, 150, 168, 99]  // Data for the second series (Revenue)
         }
       ],
       xaxis: {
-        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],  // Set categories (months)
         labels: {
           style: {
-            colors: ['#222', '#222', '#222', '#222', '#222', '#222']
+            colors: ['#222', '#222', '#222', '#222', '#222', '#222']  // Set color for X-axis labels
           }
         }
       },
       tooltip: {
-        theme: 'light'
+        theme: 'light'  // Set tooltip theme to light
       },
-      colors: ['#faad14', '#1677ff'],
+      colors: ['#faad14', '#1677ff'],  // Set colors for the series
       grid: {
-        borderColor: '#f5f5f5'
+        borderColor: '#f5f5f5'  // Set grid border color
       }
     };
   }

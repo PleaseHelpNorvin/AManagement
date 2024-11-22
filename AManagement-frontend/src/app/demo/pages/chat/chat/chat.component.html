@@ -1,197 +1,44 @@
 <div class="row">
     <div class="container">
-        <div class="container" [ngClass]="{ 'sidebar-visible': sidebarVisible }">
-            <div class="box">
-                <div class="header-container">
-                    <h2>I am a header</h2>
-                </div>
-                <div class="body-container">
-                    <div class="inner-box">
-                        <p>Box 1 (20%)</p>
-                    </div>
-                    <div class="inner-box">
-                        <p>Box 2 (20%)</p>
-                    </div>
-                    <div class="inner-box">
-                        <p>Box 3 (20%)</p>
-                    </div>
-                    <div class="inner-box">
-                        <p>Box 4 (20%)</p>
-                    </div>
-                    <div class="inner-box">
-                        <p>Box 5 (20%)</p>
-                    </div>
-                    <div class="inner-box">
-                        <p>Box 5 (20%)</p>
-                    </div>
-                    <div class="inner-box">
-                        <p>Box 5 (20%)</p>
-                    </div>
-                    <div class="inner-box">
-                        <p>Box 5 (20%)</p>
-                    </div>
-                    <div class="inner-box">
-                        <p>Box 5 (20%)</p>
-                    </div>
-                    <div class="inner-box">
-                        <p>Box 5 (20%)</p>
-                    </div>
-                    <div class="inner-box">
-                        <p>Box 5 (20%)</p>
-                    </div>
-                    <div class="inner-box">
-                        <p>Box 5 (20%)</p>
-                    </div>
-                    <div class="inner-box">
-                        <p>Box 5 (20%)</p>
-                    </div>
-                    <div class="inner-box">
-                        <p>Box 5 (20%)</p>
-                    </div>
-                    <div class="inner-box">
-                        <p>Box 5 (20%)</p>
-                    </div>
-                    <div class="inner-box">
-                        <p>Box 5 (20%)</p>
-                    </div>
-                    <div class="inner-box">
-                        <p>Box 5 (20%)</p>
-                    </div>
-                    <div class="inner-box">
-                        <p>Box 5 (20%)</p>
-                    </div>
-                </div>
+      <div class="container" [ngClass]="{ 'sidebar-visible': sidebarVisible }">
+        <div class="box">
+          <div class="header-container">
+            <h2>I am a header</h2>
+          </div>
+          <div class="body-container">
+            <div class="inner-box" *ngFor="let tenant of tenants" (click)="selectTenant(tenant)">
+              <p>{{ tenant.name }}</p>
             </div>
-            <div class="box">
-                <div class="burger-menu" (click)="toggleSidebar()">☰</div>
-                <div class="chat-box-header">
-                    <h3>Tenant's name</h3>
-                </div>
-                <div class="chat-box">
-                    <div class="chat-box-container">
-                        <div class="message">
-                            <p><strong>User:</strong> Hello!</p>
-                        </div>
-                        <div class="my-message">
-                            <p><strong>User:</strong> Hello!</p>
-                        </div>
-                        <div class="message">
-                            <p><strong>User:</strong> Hello!</p>
-                        </div>
-                        <div class="my-message">
-                            <p><strong>User:</strong> Hello!</p>
-                        </div>
-                        <div class="message">
-                            <p><strong>User:</strong> Hello!</p>
-                        </div>
-                        <div class="my-message">
-                            <p><strong>User:</strong> Hello!</p>
-                        </div>
-                        <div class="message">
-                            <p><strong>User:</strong> Hello!</p>
-                        </div>
-                        <div class="my-message">
-                            <p><strong>User:</strong> Hello!</p>
-                        </div>
-                        <div class="message">
-                            <p><strong>User:</strong> Hello!</p>
-                        </div>
-                        <div class="my-message">
-                            <p><strong>User:</strong> Hello!</p>
-                        </div>
-                        <div class="message">
-                            <p><strong>User:</strong> Hello!</p>
-                        </div>
-                        <div class="my-message">
-                            <p><strong>User:</strong> Hello!</p>
-                        </div>
-                        <div class="message">
-                            <p><strong>User:</strong> Hello!</p>
-                        </div>
-                        <div class="my-message">
-                            <p><strong>User:</strong> Hello!</p>
-                        </div>
-                        <div class="message">
-                            <p><strong>User:</strong> Hello!</p>
-                        </div>
-                        <div class="my-message">
-                            <p><strong>User:</strong> Hello!</p>
-                        </div>
-                        <div class="message">
-                            <p><strong>User:</strong> Hello!</p>
-                        </div>
-                        <div class="my-message">
-                            <p><strong>User:</strong> Hello!</p>
-                        </div>
-                        <div class="message">
-                            <p><strong>User:</strong> Hello!</p>
-                        </div>
-                        <div class="my-message">
-                            <p><strong>User:</strong> Hello!</p>
-                        </div>
-                        <div class="message">
-                            <p><strong>User:</strong> Hello!</p>
-                        </div>
-                        <div class="my-message">
-                            <p><strong>User:</strong> Hello!</p>
-                        </div>
-                        <div class="message">
-                            <p><strong>User:</strong> Hello!</p>
-                        </div>
-                        <div class="my-message">
-                            <p><strong>User:</strong> Hello!</p>
-                        </div>
-                        <div class="message">
-                            <p><strong>User:</strong> Hello!</p>
-                        </div>
-                        <div class="my-message">
-                            <p><strong>User:</strong> Hello!</p>
-                        </div>
-                        <div class="message">
-                            <p><strong>User:</strong> Hello!</p>
-                        </div>
-                        <div class="my-message">
-                            <p><strong>User:</strong> Hello!</p>
-                        </div>
-                        <div class="message">
-                            <p><strong>User:</strong> Hello!</p>
-                        </div>
-                        <div class="my-message">
-                            <p><strong>User:</strong> Hello!</p>
-                        </div>
-                        <div class="message">
-                            <p><strong>User:</strong> Hello!</p>
-                        </div>
-                        <div class="my-message">
-                            <p><strong>User:</strong> Hello!</p>
-                        </div>
-                        <div class="message">
-                            <p><strong>User:</strong> Hello!</p>
-                        </div>
-                        <div class="my-message">
-                            <p><strong>User:</strong> Hello!</p>
-                        </div>
-                        <div class="message">
-                            <p><strong>User:</strong> Hello!</p>
-                        </div>
-                        <div class="my-message">
-                            <p><strong>User:</strong> Hello!</p>
-                        </div>
-                        <div class="message">
-                            <p><strong>User:</strong> Hello!</p>
-                        </div>
-                        <div class="my-message">
-                            <p><strong>User:</strong> Hello!</p>
-                        </div>
-
-                    </div>
-                </div>
-                <div class="chat-form">
-                    <form action="">
-                        <input type="text" placeholder="send a message">
-                        <button>submit</button>
-                    </form>
-                </div>
-            </div>
+          </div>
         </div>
+  
+        <!-- Sidebar and chat box -->
+        <div class="box">
+          <div class="burger-menu" (click)="toggleSidebar()">☰</div>
+  
+          <!-- Chat header -->
+          <div class="chat-box-header" *ngIf="selectedTenant">
+            <h3>{{ selectedTenant.name }}</h3>
+          </div>
+  
+          <!-- Chat messages -->
+          <div class="chat-box">
+            <div class="chat-box-container">
+              <div *ngFor="let message of messages" class="message" [ngClass]="{ 'my-message': message.sender === 'User' }">
+                <p><strong>{{ message.sender }}:</strong> {{ message.text }}</p>
+              </div>
+            </div>
+          </div>
+  
+          <!-- Chat input form -->
+          <div class="chat-form">
+            <form (ngSubmit)="sendMessage()">
+              <input type="text" placeholder="Send a message" [(ngModel)]="messageText" name="messageText" required>
+              <button type="submit">Submit</button>
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
+  

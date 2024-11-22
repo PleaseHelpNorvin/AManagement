@@ -7,5 +7,6 @@ Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
 });
 
 Broadcast::channel('private-channel.user.{id}', function ($user, $id){
-    return $user->id == $id;
+    \Log::info('User accessing channel', ['user_id' => $user->id, 'channel_id' => $id]);
+    return (int) $user->id === (int) $id;
 });
