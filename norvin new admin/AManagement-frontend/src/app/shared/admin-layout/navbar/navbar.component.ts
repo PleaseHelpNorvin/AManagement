@@ -5,6 +5,7 @@ import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-navbar',
+  standalone: true,
   imports: [MatIcon,CommonModule,MatToolbarModule],
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css'],

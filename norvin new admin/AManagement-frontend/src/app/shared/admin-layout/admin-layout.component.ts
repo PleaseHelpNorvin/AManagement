@@ -7,6 +7,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 
 @Component({
   selector: 'app-admin-layout',
+  standalone: true,
   imports: [MatButtonModule, SidebarComponent, NavbarComponent, RouterModule, MatSidenavModule],
   templateUrl: './admin-layout.component.html',
   styleUrls: ['./admin-layout.component.css']

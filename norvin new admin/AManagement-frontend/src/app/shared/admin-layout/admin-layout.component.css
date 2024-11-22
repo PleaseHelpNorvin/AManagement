@@ -145,11 +145,12 @@
       .main-content {
         margin-left: 0px; /* Add margin for sidebar */
       }
-      
-      /* .admin-layout .sidebar-shown{
-        width: 250px;
-      } */
-      
+      .sidebar-shown app-sidebar {
+        transform: translateX(0); /* Slide in */
+      }
+      .sidebar-shown .main-content {
+        margin-left: 250px;
+      }
   }
   
 

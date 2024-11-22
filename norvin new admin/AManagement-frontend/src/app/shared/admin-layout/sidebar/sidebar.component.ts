@@ -4,6 +4,7 @@ import { MatListModule } from '@angular/material/list';
 
 @Component({
   selector: 'app-sidebar',
+  standalone:true,
   imports: [MatListModule, MatIconModule],
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.css'],  // Use styleUrls, not styleUrl
