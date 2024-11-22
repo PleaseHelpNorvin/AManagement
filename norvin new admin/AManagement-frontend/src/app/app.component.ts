@@ -6,6 +6,7 @@ import { AdminLayoutComponent } from "./shared/admin-layout/admin-layout.compone
 
 @Component({
   selector: 'app-root',
+  standalone: true,
   imports: [ MatButtonModule, AdminLayoutComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'

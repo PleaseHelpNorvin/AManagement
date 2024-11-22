@@ -4,11 +4,12 @@ import { SidebarComponent } from './sidebar/sidebar.component';
 import { RouterModule } from '@angular/router';  
 import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
 
 @Component({
   selector: 'app-admin-layout',
   standalone: true,
-  imports: [MatButtonModule, SidebarComponent, NavbarComponent, RouterModule, MatSidenavModule],
+  imports: [MatButtonModule, BreadcrumbComponent, SidebarComponent, NavbarComponent, RouterModule, MatSidenavModule],
   templateUrl: './admin-layout.component.html',
   styleUrls: ['./admin-layout.component.css']
 })

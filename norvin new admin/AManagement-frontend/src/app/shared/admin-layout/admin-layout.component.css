@@ -1,11 +1,27 @@
-.router-div{
+.router-container{
   /* border: 1px solid black; */
-  background-color: white;
+  /* background-color: white; */
   border-radius: 5px;
   margin: 0px;
   padding: 0px;
 }
+.router-div{
+  background-color: white;
+}
+
 /* Style for the burger icon */
+.breadcrumb-container{
+  /* border: 1px solid black; */
+  border-radius: 5px;
+  background-color: white;
+  height: 30px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  padding: 5px;
+  color: #427186;
+}
+
 .burger-icon {
   display: none;
   }
@@ -167,7 +183,6 @@
   
     .main-content {
       margin-left: 0px;
-
     }
     
   }

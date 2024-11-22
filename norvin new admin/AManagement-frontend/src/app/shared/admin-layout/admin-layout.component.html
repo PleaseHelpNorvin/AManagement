@@ -13,11 +13,13 @@
       <app-sidebar></app-sidebar> <!-- Sidebar component -->
   
       <div class="main-content">
-        <div class="router-div">
+        <div class="router-container">
           <div class="breadcrumb-container">
-            
+            <app-breadcrumb></app-breadcrumb>
           </div>
-          <router-outlet></router-outlet> <!-- Main content that will be scrollable -->
+          <div class="router-div">
+            <router-outlet></router-outlet> <!-- Main content that will be scrollable -->
+          </div>
         </div>
       </div>
     </div>
