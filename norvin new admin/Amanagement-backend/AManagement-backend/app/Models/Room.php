@@ -2,22 +2,40 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Room extends Model
-{
-    //
-    protected $fillable = ['name', 'property_id', 'price', 'is_vacant'];
 
-    // A room belongs to a property
+
+class Room extends Model
+{ 
+    use HasFactory;
+
+    //
+    protected $fillable = [
+        'name',
+        'property_id',
+        'price',
+        'is_vacant',
+    ];
+
     public function property()
     {
-        return $this->belongsTo(Property::class, 'property_id');
+        return $this->belongsTo(Property::class);
     }
 
-    // A room can have many tenants (through rentals)
-    public function tenants()
+    public function tenant()
     {
-        return $this->belongsToMany(User::class, 'rentals', 'room_id', 'tenant_id');
+        return $this->hasMany(Tenant::class);
+    }
+
+    public function rentals()
+    {
+        return $this->hasMany(Rental::class);
+    }
+
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
     }
 }

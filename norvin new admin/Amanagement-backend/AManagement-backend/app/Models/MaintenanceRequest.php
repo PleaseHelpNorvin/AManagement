@@ -18,12 +18,11 @@ class MaintenanceRequest extends Model
     // A maintenance request belongs to a user (tenant)
     public function user()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class);
     }
 
-    // A maintenance request belongs to a property
     public function property()
     {
-        return $this->belongsTo(Property::class, 'property_id');
+        return $this->belongsTo(Property::class);
     }
 }

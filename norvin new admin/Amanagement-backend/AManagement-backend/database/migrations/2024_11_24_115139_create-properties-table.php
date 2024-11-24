@@ -16,6 +16,7 @@ return new class extends Migration
             $table->id();
             // $table->foreignId('user_id')->constrained()->onDelete('cascade'); // Adding user_id foreign key
             $table->string('unit_name'); // E.g., Unit A, Apartment 1B
+            $table->foreignId('admin_id')->constrained('users')->onDelete('cascade'); // Admin who manages the unit
             $table->boolean('is_vacant')->default(true); // Tracks vacancy
             $table->timestamps();
         });

@@ -14,10 +14,16 @@ class Notification extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id', 'type', 'data', 'is_read'
+        'user_id',
+        'type',
+        'data',
+        'is_read',
     ];
 
-    // Define relationship to User (Receiver)
+    protected $casts = [
+        'data' => 'array',
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);

@@ -54,36 +54,44 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'lease_start' => 'date',
+            'lease_end' => 'date',
         ];
     }
 
     //relations
     // A user can have many payments (if they are tenants)
-    public function payments()
+    public function properties()
     {
-        return $this->hasMany(Payment::class);
+        return $this->hasMany(Property::class, 'admin_id');
     }
 
-    // A user can have many maintenance requests
     public function maintenanceRequests()
     {
         return $this->hasMany(MaintenanceRequest::class);
     }
 
-    // A user can send and receive many messages
-    public function sentMessages()
+    public function messagesSent()
     {
         return $this->hasMany(Message::class, 'sender_id');
     }
 
-    public function receivedMessages()
+    public function messagesReceived()
     {
         return $this->hasMany(Message::class, 'receiver_id');
     }
 
-    // A user can have many notifications
     public function notifications()
     {
         return $this->hasMany(Notification::class);
+    }
+
+    public function tenant()
+    {
+        return $this->hasOne(Tenant::class);
+    }
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
     }
 }

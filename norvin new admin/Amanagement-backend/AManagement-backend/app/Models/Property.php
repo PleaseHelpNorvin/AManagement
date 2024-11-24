@@ -15,31 +15,24 @@ class Property extends Model
 
     //
     protected $fillable = [
-        'unit_name', 'is_vacant'
+        'unit_name',
+        'admin_id',
+        'is_vacant',
     ];
 
-       // A property has many rooms
-       public function rooms()
-       {
-           return $this->hasMany(Room::class);
-       }
-   
-       // A property has many tenants (through the rentals)
-       public function tenants()
-       {
-           return $this->belongsToMany(User::class, 'rentals');
-       }
-   
-       // A property can have many maintenance requests
-       public function maintenanceRequests()
-       {
-           return $this->hasMany(MaintenanceRequest::class);
-       }
-   
-       // A property can have many payments
-       public function payments()
-       {
-           return $this->hasMany(Payment::class);
-       }
+    public function admin()
+    {
+        return $this->belongsTo(User::class, 'admin_id');
+    }
+
+    public function rooms()
+    {
+        return $this->hasMany(Room::class);
+    }
+
+    public function maintenanceRequests()
+    {
+        return $this->hasMany(MaintenanceRequest::class);
+    }
 
 }
