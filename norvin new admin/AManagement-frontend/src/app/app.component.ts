@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-// import {}
+// import { AdminLayoutComponent } from './shared/admin-layout/admin-layout.component';
 import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [ MatButtonModule, RouterOutlet],
+  imports: [ RouterOutlet,MatButtonModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

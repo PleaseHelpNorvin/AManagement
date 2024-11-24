@@ -1,1 +1,38 @@
-<p>signin-page works!</p>
+<div class="container">
+  <div class="signin-container">
+    <h2 class="form-title">Sign In</h2>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input
+          id="email"
+          type="email"
+          class="form-control"
+          formControlName="email"
+          required
+          placeholder="Enter your email"
+        />
+        <div *ngIf="loginForm.controls['email'].invalid && loginForm.controls['email'].touched" class="text-danger">
+          Please enter a valid email.
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password:</label>
+        <input
+          id="password"
+          type="password"
+          class="form-control"
+          formControlName="password"
+          required
+          placeholder="Enter your password"
+        />
+        <div *ngIf="loginForm.controls['password'].invalid && loginForm.controls['password'].touched" class="text-danger">
+          Password is required.
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary" [disabled]="loginForm.invalid">Sign In</button>
+    </form>
+  </div>
+</div>

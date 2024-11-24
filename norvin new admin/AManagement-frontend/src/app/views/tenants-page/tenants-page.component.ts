@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-
+import { RouterModule } from '@angular/router';
 @Component({
   selector: 'app-tenants-page',
-  imports: [],
+  imports: [RouterModule],
   templateUrl: './tenants-page.component.html',
   styleUrl: './tenants-page.component.css'
 })
