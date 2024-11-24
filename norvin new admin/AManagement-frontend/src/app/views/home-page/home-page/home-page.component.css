@@ -1,0 +1,82 @@
+.page-wrapper {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    padding: 20px;
+    /* border: 1px solid black; */
+  }
+  
+  .chart-container {
+    /* border: 1px solid green; */
+    padding: 10px;
+    background: #f9f9f9;
+    border-radius: 8px;
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+  }
+  
+  canvas {
+    max-height: 100%;
+    max-width: 100%;
+  }
+  
+  .box {
+    background-color: rgb(237, 247, 252);
+    padding: 20px;
+    border-radius: 8px;
+    /* border: 1px solid #ccc; */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add shadow for floating effect */
+    /* transition: box-shadow 0.3s ease, transform 0.3s ease; Smooth animation */
+  }
+  /* .box:hover { */
+    /* box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); Stronger shadow on hover */
+    /* transform: translateY(-5px); Slight lift effect on hover */
+  /* } */
+  
+  .recent-activity,
+  .notifications-panel {
+    grid-column: span 2; /* These will span across the two columns */
+    /* border: 1px solid blue; */
+    padding: 20px;
+    background-color: rgb(237, 247, 252);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add shadow for floating effect */
+  /* transition: box-shadow 0.3s ease, transform 0.3s ease; Smooth animation */
+  }
+  
+  .recent-activity h3,
+  .notifications-panel h3 {
+    margin-bottom: 10px;
+  }
+  
+  .recent-activity ul,
+  .notifications-panel ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .recent-activity li,
+  .notifications-panel li {
+    margin-bottom: 5px;
+    padding: 10px;
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  /* .recent-activity:hover,
+.notifications-panel:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); Stronger shadow on hover */
+  /* transform: translateY(-5px); Slight lift effect on hover */
+/* } */
+
+@media (max-width: 700px){
+    .page-wrapper{
+        display: flex;
+        flex-direction: column;
+    }
+}

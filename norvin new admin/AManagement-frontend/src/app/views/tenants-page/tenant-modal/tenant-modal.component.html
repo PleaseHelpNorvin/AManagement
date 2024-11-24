@@ -1,0 +1,26 @@
+<!-- <h2>{{ tenant.name }}'s Profile</h2>
+<p><strong>Phone:</strong> {{ tenant.phone }}</p>
+<p><strong>Email:</strong> {{ tenant.email }}</p>
+<p><strong>Lease Start Date:</strong> {{ tenant.leaseStartDate }}</p>
+<p><strong>Lease End Date:</strong> {{ tenant.leaseEndDate }}</p>
+
+<h4>Payment History</h4>
+<table mat-table [dataSource]="tenant.paymentHistory">
+  <ng-container matColumnDef="date">
+    <th mat-header-cell *matHeaderCellDef>Date</th>
+    <td mat-cell *matCellDef="let payment">{{ payment.date }}</td>
+  </ng-container>
+  <ng-container matColumnDef="amount">
+    <th mat-header-cell *matHeaderCellDef>Amount</th>
+    <td mat-cell *matCellDef="let payment">{{ payment.amount }}</td>
+  </ng-container>
+  <tr mat-header-row *matHeaderRowDef="['date', 'amount']"></tr>
+  <tr mat-row *matRowDef="let row; columns: ['date', 'amount']"></tr>
+</table>
+
+<h4>Maintenance Requests</h4>
+<ul>
+  <li *ngFor="let request of tenant.maintenanceRequests">{{ request.description }} - Status: {{ request.status }}</li>
+</ul>
+
+<button mat-button (click)="close()">Close</button> -->

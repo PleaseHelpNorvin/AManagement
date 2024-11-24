@@ -1,2 +1,49 @@
-<p>tenants-page works!</p>
-<li><a [routerLink]="'/admin/chat'"><span class="material-icons">chat</span> Chat</a></li>
+<!-- <div class="tenant-page-container">
+    <div class="search-bar">
+      <mat-form-field appearance="fill">
+        <mat-label>Search Tenants</mat-label>
+        <input matInput [(ngModel)]="searchQuery" placeholder="Search by Name, Apartment, or Payment Status">
+      </mat-form-field>
+    </div>
+  
+    <table mat-table [dataSource]="filteredTenants" class="mat-elevation-z8">
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Name</th>
+        <td mat-cell *matCellDef="let tenant">{{ tenant.name }}</td>
+      </ng-container>
+  
+      <ng-container matColumnDef="apartment">
+        <th mat-header-cell *matHeaderCellDef>Apartment</th>
+        <td mat-cell *matCellDef="let tenant">{{ tenant.apartment }}</td>
+      </ng-container>
+  
+      <ng-container matColumnDef="dueDate">
+        <th mat-header-cell *matHeaderCellDef>Due Date</th>
+        <td mat-cell *matCellDef="let tenant">{{ tenant.dueDate }}</td>
+      </ng-container>
+  
+      <ng-container matColumnDef="lastPayment">
+        <th mat-header-cell *matHeaderCellDef>Last Payment</th>
+        <td mat-cell *matCellDef="let tenant">{{ tenant.lastPayment }}</td>
+      </ng-container>
+  
+      <ng-container matColumnDef="paymentStatus">
+        <th mat-header-cell *matHeaderCellDef>Payment Status</th>
+        <td mat-cell *matCellDef="let tenant">{{ tenant.paymentStatus }}</td>
+      </ng-container>
+  
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Actions</th>
+        <td mat-cell *matCellDef="let tenant">
+          <button mat-button (click)="viewDetails(tenant)">View Details</button>
+          <button mat-button (click)="sendMessage(tenant)">Send Message</button>
+          <button mat-button (click)="updateDetails(tenant)">Update Details</button>
+          <button mat-button (click)="generateReminder(tenant)">Generate Payment Reminder</button>
+        </td>
+      </ng-container>
+  
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
+   -->

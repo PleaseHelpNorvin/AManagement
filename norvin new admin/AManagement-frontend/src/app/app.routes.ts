@@ -6,6 +6,7 @@ import { TenantsPageComponent } from './views/tenants-page/tenants-page.componen
 import { ChatPageComponent } from './views/chat-page/chat-page.component';
 import { PaymentPageComponent } from './views/payment-page/payment-page.component';
 import { MaintenancePageComponent } from './views/maintenance-page/maintenance-page.component';
+import { SettingsPageComponent } from './views/settings-page/settings-page.component';
 
 import { AuthGuard } from './core/guard/auth.guard';
 
@@ -40,15 +41,21 @@ export const routes: Routes = [
         data: { breadcrumb: 'Payment' }
       },
       {
-        path: 'maintentance',
+        path: 'maintenance',
         component: MaintenancePageComponent,
-        data: { breadcrumb: 'maintenance'},
+        data: { breadcrumb: 'Maintenance Requests'},
       },
       {
         path: 'chat',
-        component: MaintenancePageComponent,
-        data: { breadcrumb: 'messages'},
+        component: ChatPageComponent,
+        data: { breadcrumb: 'Messages'},
+      },
+      {
+        path: 'settings',
+        component: SettingsPageComponent,
+        data: { breadcrumb: 'Settings'},
       }
+      
     ],
     canActivate: [AuthGuard],  // Protect admin routes
   }
