@@ -1,0 +1,45 @@
+<div *ngIf="tenant">
+    <h2>Tenant Details for {{ tenant.name }}</h2>
+    <p><strong>Apartment:</strong> {{ tenant.apartment }}</p>
+    <p><strong>Due Date:</strong> {{ tenant.dueDate }}</p>
+    <p><strong>Last Payment:</strong> {{ tenant.lastPayment }}</p>
+    <p><strong>Payment Status:</strong> {{ tenant.paymentStatus }}</p>
+    <p><strong>Phone:</strong> {{ tenant.phone }}</p>
+    <p><strong>Email:</strong> {{ tenant.email }}</p>
+    <!-- Add more details as necessary -->
+</div>
+<div>
+  <!-- Payment History Table -->
+  <h3>Payment History</h3>
+  <table border="1">
+      <thead>
+          <tr>
+              <th>Date</th>
+              <th>Amount</th>
+          </tr>
+      </thead>
+      <tbody>
+          <tr *ngFor="let payment of tenant?.paymentHistory">
+              <td>{{ payment.date }}</td>
+              <td>{{ payment.amount }}</td>
+          </tr>
+      </tbody>
+  </table>
+
+  <!-- Maintenance Requests Table -->
+  <h3>Maintenance Requests</h3>
+  <table border="1">
+      <thead>
+          <tr>
+              <th>Description</th>
+              <th>Status</th>
+          </tr>
+      </thead>
+      <tbody>
+          <tr *ngFor="let request of tenant?.maintenanceRequests">
+              <td>{{ request.description }}</td>
+              <td>{{ request.status }}</td>
+          </tr>
+      </tbody>
+  </table>
+</div>

@@ -1,49 +1,67 @@
-<!-- <div class="tenant-page-container">
-    <div class="search-bar">
-      <mat-form-field appearance="fill">
-        <mat-label>Search Tenants</mat-label>
-        <input matInput [(ngModel)]="searchQuery" placeholder="Search by Name, Apartment, or Payment Status">
-      </mat-form-field>
+<div class="page-wrapper">
+    <div class="box">
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+  
+            <!-- ID Column -->
+            <ng-container matColumnDef="id">
+              <th mat-header-cell *matHeaderCellDef> ID </th>
+              <td mat-cell *matCellDef="let element" [attr.data-label]="'ID'"> {{element.id}} </td>
+            </ng-container>
+          
+            <!-- Name Column -->
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef> Name </th>
+              <td mat-cell *matCellDef="let element" [attr.data-label]="'Name'"> {{element.name}} </td>
+            </ng-container>
+          
+            <!-- Apartment Column -->
+            <ng-container matColumnDef="apartment">
+              <th mat-header-cell *matHeaderCellDef> Apartment/Unit </th>
+              <td mat-cell *matCellDef="let element" [attr.data-label]="'Apartment/Unit'"> {{element.apartment}} </td>
+            </ng-container>
+          
+            <!-- Due Date Column -->
+            <ng-container matColumnDef="dueDate">
+              <th mat-header-cell *matHeaderCellDef> Due Date </th>
+              <td mat-cell *matCellDef="let element" [attr.data-label]="'Due Date'"> {{element.dueDate}} </td>
+            </ng-container>
+          
+            <!-- Last Payment Column -->
+            <ng-container matColumnDef="lastPayment">
+              <th mat-header-cell *matHeaderCellDef> Last Payment </th>
+              <td mat-cell *matCellDef="let element" [attr.data-label]="'Last Payment'"> {{element.lastPayment}} </td>
+            </ng-container>
+          
+            <!-- Payment Status Column -->
+            <ng-container matColumnDef="paymentStatus">
+              <th mat-header-cell *matHeaderCellDef> Payment Status </th>
+              <td mat-cell *matCellDef="let element" [attr.data-label]="'Payment Status'"> {{element.paymentStatus}} </td>
+            </ng-container>
+
+            <!-- Actions Column -->
+            <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef> Actions </th>
+                <td mat-cell *matCellDef="let element" [attr.data-label]="'Actions'">
+                    <button mat-mini-fab color="primary" aria-label="View tenant" (click)="viewTenant(element)">
+                        <mat-icon>visibility</mat-icon>
+                    </button>
+                    <button mat-mini-fab color="accent" aria-label="Edit tenant" (click)="editTenant(element)">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                    <button mat-mini-fab color="warn" aria-label="Payment-reminder" (click)="generatePaymentReminder(element)">
+                        <mat-icon>warning</mat-icon>
+                    </button>
+                    <button mat-mini-fab color="warn" aria-label="Delete tenant" (click)="deleteTenant(element)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </td>
+            </ng-container>
+          
+            <!-- Header Row -->
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <!-- Data Row -->
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+              
     </div>
-  
-    <table mat-table [dataSource]="filteredTenants" class="mat-elevation-z8">
-      <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef>Name</th>
-        <td mat-cell *matCellDef="let tenant">{{ tenant.name }}</td>
-      </ng-container>
-  
-      <ng-container matColumnDef="apartment">
-        <th mat-header-cell *matHeaderCellDef>Apartment</th>
-        <td mat-cell *matCellDef="let tenant">{{ tenant.apartment }}</td>
-      </ng-container>
-  
-      <ng-container matColumnDef="dueDate">
-        <th mat-header-cell *matHeaderCellDef>Due Date</th>
-        <td mat-cell *matCellDef="let tenant">{{ tenant.dueDate }}</td>
-      </ng-container>
-  
-      <ng-container matColumnDef="lastPayment">
-        <th mat-header-cell *matHeaderCellDef>Last Payment</th>
-        <td mat-cell *matCellDef="let tenant">{{ tenant.lastPayment }}</td>
-      </ng-container>
-  
-      <ng-container matColumnDef="paymentStatus">
-        <th mat-header-cell *matHeaderCellDef>Payment Status</th>
-        <td mat-cell *matCellDef="let tenant">{{ tenant.paymentStatus }}</td>
-      </ng-container>
-  
-      <ng-container matColumnDef="actions">
-        <th mat-header-cell *matHeaderCellDef>Actions</th>
-        <td mat-cell *matCellDef="let tenant">
-          <button mat-button (click)="viewDetails(tenant)">View Details</button>
-          <button mat-button (click)="sendMessage(tenant)">Send Message</button>
-          <button mat-button (click)="updateDetails(tenant)">Update Details</button>
-          <button mat-button (click)="generateReminder(tenant)">Generate Payment Reminder</button>
-        </td>
-      </ng-container>
-  
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    </table>
-  </div>
-   -->
+</div>

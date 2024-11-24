@@ -7,7 +7,8 @@ import { ChatPageComponent } from './views/chat-page/chat-page.component';
 import { PaymentPageComponent } from './views/payment-page/payment-page.component';
 import { MaintenancePageComponent } from './views/maintenance-page/maintenance-page.component';
 import { SettingsPageComponent } from './views/settings-page/settings-page.component';
-
+import { TenantsDetailsComponent } from './views/tenants-page/tenants-details/tenants-details.component';
+import { TenantsEditComponent } from './views/tenants-page/tenants-edit/tenants-edit.component';
 import { AuthGuard } from './core/guard/auth.guard';
 
 export const routes: Routes = [
@@ -29,6 +30,16 @@ export const routes: Routes = [
         path: 'tenants',
         component: TenantsPageComponent,
         data: { breadcrumb: 'Tenants' }
+      }, 
+      {
+        path: 'tenants/:id',  // This is the child route for tenant details
+        component: TenantsDetailsComponent,
+        data: { breadcrumb: 'Tenant Details' }
+      },
+      {
+        path: 'tenants-edit/:id',
+        component: TenantsEditComponent,
+        data: { breadcrumb: 'Tenant Edit'}
       },
       {
         path: 'chat',

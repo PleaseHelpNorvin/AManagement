@@ -1,15 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { MatDialog,MatDialogModule  } from '@angular/material/dialog';
+import { Router } from '@angular/router';
+
 import { CommonModule } from '@angular/common';
-import { TenantModalComponent } from './tenant-modal/tenant-modal.component';  // Import the TenantModalComponent
+import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
-import { MatInputModule } from '@angular/material/input';  // Import MatInputModule
-import { MatTableModule } from '@angular/material/table';  // Import MatTableModule
-import { MatFormFieldModule } from '@angular/material/form-field';  // Import MatFormFieldModule
-import { FormsModule } from '@angular/forms';  // Import FormsModule for ngModel
+import { MatIconModule } from '@angular/material/icon';
 
 interface Tenant {
+  id: number;
   name: string;
   apartment: string;
   dueDate: string;
@@ -29,75 +28,112 @@ interface Tenant {
   imports: [
     RouterModule,
     CommonModule,
-    MatDialogModule,
-    MatButtonModule,
-    MatInputModule,
     MatTableModule,
-    MatFormFieldModule,
-    // TenantModalComponent,
-    FormsModule  // Add FormsModule here
+    MatIconModule,
+    MatButtonModule
   ],
   templateUrl: './tenants-page.component.html',
   styleUrls: ['./tenants-page.component.css']
 })
-export class TenantsPageComponent {
-  // displayedColumns: string[] = ['name', 'apartment', 'dueDate', 'lastPayment', 'paymentStatus', 'actions'];
-  // tenants: Tenant[] = [
-  //   {
-  //     name: 'John Doe',
-  //     apartment: '101',
-  //     dueDate: '2024-12-01',
-  //     lastPayment: '2024-11-01',
-  //     paymentStatus: 'Paid',
-  //     phone: '123-456-7890',
-  //     email: 'john.doe@example.com',
-  //     leaseStartDate: '2024-01-01',
-  //     leaseEndDate: '2025-01-01',
-  //     paymentHistory: [
-  //       { date: '2024-11-01', amount: '$1000' },
-  //       { date: '2024-10-01', amount: '$1000' }
-  //     ],
-  //     maintenanceRequests: [
-  //       { description: 'Plumbing issue', status: 'Closed' },
-  //       { description: 'AC repair', status: 'Open' }
-  //     ]
-  //   },
-  //   // Add more tenant data here...
-  // ];
+export class TenantsPageComponent implements OnInit {
+  tenant: Tenant | undefined;
+  isSmallScreen: boolean = false;
+  public displayedColumns: string[] = ['id', 'name', 'apartment', 'dueDate', 'lastPayment', 'paymentStatus', 'actions'];
+  // public dataSource = [];
+  public dataSource: Tenant[] = [];
 
-  // searchQuery: string = '';
+  constructor(private router: Router){}
 
-  // constructor(public dialog: MatDialog) {}
+  onResize(event: any) {
+    this.isSmallScreen = event.target.innerWidth <= 600;
+  }
+  
+  //mock tenants ill change the api to this format 
+    tenants: Tenant[] = [
+      {
+        id: 1,
+        name: 'John Doe',
+        apartment: '101',
+        dueDate: '2024-12-01',
+        lastPayment: '2024-11-01',
+        paymentStatus: 'Paid',
+        phone: '123-456-7890',
+        email: 'john.doe@example.com',
+        leaseStartDate: '2024-01-01',
+        leaseEndDate: '2025-01-01',
+        paymentHistory: [
+          { date: '2024-11-01', amount: '$1000' },
+          { date: '2024-10-01', amount: '$1000' }
+        ],
+        maintenanceRequests: [
+          { description: 'Plumbing issue', status: 'Closed' },
+          { description: 'AC repair', status: 'Open' }
+        ]
+      },
+      {
+        id: 2,
+        name: 'Jane Smith',
+        apartment: '102',
+        dueDate: '2024-12-05',
+        lastPayment: '2024-11-05',
+        paymentStatus: 'Pending',
+        phone: '987-654-3210',
+        email: 'jane.smith@example.com',
+        leaseStartDate: '2024-02-01',
+        leaseEndDate: '2025-02-01',
+        paymentHistory: [
+          { date: '2024-11-05', amount: '$1200' },
+          { date: '2024-10-05', amount: '$1200' }
+        ],
+        maintenanceRequests: [
+          { description: 'Electrical issue', status: 'Open' },
+          { description: 'Water leak', status: 'Closed' }
+        ]
+      }
+      // Add more tenants as needed...
+    ];
 
-  // // Filter tenants based on search query
-  // get filteredTenants() {
-  //   return this.tenants.filter(tenant =>
-  //     tenant.name.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
-  //     tenant.apartment.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
-  //     tenant.paymentStatus.toLowerCase().includes(this.searchQuery.toLowerCase())
-  //   );
-  // }
+  ngOnInit(): void {
+    // Call the static method to set the tenant data
+   
+    this.getTenants();
+  }
 
-  // // Open the Tenant Modal with the tenant details
-  // viewDetails(tenant: Tenant) {
-  //   console.log('Tenant data:', tenant);
-  //   this.dialog.open(TenantModalComponent, {
-  //     data: tenant // Pass the tenant data to the modal
-  //   });
-  // }
+  // Static method to get tenant data (replacing API call)
+  getTenants(): void {
+    // Simulate an API call (commented out)
+    // this.httpClient.get<Tenant[]>('API_ENDPOINT').subscribe(
+    //   (response) => {
+    //     this.dataSource = response;
+    //     console.log('Data fetched from API:', response);
+    //   },
+    //   (error) => {
+    //     console.error('Error fetching data:', error);
+    //   }
+    // );
 
-  // sendMessage(tenant: Tenant) {
-  //   console.log('Send message to', tenant);
-  //   // Open a chat or messaging component
-  // }
+    // Static method for now (using mock data)
+    console.log('Static tenant data:', this.tenants);
+    this.dataSource = this.tenants;  // Assigning mock tenant data
+    console.log('Assigned dataSource:', this.dataSource);
+  }
+  viewTenant(tenant: Tenant): void {
+    console.log('view tenant:', tenant);
+    this.router.navigate(['admin/tenants/', tenant.id]);
 
-  // updateDetails(tenant: Tenant) {
-  //   console.log('Update details for', tenant);
-  //   // Logic to open update form/modal
-  // }
+  }
+  editTenant(tenant: Tenant): void {
+    console.log('Edit tenant:', tenant);
+    this.router.navigate(['admin/tenants-edit/', tenant.id]);
 
-  // generateReminder(tenant: Tenant) {
-  //   console.log('Generate payment reminder for', tenant);
-  //   // Logic to send reminder to the tenant
-  // }
+    // Implement edit logic here (e.g., navigate to a form or open a modal)
+  }
+  generatePaymentReminder(tenant: Tenant): void {
+    console.log('generatepayment remindder', tenant);
+  }
+  deleteTenant(tenant: Tenant): void {
+    console.log('Delete tenant:', tenant);
+    // Implement delete logic here (e.g., API call to delete tenant)
+    this.dataSource = this.dataSource.filter(t => t.id !== tenant.id);
+  }
 }
