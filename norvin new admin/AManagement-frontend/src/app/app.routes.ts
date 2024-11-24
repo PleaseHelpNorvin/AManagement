@@ -44,7 +44,7 @@ export const routes: Routes = [
       {
         path: 'chat',
         component: ChatPageComponent,
-        data: { breadcrumb: 'Chat' }
+        data: { breadcrumb: 'Messages' }
       },
       {
         path: 'payment',
@@ -55,11 +55,6 @@ export const routes: Routes = [
         path: 'maintenance',
         component: MaintenancePageComponent,
         data: { breadcrumb: 'Maintenance Requests'},
-      },
-      {
-        path: 'chat',
-        component: ChatPageComponent,
-        data: { breadcrumb: 'Messages'},
       },
       {
         path: 'settings',

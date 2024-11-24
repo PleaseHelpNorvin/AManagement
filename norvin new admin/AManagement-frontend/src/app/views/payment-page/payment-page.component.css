@@ -1,0 +1,29 @@
+.page-wrapper{
+    border: 1px solid black;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
+.payment-status-overview{
+    border: 1px solid black;
+    /* display: flex; */
+}
+.status-cards{
+    display: flex;
+    border: 1px solid black;
+}
+.card{
+    border: 1px solid red;
+}
+.filters{
+    border: 1px solid black;
+}
+.fliter-button{
+    border: 1px solid black;
+}
+.payment-history{
+    border: 1px solid black;
+}
+.payment-report{
+    border: 1px solid black;
+}

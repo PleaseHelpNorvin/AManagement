@@ -1,1 +1,51 @@
-<p>payment-page works!</p>
+<div class="page-wrapper">
+    <div class="payment-status-overview">
+        <h2>Payment Status Overview</h2>
+        <div class="status-cards">
+            <div class="card">Paid: {{ paidCount }}</div>
+            <div class="card">Pending: {{ pendingCount }}</div>
+            <div class="card">Overdue: {{ overdueCount }}</div>
+        </div>
+    </div>
+    <div class="filters">
+        <h3>Filters</h3>
+        <button class="fliter-button" (click)="filterPayments('all')">All</button>
+        <button class="fliter-button" (click)="filterPayments('paid')">Paid</button>
+        <button class="fliter-button" (click)="filterPayments('pending')">Pending</button>
+        <button class="fliter-button" (click)="filterPayments('overdue')">Overdue</button>
+    </div>
+    <div class="payment-history">
+        <h3>Payment History</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Tenant Name</th>
+              <th>Amount Paid</th>
+              <th>Date</th>
+              <th>Payment Method</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let payment of filteredPayments">
+              <td>{{ payment.tenantName }}</td>
+              <td>{{ payment.amountPaid }}</td>
+              <td>{{ payment.date | date }}</td>
+              <td>{{ payment.paymentMethod }}</td>
+            </tr>
+          </tbody>
+        </table>
+    </div>
+       
+    <div class="payment-report">
+        <h3>Payment Report</h3>
+        <label for="startDate">Start Date:</label>
+        <input id="startDate" type="date" [(ngModel)]="startDate" />
+        <label for="endDate">End Date:</label>
+        <input id="endDate" type="date" [(ngModel)]="endDate" />
+        <button (click)="generateReport()">Generate Report</button>
+    </div>
+    <div class="payment-reminder">
+        <h3>Payment Reminder</h3>
+        <button (click)="sendReminders()">Send Reminders for Overdue</button>
+    </div>
+</div>
