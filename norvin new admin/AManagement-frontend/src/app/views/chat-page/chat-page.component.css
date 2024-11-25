@@ -1,0 +1,167 @@
+.container {
+    height: 100%; /* Ensure container fills available height */
+    display: flex; /* Flexbox for child arrangement */
+    flex-direction: row; /* Keep horizontal layout inside the container */
+    width: 100%; /* Ensure the container fills the row */
+}
+
+.burger-menu {
+    display: none;
+    cursor: pointer;
+    /* // border:  1px solid black; */
+
+}
+  
+.box {
+    border: 1px solid violet;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+  
+  .container .box:first-child {
+    width: 30%; 
+  }
+  
+  .container .box:nth-child(2) {
+    width: 70%; /* Second box takes up 70% of the width */
+  }
+  
+  .header-container {
+    padding-bottom: 10px; /* Space between header and body */
+  }
+  
+  .row {
+    border: 1px solid black;
+    display: flex;
+    flex-grow: 1; /* Ensure this fills the container */
+    height: calc(100vh - 150px); /* Full viewport height */
+    flex-direction: row; /* Horizontal layout for child elements */
+}
+  
+  .body-container {
+    border: 1px solid black;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow-y: auto; /* Enable vertical scrolling */
+    overflow-x: hidden; /* Hide horizontal scrollbar */
+    flex-grow: 1; /* Allow it to fill the available space */
+    max-height: 100%; /* Ensure height adjusts as per available space */
+    padding-right: 15px; /* Optional: Space for scrollbar */
+  }
+  
+  .inner-box {
+    border: 1px solid green; /* Border around inner boxes */
+    width: 100%; /* Each inner box takes the full width */
+    box-sizing: border-box;
+  }
+  
+  /* Style for the chat box and form */
+  .chat-form {
+    border: 1px solid blue;
+    height: 5%;
+    display: flex;
+  }
+  .chat-form form {
+    /* background-color: pink; */
+    height: 100%;
+    flex-grow: 1;
+  }
+  .chat-form form input{
+    background-color: aqua;
+    border: none;
+    flex-grow: 1;
+    /* width: 90%; */
+  }
+  .chat-form form button{
+    /* // border: none; */
+    width: 100px;
+  }
+  .chat-form form input, button{
+    margin: 0;
+    height: 100%;
+  }
+
+  .chat-box {
+        border: 1px solid red;
+        height: 90%;
+        display: flex;
+        flex-direction: column-reverse; /* Enable vertical scrolling */
+        padding-bottom: 10px;
+    }
+    .chat-box-header{
+        border: 1px dotted rebeccapurple;
+    }
+
+    .chat-box-container{
+        /* //... */
+        /* // max-height: 660px; */
+        flex-grow: 1;
+        max-height: 100%;
+        overflow-y: auto;
+        /* // gap: 5px; */
+        border: 1px solid black;
+    }
+
+  .message{
+    border: 1px solid green;
+  }
+  .my-message{
+    border: 1px solid blue;
+    text-align: end;
+  }
+  
+@media (max-width: 600px) {
+    .burger-menu {
+        display: block; /* Display burger menu on smaller screens */
+        }
+    .container .box:first-child {
+        display: none; /* Hide the sidebar on smaller devices */
+        float: left; /* Make the first box float to the left */
+        width: 100%; /* Adjust width as needed */
+        /* // margin-right: 10px;  */
+    }
+    .container .box:nth-child(2) {
+        width: 100%; /* Second box takes up 100% on medium screens */
+        
+    }
+    .container.sidebar-visible .box:first-child {
+        display: flex; /* Show the sidebar when toggled */
+    }
+    .chat-box{
+        padding: 10px;
+        height: 85%;
+    }
+}
+
+@media (min-width: 601px) and (max-width: 1035px) {
+    .container .box:nth-child(2) {
+        width: 100%; /* Second box takes up 100% on medium screens */
+    }
+    .container .box:first-child {
+        display: none; /* Hide the sidebar on smaller devices */
+        float: left; /* Make the first box float to the left */
+        width: 100%; /* Adjust width as needed */
+        /* // margin-right: 10px;  */
+    }
+    .container.sidebar-visible .box:first-child {
+        display: flex; /* Show the sidebar when toggled */
+    }
+    .burger-menu {
+        display: block; /* Hide burger menu on medium screens */
+    }
+    .chat-box{
+        padding: 10px;
+        height: 85%;
+    }
+}
+
+@media (min-width: 1025px) {
+    .burger-menu {
+        display: none; /* Keep burger menu hidden on larger screens */
+    }
+
+}
+  
