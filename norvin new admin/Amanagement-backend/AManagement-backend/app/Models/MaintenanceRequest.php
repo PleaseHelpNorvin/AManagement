@@ -28,8 +28,8 @@ class MaintenanceRequest extends Model
         return $this->belongsTo(Property::class);
     }
 
-    // public function tenant()
-    // {
-    //     return $this->belongsTo(Tenant::class); // Corrected the method name to tenant
-    // }
+    public function tenant()
+    {
+        return $this->belongsTo(Tenant::class); // Corrected the method name to tenant
+    }
 }

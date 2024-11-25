@@ -42,6 +42,11 @@ Route::prefix('admin')->middleware('auth:sanctum')->group(function () {
     Route::get('tenants/{id}', [TenantsController::class, 'show']);
     Route::put('tenants/{id}', [TenantsController::class, 'update']);
 
+    //user
+    Route::get('user', [UserController::class, 'index']);
+    Route::get('user/{id}', [UserController::class, 'show']);
+    Route::put('user/{id}', [UserController::class, 'update']);
+
     // // Admin to Tenant Messaging (Admin chooses tenant)
     // Route::post('messages/{tenantId}', [MessageController::class, 'sendMessage']); // Admin sends messages to tenants
 

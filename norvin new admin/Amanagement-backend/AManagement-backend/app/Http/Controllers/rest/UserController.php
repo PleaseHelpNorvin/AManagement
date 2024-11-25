@@ -18,7 +18,7 @@ class UserController extends ApiController
     public function index(Request $request)
     {
         // Retrieve all users with the 'tenant' role
-        $tenants = User::where('role', 'tenant')->get();
+        $tenants = User::where('role', 'tenant')->count();
     
         // Use the custom success response from ApiController
         return $this->successResponse($tenants, 'Tenants retrieved successfully');

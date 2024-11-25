@@ -16,6 +16,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade'); // Tenant ID
             $table->foreignId('property_id')->constrained()->onDelete('cascade'); // Unit ID
+            $table->foreignId('tenant_id')->constrained()->onDelete('cascade');
             $table->string('title'); // Request title
             $table->text('description'); // Detailed description
             $table->enum('status', ['open', 'closed'])->default('open'); // Request status
