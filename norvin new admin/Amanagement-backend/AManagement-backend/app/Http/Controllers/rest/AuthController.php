@@ -1,8 +1,10 @@
 <?php
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\rest;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Controllers\ApiController; 
+
 use Illuminate\Http\Request;
 use App\Models\User;
 

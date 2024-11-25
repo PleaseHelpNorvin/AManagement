@@ -23,6 +23,15 @@ class PaymentSeeder extends Seeder
                 'amount' => 5000, // Example payment amount
                 'status' => 'paid',
                 'due_date' => now()->addMonth(),
+                // 'payments' => '2024-12-25'
+            ]);
+            Payment::create([
+                'tenant_id' => $tenant->id,
+                'room_id' => $tenant->room_id,
+                'amount' => 5000, // Example payment amount
+                'status' => 'paid',
+                'due_date' => now()->addMonth(),
+                // 'payments' => '2024-12-25'
             ]);
         });
     }

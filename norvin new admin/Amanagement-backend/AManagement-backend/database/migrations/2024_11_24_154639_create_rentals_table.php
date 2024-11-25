@@ -19,6 +19,7 @@ return new class extends Migration
             $table->date('start_date'); // Rental start date
             $table->date('end_date'); // Rental end date
             $table->enum('status', ['active', 'terminated'])->default('active');
+            // $table->enum('payment_status', ['paid', 'pending','overdue'])->default('pending');
             $table->timestamps();
         });
     }

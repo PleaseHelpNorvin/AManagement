@@ -3,7 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\rest\AuthController;
-use App\Http\Controllers\rest\TenantController;
+use App\Http\Controllers\rest\TenantsController;
 use App\Http\Controllers\rest\MessageController;
 use App\Http\Controllers\rest\UserController;
 use App\Http\Controllers\rest\PaymentController;
@@ -22,7 +22,7 @@ Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:sanct
 
 Route::prefix('tenant')->middleware('auth:sanctum')->group(function () {
     // Tenant Profile
-    Route::get('profile', [TenantController::class, 'showProfile']);
+    // Route::get('profile', [TenantController::class, 'showProfile']);
 
     // Payment History
     // Route::get('payments', [TenantController::class, 'paymentHistory']);
@@ -38,9 +38,9 @@ Route::prefix('tenant')->middleware('auth:sanctum')->group(function () {
 
 Route::prefix('admin')->middleware('auth:sanctum')->group(function () {
     // Tenant Management
-    Route::get('tenants', [UserController::class, 'index']);
-    Route::get('tenants/{id}', [UserController::class, 'show']);
-    Route::put('tenants/{id}', [UserController::class, 'update']);
+    Route::get('tenants', [TenantsController::class, 'index']);
+    Route::get('tenants/{id}', [TenantsController::class, 'show']);
+    Route::put('tenants/{id}', [TenantsController::class, 'update']);
 
     // // Admin to Tenant Messaging (Admin chooses tenant)
     // Route::post('messages/{tenantId}', [MessageController::class, 'sendMessage']); // Admin sends messages to tenants

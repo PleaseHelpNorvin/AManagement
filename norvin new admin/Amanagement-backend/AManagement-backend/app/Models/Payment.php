@@ -20,6 +20,7 @@ class Payment extends Model
         'amount',
         'status',
         'due_date',
+        // 'payments_date'
     ];
 
     protected $casts = [

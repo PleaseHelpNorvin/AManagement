@@ -10,12 +10,15 @@ import { SettingsPageComponent } from './views/settings-page/settings-page.compo
 import { TenantsDetailsComponent } from './views/tenants-page/tenants-details/tenants-details.component';
 import { TenantsEditComponent } from './views/tenants-page/tenants-edit/tenants-edit.component';
 import { AuthGuard } from './core/guard/auth.guard';
+import { NoAuthGuard } from './core/guard/noauth.guard';
+
 
 export const routes: Routes = [
   {
     path: '', 
     component: SigninPageComponent,  // Independent SignIn page
-    data: { breadcrumb: 'Sign In' }
+    data: { breadcrumb: 'Sign In' },
+    canActivate: [NoAuthGuard],
   },
   {
     path: 'admin',  // Admin routes protected by AuthGuard

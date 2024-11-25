@@ -17,7 +17,7 @@
             <!-- Apartment Column -->
             <ng-container matColumnDef="apartment">
               <th mat-header-cell *matHeaderCellDef> Apartment/Unit </th>
-              <td mat-cell *matCellDef="let element" [attr.data-label]="'Apartment/Unit'"> {{element.apartment}} </td>
+              <td mat-cell *matCellDef="let element" [attr.data-label]="'Apartment/Unit'">{{element.property}} - {{element.apartment}} </td>
             </ng-container>
           
             <!-- Due Date Column -->

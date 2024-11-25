@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 
+
 class Rental extends Model
 {
     use HasFactory;
@@ -17,6 +18,7 @@ class Rental extends Model
         'start_date',
         'end_date',
         'status',
+        // 'payment_status'
     ];
 
     protected $casts = [

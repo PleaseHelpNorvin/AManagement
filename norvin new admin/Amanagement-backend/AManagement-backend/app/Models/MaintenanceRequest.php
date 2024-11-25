@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 use App\Models\User; // Importing User Model
 use App\Models\Property; // Importing Property Model
+use App\Models\Tenant;
+
 
 class MaintenanceRequest extends Model
 {
@@ -25,4 +27,9 @@ class MaintenanceRequest extends Model
     {
         return $this->belongsTo(Property::class);
     }
+
+    // public function tenant()
+    // {
+    //     return $this->belongsTo(Tenant::class); // Corrected the method name to tenant
+    // }
 }
