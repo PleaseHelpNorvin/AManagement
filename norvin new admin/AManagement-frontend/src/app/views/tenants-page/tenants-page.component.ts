@@ -51,8 +51,9 @@ export class TenantsPageComponent implements OnInit {
       (response) => {
         console.log('Data fetched from API:', response);
         this.dataSource = response.data.map((tenant: any) => ({
-          ...tenant,
-          apartment: tenant.apartment || 'N/A', // Handle null apartment
+          id: tenant.id,
+          name: tenant.name,
+          apartment: tenant.apartment || 'N/A',
           leaseStart: tenant.leaseStart,
           leaseEnd: tenant.leaseEnd,
           status: tenant.status,
