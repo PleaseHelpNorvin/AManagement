@@ -20,6 +20,8 @@ class TenantsController extends ApiController
         ->get()
         ->map(function ($user) {
             $tenant = $user->tenant; // Get the tenant for the user
+            $apartment = $tenant->room->property->unit_name;
+            // dd($testapartment);
             
             // Check if the tenant or room relationship is missing
             if (!$tenant || !$tenant->room) {
@@ -37,7 +39,7 @@ class TenantsController extends ApiController
                 return [
                     'id' => $user->id,
                     'name' => $user->name,
-                    'apartment' => $tenant->room->property_id, // Access room through tenant
+                    'apartment' => $tenant->room->property->unit_name, // Access room through tenant
                     'room' => $tenant->room->name, // Access room name through tenant
                     'leaseStart' => $tenant->start_date,
                     'leaseEnd' => $tenant->end_date,

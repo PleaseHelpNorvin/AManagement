@@ -10,6 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
 interface Tenant {
   id: number;
   name: string;
+  room: string;
   apartment: string | null; // Apartment can be null
   leaseStart: string;
   leaseEnd: string;
@@ -53,8 +54,9 @@ export class TenantsPageComponent implements OnInit {
         this.dataSource = response.data.map((tenant: any) => ({
           id: tenant.id,
           name: tenant.name,
+          room: tenant.room,
           apartment: tenant.apartment || 'N/A',
-          leaseStart: tenant.leaseStart,
+          leaseStart: tenant.leaseStart,  
           leaseEnd: tenant.leaseEnd,
           status: tenant.status,
         }));

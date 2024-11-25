@@ -2,6 +2,17 @@
     background-color: #1976d2;
     color: black; /* Set default text color to black */
 }
+
+button{
+  margin-right: 5px; /* Add spacing between buttons */
+}
+
+.action-buttons button:last-child {
+  margin-right: 0; /* Remove margin for the last button */
+}
+.mat-mdc-mini-fab{
+  background-color: var(--mdc-fab-small-container-color, var(--mat-sys-primary-container));
+}
 /* Apply styles for mobile devices (screen width < 600px) */
 @media screen and (max-width: 600px) {
 
