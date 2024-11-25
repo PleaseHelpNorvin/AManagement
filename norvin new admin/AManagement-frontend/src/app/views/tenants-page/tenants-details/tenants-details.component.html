@@ -1,11 +1,18 @@
-<div *ngIf="tenant">
-    <h2>Tenant Details for {{ tenant.name }}</h2>
-    <p><strong>Apartment:</strong> {{ tenant.apartment }}</p>
-    <p><strong>Due Date:</strong> {{ tenant.dueDate }}</p>
-    <p><strong>Last Payment:</strong> {{ tenant.lastPayment }}</p>
-    <p><strong>Payment Status:</strong> {{ tenant.paymentStatus }}</p>
-    <p><strong>Phone:</strong> {{ tenant.phone }}</p>
-    <p><strong>Email:</strong> {{ tenant.email }}</p>
+<div *ngIf="tenant" class="tenant-details-container" >
+    <div class="profile-container">
+        <div class="image-container">
+            <!-- <img [src]="imageUrl" [alt]="imageAlt" /> -->
+        </div>
+    </div>   
+    <div class="tenant-details">
+        <h2>Tenant Details for {{ tenant.name }}</h2>
+        <p><strong>Apartment:</strong> {{ tenant.apartment }}</p>
+        <p><strong>Due Date:</strong> {{ tenant.dueDate }}</p>
+        <p><strong>Last Payment:</strong> {{ tenant.lastPayment }}</p>
+        <p><strong>Payment Status:</strong> {{ tenant.paymentStatus }}</p>
+        <p><strong>Phone:</strong> {{ tenant.phone }}</p>
+        <p><strong>Email:</strong> {{ tenant.email }}</p>
+   </div>
     <!-- Add more details as necessary -->
 </div>
 <div>

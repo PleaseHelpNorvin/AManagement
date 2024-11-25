@@ -1,0 +1,19 @@
+.tenant-details-container{
+    border: 1px solid black;
+    display: flex;
+}
+.tenant-details, .profile-container{
+    flex-grow: 1;
+}
+.tenant-profile-container{
+    border: 1px soild black;
+}
+.image-container{
+    border: 1px solid black;
+    height: 100%;
+
+}
+.tenant-details{
+    border: 1px solid black;
+    padding-left: 10px;
+}
