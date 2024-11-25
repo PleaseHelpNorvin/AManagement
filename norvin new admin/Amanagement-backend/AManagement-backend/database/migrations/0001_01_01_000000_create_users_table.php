@@ -21,6 +21,7 @@ return new class extends Migration
             $table->enum('role', ['admin', 'tenant'])->default('tenant'); // Role differentiation
             $table->date('lease_start')->nullable(); // Lease info for tenants
             $table->date('lease_end')->nullable();
+            $table->enum('status', ['not_started','active', 'evicted'])->default('not_started');
             $table->rememberToken();
             $table->timestamps();
         });

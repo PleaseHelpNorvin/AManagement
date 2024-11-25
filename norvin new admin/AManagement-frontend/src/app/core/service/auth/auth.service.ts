@@ -36,7 +36,7 @@ export class AuthService {
     sessionStorage.setItem(this.tokenKey, token);
     console.log('Token saved in sessionStorage:', sessionStorage.getItem(this.tokenKey)); // Debugging log
 
-  }
+  } 
 
 
   // Get the static token (not using localStorage here)

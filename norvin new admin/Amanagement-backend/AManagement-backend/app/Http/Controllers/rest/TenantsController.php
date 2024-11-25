@@ -8,61 +8,48 @@ use Illuminate\Http\Request;
 //models
 use App\Models\Tenant;
 use App\Models\Room;
-
+use App\Models\User;
+use App\Models\Property;
 
 class TenantsController extends ApiController
 {
-    //
-    // get tenant no payment logic
-    // public function index()
-    // {
-    //     // Fetch tenants with the necessary relationships
-    //     $tenants = Tenant::with(['user', 'room', 'room.property', 'payments'])
-    //         ->get()
-    //         ->map(function ($tenant) {
-    //             // Format the data for the table view
-    //             return [
-    //                 'id' => $tenant->id,
-    //                 'name' => $tenant->user->name,
-    //                 'property' => $tenant->room->property->unit_name,
-    //                 'apartment' => $tenant->room->name,
-    //                 'dueDate' => $tenant->payments->last()->due_date ?? null, // Last payment due date
-    //                 'lastPayment' => $tenant->payments->last()->created_at ?? null, // Last payment date
-    //                 'paymentStatus' => $tenant->payments->last()->status ?? 'Pending', // Last payment status
-    //             ];
-    //         });
-
-    //     // Use successResponse from ApiController
-    //     return $this->successResponse($tenants);
-    // }
     public function index()
-    {
-        // Fetch tenants with the necessary relationships, including all payments
-        $tenants = Tenant::with(['user', 'room', 'room.property', 'payments'])
-            ->get()
-            ->map(function ($tenant) {
-                // Format the data for the table view, including all the necessary fields
-                return [
-                    'id' => $tenant->id,
-                    'name' => $tenant->user->name,
-                    'property' => $tenant->room->property->unit_name,
-                    'apartment' => $tenant->room->name,
-                    'payments' => $tenant->payments->map(function ($payment) {
-                        // Include all payment details, adjust based on the payment fields available
-                        return [
-                            'dueDate' => $payment->due_date,
-                            'createdAt' => $payment->created_at,
-                            'status' => $payment->status,
-                            'amount' => $payment->amount, // Adjust with actual payment field name
-                        ];
-                    }),
-                ];
-            });
-    
-        // Use successResponse from ApiController
-        return $this->successResponse($tenants);
-    }
+{
+    $tenants = User::with('tenant.room') // Eager load tenant, and then room
+        ->where('role', 'tenant')
+        ->get()
+        ->map(function ($user) {
+            $tenant = $user->tenant; // Get the tenant for the user
+            
+            // Check if the tenant or room relationship is missing
+            if (!$tenant || !$tenant->room) {
+                $user->status = 'no_room';
+            } else {
+                // Determine the tenant's status based on lease dates
+                if ($tenant->start_date > now()) {
+                    $user->status = 'not_started';
+                } elseif ($tenant->end_date < now()) {
+                    $user->status = 'evicted'; // Or 'inactive' depending on your use case
+                } else {
+                    $user->status = 'active';
+                }
 
+                return [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'apartment' => $tenant->room->property_id, // Access room through tenant
+                    'room' => $tenant->room->name, // Access room name through tenant
+                    'leaseStart' => $tenant->start_date,
+                    'leaseEnd' => $tenant->end_date,
+                    'status' => $user->status,
+                ];
+            }
+        });
+
+    return response()->json([
+        'data' => $tenants,
+    ]);
+}
 
     public function show($tenantId)
 {
@@ -86,6 +73,7 @@ class TenantsController extends ApiController
         'email' => $tenant->user->email,
         'leaseStartDate' => $tenant->user->lease_start,
         'leaseEndDate' => $tenant->user->lease_end,
+        'status' => $tenant->user->status,
         'paymentHistory' => $tenant->payments->map(function ($payment) {
             return [
                 'date' => $payment->due_date->format('Y-m-d'),

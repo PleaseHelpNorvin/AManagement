@@ -13,6 +13,7 @@ use App\Models\Property; // Importing Property Model
 use App\Models\Payment;  // Importing Payment Model
 use App\Models\MaintenanceRequest; // Importing MaintenanceRequest Model
 use App\Models\Message; // Importing Message Model
+use App\Models\Room;
 
 class User extends Authenticatable
 {
@@ -32,6 +33,7 @@ class User extends Authenticatable
         'role',           // This column was missing in your seeder, but you should add it here
         'lease_start',
         'lease_end',
+        'status'
     ];
 
     /**
@@ -94,4 +96,5 @@ class User extends Authenticatable
     {
         return $this->hasMany(Payment::class);
     }
+    
 }

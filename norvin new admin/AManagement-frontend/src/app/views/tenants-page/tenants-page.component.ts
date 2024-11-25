@@ -10,16 +10,10 @@ import { MatIconModule } from '@angular/material/icon';
 interface Tenant {
   id: number;
   name: string;
-  apartment: string;
-  dueDate: string;
-  lastPayment: string;
-  paymentStatus: string;
-  phone: string;
-  email: string;
-  leaseStartDate: string;
-  leaseEndDate: string;
-  paymentHistory: any[];
-  maintenanceRequests: any[];
+  apartment: string | null; // Apartment can be null
+  leaseStart: string;
+  leaseEnd: string;
+  status: string;
 }
 
 @Component({
@@ -37,7 +31,7 @@ interface Tenant {
 export class TenantsPageComponent implements OnInit {
   tenant: Tenant | undefined;
   isSmallScreen: boolean = false;
-  public displayedColumns: string[] = ['id', 'name', 'apartment', 'dueDate', 'lastPayment', 'paymentStatus', 'actions'];
+  public displayedColumns: string[] = ['id', 'name', 'apartment', 'leaseStart', 'leaseEnd', 'status', 'actions'];
   public dataSource: Tenant[] = []; // Array to hold tenant data
 
   constructor(private router: Router, private tenantsService: TenantsService) {}
@@ -56,7 +50,13 @@ export class TenantsPageComponent implements OnInit {
     this.tenantsService.getTenants().subscribe(
       (response) => {
         console.log('Data fetched from API:', response);
-        this.dataSource = response.data; // Assuming response structure has a 'data' property
+        this.dataSource = response.data.map((tenant: any) => ({
+          ...tenant,
+          apartment: tenant.apartment || 'N/A', // Handle null apartment
+          leaseStart: tenant.leaseStart,
+          leaseEnd: tenant.leaseEnd,
+          status: tenant.status,
+        }));
       },
       (error) => {
         console.error('Error fetching data:', error);
@@ -75,7 +75,7 @@ export class TenantsPageComponent implements OnInit {
   }
 
   generatePaymentReminder(tenant: Tenant): void {
-    console.log('generatepayment remindder', tenant);
+    console.log('generate payment reminder for', tenant);
   }
 
   deleteTenant(tenant: Tenant): void {
