@@ -32,7 +32,7 @@ interface Tenant {
 export class TenantsPageComponent implements OnInit {
   tenant: Tenant | undefined;
   isSmallScreen: boolean = false;
-  public displayedColumns: string[] = ['id', 'name', 'apartment', 'leaseStart', 'leaseEnd', 'status', 'actions'];
+  public displayedColumns: string[] = ['id','tenant_code', 'name', 'apartment','monthly_rent', 'leaseStart', 'leaseEnd', 'status', 'actions'];
   public dataSource: Tenant[] = []; // Array to hold tenant data
 
   constructor(private router: Router, private tenantsService: TenantsService) {}
@@ -52,10 +52,12 @@ export class TenantsPageComponent implements OnInit {
       (response) => {
         console.log('Data fetched from API:', response);
         this.dataSource = response.data.map((tenant: any) => ({
-          id: tenant.id,
+          id: tenant.tenant_id,
+          tenant_code: tenant.tenant_code,
           name: tenant.name,
           room: tenant.room,
           apartment: tenant.apartment || 'N/A',
+          monthly_rent: tenant.monthly_rent,
           leaseStart: tenant.leaseStart,  
           leaseEnd: tenant.leaseEnd,
           status: tenant.status,

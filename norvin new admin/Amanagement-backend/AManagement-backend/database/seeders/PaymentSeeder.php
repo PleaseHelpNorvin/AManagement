@@ -1,45 +1,51 @@
 <?php
-
+// database/seeders/PaymentSeeder.php
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\Tenant;
 use App\Models\Payment;
-
+use App\Models\Tenant;
+use Carbon\Carbon;
 
 class PaymentSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
-    public function run(): void
+    public function run()
     {
-        Tenant::all()->each(function ($tenant, $index) {
-            // Use the index to generate unique payment amounts
-            Payment::create([
-                'tenant_id' => $tenant->id,
-                'room_id' => $tenant->room_id,
-                'amount' => 5000 + ($index * 100), // Example: 5000, 5100, 5200...
-                'status' => 'pending',
-                'due_date' => now()->addMonth(),
-            ]);
+        // Get tenants (assuming tenants already exist)
+        $tenant1 = Tenant::find(1); // Tenant 1
+        $tenant2 = Tenant::find(2); // Tenant 2
 
-            Payment::create([
-                'tenant_id' => $tenant->id,
-                'room_id' => $tenant->room_id,
-                'amount' => 2300 + ($index * 50), // Example: 2300, 2350, 2400...
-                'status' => 'overdue',
-                'due_date' => now()->addMonths(2),
-            ]);
+        // Create payments for Tenant 1
+        Payment::create([
+            'tenant_id' => $tenant1->id, // Link to Tenant 1
+            'amount' => 500, // Payment amount
+            'status' => 'paid', // Payment status
+            'due_date' => Carbon::now()->addMonth(1), // Due date is 1 month from now
+        ]);
 
-            Payment::create([
-                'tenant_id' => $tenant->id,
-                'room_id' => $tenant->room_id,
-                'amount' => 12300 + ($index * 150), // Example: 12300, 12450, 12600...
-                'status' => 'paid',
-                'due_date' => now()->addMonths(3),
-            ]);
-        });
+        Payment::create([
+            'tenant_id' => $tenant1->id, // Link to Tenant 1
+            'amount' => 500, // Payment amount
+            'status' => 'pending', // Payment status
+            'due_date' => Carbon::now()->addMonth(2), // Due date is 2 months from now
+        ]);
+
+        // Create payments for Tenant 2
+        Payment::create([
+            'tenant_id' => $tenant2->id, // Link to Tenant 2
+            'amount' => 600, // Payment amount
+            'status' => 'paid', // Payment status
+            'due_date' => Carbon::now()->addMonth(1), // Due date is 1 month from now
+        ]);
+
+        Payment::create([
+            'tenant_id' => $tenant2->id, // Link to Tenant 2
+            'amount' => 600, // Payment amount
+            'status' => 'pending', // Payment status
+            'due_date' => Carbon::now()->addMonth(2), // Due date is 2 months from now
+        ]);
     }
 }

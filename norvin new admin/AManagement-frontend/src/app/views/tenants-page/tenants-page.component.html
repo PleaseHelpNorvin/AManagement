@@ -7,6 +7,12 @@
             <th mat-header-cell *matHeaderCellDef> ID </th>
             <td mat-cell *matCellDef="let element"> {{element.id}} </td>
         </ng-container>
+
+        <!-- Tenant Code Column -->
+        <ng-container matColumnDef="tenant_code">
+          <th mat-header-cell *matHeaderCellDef> Code </th>
+          <td mat-cell *matCellDef="let element"> {{element.tenant_code}} </td>
+      </ng-container>
       
         <!-- Name Column -->
         <ng-container matColumnDef="name">
@@ -18,6 +24,12 @@
         <ng-container matColumnDef="apartment">
             <th mat-header-cell *matHeaderCellDef> Apartment/Unit </th>
             <td mat-cell *matCellDef="let element"> {{element.apartment}} | {{element.room}} </td>
+        </ng-container>
+
+         <!-- Monthly Column -->
+         <ng-container matColumnDef="monthly_rent">
+          <th mat-header-cell *matHeaderCellDef> Monthly Rent </th>
+          <td mat-cell *matCellDef="let element"> {{element.monthly_rent}} </td>
         </ng-container>
       
         <!-- Lease Start Column -->

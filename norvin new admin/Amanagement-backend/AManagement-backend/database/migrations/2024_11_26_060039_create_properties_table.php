@@ -11,11 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        //
         Schema::create('properties', function (Blueprint $table) {
             $table->id();
-            // $table->foreignId('user_id')->constrained()->onDelete('cascade'); // Adding user_id foreign key
             $table->string('unit_name'); // E.g., Unit A, Apartment 1B
+            $table->string('address');
             $table->foreignId('admin_id')->constrained('users')->onDelete('cascade'); // Admin who manages the unit
             $table->boolean('is_vacant')->default(true); // Tracks vacancy
             $table->timestamps();
@@ -27,7 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
         Schema::dropIfExists('properties');
     }
 };

@@ -5,31 +5,39 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-use App\Models\User; // Importing User Model
-use App\Models\Property; // Importing Property Model
-use App\Models\Tenant;
-
-
 class MaintenanceRequest extends Model
 {
-    //
     use HasFactory;
 
-    protected $fillable = ['user_id', 'property_id', 'title', 'description', 'status'];
-
-    // A maintenance request belongs to a user (tenant)
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
+    protected $fillable = [
+        'property_id',
+        'room_id',
+        'tenant_id',
+        'description',
+        'priority',
+        'status',
+        'technician_id',
+        'completion_date',
+        'remarks',
+    ];
 
     public function property()
     {
-        return $this->belongsTo(Property::class);
+        return $this->belongsTo(Property::class, 'property_id');
+    }
+
+    public function room()
+    {
+        return $this->belongsTo(Room::class, 'room_id');
     }
 
     public function tenant()
     {
-        return $this->belongsTo(Tenant::class); // Corrected the method name to tenant
+        return $this->belongsTo(Tenant::class, 'tenant_id');
+    }
+
+    public function technician()
+    {
+        return $this->belongsTo(User::class, 'technician_id');
     }
 }

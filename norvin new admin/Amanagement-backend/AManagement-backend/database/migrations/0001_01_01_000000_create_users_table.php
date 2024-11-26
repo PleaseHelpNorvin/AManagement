@@ -18,10 +18,7 @@ return new class extends Migration
             $table->string('phone')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->enum('role', ['admin', 'tenant'])->default('tenant'); // Role differentiation
-            $table->date('lease_start')->nullable(); // Lease info for tenants
-            $table->date('lease_end')->nullable();
-            $table->enum('status', ['not_started','active', 'evicted'])->default('not_started');
+            $table->enum('role', ['admin', 'tenant','technician'])->default('tenant'); // Role differentiation
             $table->rememberToken();
             $table->timestamps();
         });

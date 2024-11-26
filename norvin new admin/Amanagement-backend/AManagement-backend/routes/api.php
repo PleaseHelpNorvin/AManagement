@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\rest\AuthController;
 use App\Http\Controllers\rest\TenantsController;
+use App\Http\Controllers\rest\TechniciansController;
 use App\Http\Controllers\rest\MessageController;
 use App\Http\Controllers\rest\UserController;
 use App\Http\Controllers\rest\PaymentController;
@@ -12,6 +13,8 @@ use App\Http\Controllers\rest\MaintenanceRequestController;
 // Route::post('login', [AuthController::class, 'login']);
 // Route::post('logout', [AuthController::class, 'logout']);
 
+// Tenant login route
+Route::post('technician/login', [AuthController::class, 'technicianLogin']);
 // Tenant login route
 Route::post('tenant/login', [AuthController::class, 'tenantLogin']);
 // Admin login route
@@ -22,7 +25,7 @@ Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:sanct
 
 Route::prefix('tenant')->middleware('auth:sanctum')->group(function () {
     // Tenant Profile
-    // Route::get('profile', [TenantController::class, 'showProfile']);
+    Route::get('profile/{id}', [TenantsController::class, 'showProfile']);
 
     // Payment History
     // Route::get('payments', [TenantController::class, 'paymentHistory']);
@@ -39,7 +42,7 @@ Route::prefix('tenant')->middleware('auth:sanctum')->group(function () {
 Route::prefix('admin')->middleware('auth:sanctum')->group(function () {
     // Tenant Management
     Route::get('tenants', [TenantsController::class, 'index']);
-    Route::get('tenants/{id}', [TenantsController::class, 'show']);
+    Route::get('tenants/{id}', [TenantsController::class, 'showProfile']);
     Route::put('tenants/{id}', [TenantsController::class, 'update']);
 
     //user
@@ -60,4 +63,8 @@ Route::prefix('admin')->middleware('auth:sanctum')->group(function () {
     // Route::get('maintenance-requests', [MaintenanceRequestController::class, 'index']);
     // Route::get('maintenance-requests/{tenantId}', [MaintenanceRequestController::class, 'show']);
     // Route::put('maintenance-requests/{id}', [MaintenanceRequestController::class, 'update']);
+});
+
+Route::prefix('technician')->middleware('auth:sanctum')->group(function(){
+    Route::get('technicians', [TechniciansController::class, 'index']);
 });

@@ -5,12 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-use App\Models\User; // Importing User Model
-
-
 class Notification extends Model
 {
-    //
     use HasFactory;
 
     protected $fillable = [
@@ -20,12 +16,8 @@ class Notification extends Model
         'is_read',
     ];
 
-    protected $casts = [
-        'data' => 'array',
-    ];
-
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

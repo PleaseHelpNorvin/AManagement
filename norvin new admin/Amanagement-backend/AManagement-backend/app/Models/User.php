@@ -2,55 +2,38 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-
-use App\Models\Property; // Importing Property Model
-use App\Models\Payment;  // Importing Payment Model
-use App\Models\MaintenanceRequest; // Importing MaintenanceRequest Model
-use App\Models\Message; // Importing Message Model
-use App\Models\Room;
+use App\Models\Property;
+use App\Models\Tenant;
+use App\Models\MaintenanceRequest;
+use App\Models\Message;
+use App\Models\Notification;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, HasApiTokens, Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
+    const ADMIN = 'admin';
+    const TENANT = 'tenant';
+    const TECHNICIAN = 'technician';
+
     protected $fillable = [
-        'name',
-        'email',
-        'phone',
-        'password',
-        'role',           // This column was missing in your seeder, but you should add it here
-        'lease_start',
-        'lease_end',
-        'status'
+        'name', 
+        'email', 
+        'phone', 
+        'password', 
+        'role',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
     protected function casts(): array
     {
         return [
@@ -61,24 +44,28 @@ class User extends Authenticatable
         ];
     }
 
-    //relations
-    // A user can have many payments (if they are tenants)
+    // Relationships
     public function properties()
     {
         return $this->hasMany(Property::class, 'admin_id');
     }
 
-    public function maintenanceRequests()
+    public function tenant()
     {
-        return $this->hasMany(MaintenanceRequest::class);
+        return $this->hasOne(Tenant::class, 'user_id');
     }
 
-    public function messagesSent()
+    public function maintenanceRequests()
+    {
+        return $this->hasMany(MaintenanceRequest::class, 'technician_id');
+    }
+
+    public function messages()
     {
         return $this->hasMany(Message::class, 'sender_id');
     }
 
-    public function messagesReceived()
+    public function receivedMessages()
     {
         return $this->hasMany(Message::class, 'receiver_id');
     }
@@ -88,13 +75,25 @@ class User extends Authenticatable
         return $this->hasMany(Notification::class);
     }
 
-    public function tenant()
+    // Role checkers
+    public function isAdmin(): bool
     {
-        return $this->hasOne(Tenant::class);
+        return $this->role === self::ADMIN;
     }
-    public function payments()
+
+    public function isTenant(): bool
     {
-        return $this->hasMany(Payment::class);
+        return $this->role === self::TENANT;
     }
-    
+
+    public function isTechnician(): bool
+    {
+        return $this->role === self::TECHNICIAN;
+    }
+
+    // General role checker (optional)
+    public function isRole(string $role): bool
+    {
+        return $this->role === $role;
+    }
 }

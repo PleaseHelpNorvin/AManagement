@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AuthService } from '../auth/auth.service';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs'; // to work with Observables
+import { Observable, tap } from 'rxjs'; // to work with Observables
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +21,27 @@ export class TenantsService {
     });
   }
 
+  // getTenantById(id: number): Observable<any> {
+  //   const token = sessionStorage.getItem('token');
+  //   return this.http.get<any>(`${this.apiUrl}/${id}`, {  // Fixed the extra comma here
+  //     headers: {
+  //       'Authorization': `Bearer ${token}`
+  //     }
+  //   });
+  // }
+
   getTenantById(id: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/${id}`);
+    const token = sessionStorage.getItem('token');
+    
+    return this.http.get<any>(`${this.apiUrl}/${id}`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    }).pipe(
+      tap(data => {
+        // This will log the data returned by the HTTP request
+        console.log('Returned tenant details:', data);
+      })
+    );
   }
 }

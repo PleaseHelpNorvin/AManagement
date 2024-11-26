@@ -5,18 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-
-
 class Room extends Model
 { 
     use HasFactory;
 
-    //
     protected $fillable = [
         'name',
-        'property_id',
         'price',
         'is_vacant',
+        'property_id',
     ];
 
     public function property()
@@ -24,18 +21,9 @@ class Room extends Model
         return $this->belongsTo(Property::class);
     }
 
-    public function tenant()
-    {
-        return $this->hasMany(Tenant::class);
-    }
-
+    // Relationship with Rental: A Room can have multiple Rentals
     public function rentals()
     {
         return $this->hasMany(Rental::class);
-    }
-
-    public function payments()
-    {
-        return $this->hasMany(Payment::class);
     }
 }

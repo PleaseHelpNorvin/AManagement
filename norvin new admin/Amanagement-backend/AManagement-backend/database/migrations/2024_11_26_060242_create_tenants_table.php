@@ -13,13 +13,16 @@ return new class extends Migration
     {
         Schema::create('tenants', function (Blueprint $table) {
             $table->id();
+            $table->string('tenant_code')->unique();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade'); // Tenant's user ID
             $table->foreignId('room_id')->constrained('rooms')->onDelete('cascade'); // Room assigned to the tenant
-            $table->date('start_date'); // Lease start date
-            $table->date('end_date'); // Lease end date
+            $table->date('lease_start'); // Lease start date
+            $table->decimal('deposit_amount', 10, 2)->default(0);
+            $table->decimal('monthly_rent', 10, 2)->default(0);
+            $table->date('lease_end')->nullable(); // Lease end date
+            $table->enum('status', ['pending','active', 'inactive', 'terminated'])->default('pending');
             $table->timestamps();
         });
-        
     }
 
     /**

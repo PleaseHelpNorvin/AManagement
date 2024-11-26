@@ -14,7 +14,7 @@ button{
   background-color: var(--mdc-fab-small-container-color, var(--mat-sys-primary-container));
 }
 /* Apply styles for mobile devices (screen width < 600px) */
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 700px) {
 
     table.mat-elevation-z8 {
       width: 100%;

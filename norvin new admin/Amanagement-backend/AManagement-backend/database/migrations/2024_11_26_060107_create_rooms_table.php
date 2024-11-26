@@ -14,12 +14,11 @@ return new class extends Migration
         Schema::create('rooms', function (Blueprint $table) {
             $table->id();
             $table->string('name'); // E.g., Room 101, Room 102
-            $table->foreignId('property_id')->constrained('properties')->onDelete('cascade');
             $table->decimal('price', 10, 2); // Rent price for the room
             $table->boolean('is_vacant')->default(true); // Whether the room is available or not
+            $table->foreignId('property_id')->constrained()->onDelete('cascade'); // Foreign key to properties table
             $table->timestamps();
         });
-        
     }
 
     /**

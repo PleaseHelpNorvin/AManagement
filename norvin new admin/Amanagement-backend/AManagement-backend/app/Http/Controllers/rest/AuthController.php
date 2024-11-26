@@ -1,10 +1,9 @@
 <?php
+
 namespace App\Http\Controllers\rest;
 
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use App\Http\Controllers\ApiController; 
-
+use App\Http\Controllers\ApiController;
 use Illuminate\Http\Request;
 use App\Models\User;
 
@@ -21,7 +20,7 @@ class AuthController extends ApiController
         // Find the user by email and check if they are an admin
         $user = User::where('email', $request->email)->first();
 
-        if (!$user || !Hash::check($request->password, $user->password) || $user->role !== 'admin') {
+        if (!$user || !Hash::check($request->password, $user->password) || !$user->isAdmin()) {
             // Return a custom error response if not an admin or incorrect credentials
             return $this->errorResponse(null, 'Invalid credentials or not an admin', 401);
         }
@@ -47,7 +46,7 @@ class AuthController extends ApiController
         // Find the user by email and check if they are a tenant
         $user = User::where('email', $request->email)->first();
 
-        if (!$user || !Hash::check($request->password, $user->password) || $user->role !== 'tenant') {
+        if (!$user || !Hash::check($request->password, $user->password) || !$user->isTenant()) {
             // Return a custom error response if not a tenant or incorrect credentials
             return $this->errorResponse(null, 'Invalid credentials or not a tenant', 401);
         }
@@ -60,6 +59,32 @@ class AuthController extends ApiController
             'token' => $token,
             'role' => $user->role
         ], 'Tenant login successful');
+    }
+
+    // Technician login (Issue Token)
+    public function technicianLogin(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required'
+        ]);
+
+        // Find the user by email and check if they are a technician
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user || !Hash::check($request->password, $user->password) || !$user->isTechnician()) {
+            // Return a custom error response if not a technician or incorrect credentials
+            return $this->errorResponse(null, 'Invalid credentials or not a technician', 401);
+        }
+
+        // Issue token using Sanctum
+        $token = $user->createToken('Technician-Token')->plainTextToken;
+
+        // Return success response with token and role
+        return $this->successResponse([
+            'token' => $token,
+            'role' => $user->role
+        ], 'Technician login successful');
     }
 
     // Logout (Revoke Token)

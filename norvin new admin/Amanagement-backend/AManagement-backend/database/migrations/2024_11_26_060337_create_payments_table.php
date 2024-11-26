@@ -14,11 +14,9 @@ return new class extends Migration
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('tenant_id')->constrained('tenants')->onDelete('cascade');
-            $table->foreignId('room_id')->constrained('rooms')->onDelete('cascade');
             $table->decimal('amount', 10, 2);
             $table->enum('status', ['paid', 'pending', 'overdue'])->default('pending');
             $table->date('due_date');
-            // $table->date('payment_date');
             $table->timestamps();
         });
     }
