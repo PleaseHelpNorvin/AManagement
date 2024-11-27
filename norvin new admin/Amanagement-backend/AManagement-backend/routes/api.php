@@ -7,8 +7,10 @@ use App\Http\Controllers\rest\TenantsController;
 use App\Http\Controllers\rest\TechniciansController;
 use App\Http\Controllers\rest\MessageController;
 use App\Http\Controllers\rest\UserController;
-use App\Http\Controllers\rest\PaymentController;
+use App\Services\PayMongoService;
 use App\Http\Controllers\rest\MaintenanceRequestController;
+use App\Http\Controllers\rest\PaymentController;
+
 
 // Route::post('login', [AuthController::class, 'login']);
 // Route::post('logout', [AuthController::class, 'logout']);
@@ -26,6 +28,8 @@ Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:sanct
 Route::prefix('tenant')->middleware('auth:sanctum')->group(function () {
     // Tenant Profile
     Route::get('profile/{id}', [TenantsController::class, 'showProfile']);
+
+    Route::post('/generate-payment-link', [PaymentController::class, 'generatePaymentLink']);
 
     // Payment History
     // Route::get('payments', [TenantController::class, 'paymentHistory']);
