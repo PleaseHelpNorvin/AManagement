@@ -251,7 +251,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "4|7ZJFE9XwOg4jvSHc8AmNvhNimRjgBRwZAjVOcgPv38d5c8af",
+									"value": "7|lNdZlqzBw4Pw9hbXmp6SC0vTAfKqXlOpBk7uJbIi6f38be7b",
 									"type": "string"
 								}
 							]
@@ -279,6 +279,70 @@
 								"tenant",
 								"profile",
 								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "api/tenant/generate-payment-link",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "10|60PBXyLyAaxAk7An0kPLcZxro1OHnPwYpQSP5pQq869be149",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/tenant/generate-payment-link?amount=10000&description=Monthly Rent Payment&remarks=asdasdasdasd",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"tenant",
+								"generate-payment-link"
+							],
+							"query": [
+								{
+									"key": "amount",
+									"value": "10000"
+								},
+								{
+									"key": "description",
+									"value": "Monthly Rent Payment"
+								},
+								{
+									"key": "remarks",
+									"value": "asdasdasdasd"
+								}
 							]
 						}
 					},
