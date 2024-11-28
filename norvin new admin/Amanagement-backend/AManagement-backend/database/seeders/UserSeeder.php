@@ -1,5 +1,5 @@
 <?php
-// database/seeders/UserSeeder.php
+
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
@@ -26,8 +26,16 @@ class UserSeeder extends Seeder
             'password' => Hash::make('password'),
             'role' => User::ADMIN,
         ]);
-        
-        // Create Tenant Users (and other roles like Technicians, if needed)
+
+        $admin3 = User::create([
+            'name' => 'Admin Three',
+            'email' => 'admin3@example.com',
+            'phone' => '1122334455',
+            'password' => Hash::make('password'),
+            'role' => User::ADMIN,
+        ]);
+
+        // Create Tenant Users
         $tenant1 = User::create([
             'name' => 'Tenant One',
             'email' => 'tenant1@example.com',
@@ -44,18 +52,35 @@ class UserSeeder extends Seeder
             'role' => User::TENANT,
         ]);
 
+        $tenant3 = User::create([
+            'name' => 'Tenant Three',
+            'email' => 'tenant3@example.com',
+            'phone' => '7778889999',
+            'password' => Hash::make('password'),
+            'role' => User::TENANT,
+        ]);
+
+        // Create Technician Users
         $technician1 = User::create([
             'name' => 'Tech One',
-            'email' => 'Tech1@example.com',
-            'phone' => '12312312312',
+            'email' => 'tech1@example.com',
+            'phone' => '1231231234',
             'password' => Hash::make('password'),
             'role' => User::TECHNICIAN,
         ]);
 
-        $technician1 = User::create([
+        $technician2 = User::create([
             'name' => 'Tech Two',
-            'email' => 'Tech2@example.com',
-            'phone' => '1512512412431',
+            'email' => 'tech2@example.com',
+            'phone' => '1512512412',
+            'password' => Hash::make('password'),
+            'role' => User::TECHNICIAN,
+        ]);
+
+        $technician3 = User::create([
+            'name' => 'Tech Three',
+            'email' => 'tech3@example.com',
+            'phone' => '2345678901',
             'password' => Hash::make('password'),
             'role' => User::TECHNICIAN,
         ]);

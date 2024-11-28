@@ -13,10 +13,9 @@ return new class extends Migration
     {
         Schema::create('notifications', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade'); // Recipient of the notification
-            $table->string('type'); // Notification type (e.g., Payment Reminder)
-            $table->text('data'); // JSON payload for notification content
-            $table->boolean('is_read')->default(false); // Read status
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->text('message');
+            $table->enum('status', ['unread','read','dismissed'])->default('unread');
             $table->timestamps();
         });
     }

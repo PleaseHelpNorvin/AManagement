@@ -10,20 +10,12 @@ class Property extends Model
     use HasFactory;
 
     protected $fillable = [
-        'unit_name',
-        'address',
-        'admin_id',
-        'is_vacant',
+        'owner_id', 'name', 'address', 'city', 'postal_code', 'type', 'status',
     ];
 
-    public function admin()
+    public function owner()
     {
-        return $this->belongsTo(User::class, 'admin_id');
-    }
-
-    public function tenants()
-    {
-        return $this->hasMany(Tenant::class, 'property_id');
+        return $this->belongsTo(User::class, 'owner_id');
     }
 
     public function rooms()
@@ -33,6 +25,6 @@ class Property extends Model
 
     public function maintenanceRequests()
     {
-        return $this->hasMany(MaintenanceRequest::class, 'property_id');
+        return $this->hasMany(MaintenanceRequest::class);
     }
 }

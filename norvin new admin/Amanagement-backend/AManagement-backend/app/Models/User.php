@@ -45,27 +45,37 @@ class User extends Authenticatable
     }
 
     // Relationships
-    public function properties()
+    public function userProfile()
     {
-        return $this->hasMany(Property::class, 'admin_id');
+        return $this->hasOne(UserProfile::class);
     }
 
-    public function tenant()
+    public function tenants()
     {
-        return $this->hasOne(Tenant::class, 'user_id');
+        return $this->hasMany(Tenant::class);
+    }
+
+    public function properties()
+    {
+        return $this->hasMany(Property::class, 'owner_id');
+    }
+
+    public function contracts()
+    {
+        return $this->hasMany(Contract::class, 'tenant_id');
     }
 
     public function maintenanceRequests()
     {
-        return $this->hasMany(MaintenanceRequest::class, 'technician_id');
+        return $this->hasMany(MaintenanceRequest::class, 'tenant_id');
     }
 
-    public function messages()
+    public function messagesSent()
     {
         return $this->hasMany(Message::class, 'sender_id');
     }
 
-    public function receivedMessages()
+    public function messagesReceived()
     {
         return $this->hasMany(Message::class, 'receiver_id');
     }

@@ -10,10 +10,7 @@ class Room extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name',
-        'price',
-        'is_vacant',
-        'property_id',
+        'property_id', 'room_code', 'rent_amount', 'status',
     ];
 
     public function property()
@@ -21,9 +18,8 @@ class Room extends Model
         return $this->belongsTo(Property::class);
     }
 
-    // Relationship with Rental: A Room can have multiple Rentals
-    public function rentals()
+    public function tenants()
     {
-        return $this->hasMany(Rental::class);
+        return $this->hasMany(Tenant::class);
     }
 }

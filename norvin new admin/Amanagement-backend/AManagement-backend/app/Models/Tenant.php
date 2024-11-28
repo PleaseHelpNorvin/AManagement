@@ -10,37 +10,31 @@ class Tenant extends Model
     use HasFactory;
 
     protected $fillable = [
-        'tenant_code',
-        'user_id',
-        'room_id',
-        'lease_start',
-        'deposit_amount',
-        'monthly_rent',
-        'lease_end',
-        'status',
+        'user_id', 'lease_start_date', 'lease_end_date', 'room_id', 'status',
     ];
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class);
     }
 
-    public function Room()
+    public function room()
     {
-        return $this->belongsTo(Room::class, 'room_id');
+        return $this->belongsTo(Room::class);
     }
 
-    public function rental()
+    public function contracts()
     {
-        return $this->hasMany(Rental::class, 'tenant_id');
+        return $this->hasMany(Contract::class);
     }
 
-    public function payments()
+    public function billings()
     {
-        return $this->hasMany(Payment::class, 'tenant_id');
+        return $this->hasMany(Billing::class);
     }
+
     public function maintenanceRequests()
     {
-        return $this->hasMany(MaintenanceRequest::class, 'tenant_id');
+        return $this->hasMany(MaintenanceRequest::class);
     }
 }

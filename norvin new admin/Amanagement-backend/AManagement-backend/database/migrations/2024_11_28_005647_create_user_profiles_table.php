@@ -11,12 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('properties', function (Blueprint $table) {
+        Schema::create('user_profiles', function (Blueprint $table) {
             $table->id();
-            $table->string('unit_name'); // E.g., Unit A, Apartment 1B
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->integer('phone_number');
             $table->string('address');
-            $table->foreignId('admin_id')->constrained('users')->onDelete('cascade'); // Admin who manages the unit
-            $table->boolean('is_vacant')->default(true); // Tracks vacancy
+            $table->binary ('profile_picture_url');
+            $table->string('emergency_contact');
+            $table->binary('bio');
             $table->timestamps();
         });
     }
@@ -26,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('properties');
+        Schema::dropIfExists('user_profiles');
     }
 };

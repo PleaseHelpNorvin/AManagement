@@ -10,14 +10,11 @@ class Payment extends Model
     use HasFactory;
 
     protected $fillable = [
-        'tenant_id',
-        'amount',
-        'status',
-        'due_date',
+        'billing_id', 'payment_date', 'amount_paid', 'payment_method', 'status', 'transaction_id',
     ];
 
-    public function tenant()
+    public function billing()
     {
-        return $this->belongsTo(Tenant::class, 'tenant_id');
+        return $this->belongsTo(Billing::class);
     }
 }

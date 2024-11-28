@@ -1,58 +1,61 @@
 <?php
-// database/seeders/MaintenanceRequestSeeder.php
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\MaintenanceRequest;
-use App\Models\Property;
-use App\Models\Room;
 use App\Models\Tenant;
-use App\Models\User; // Technician model
+use App\Models\Property;
+use Faker\Generator as Faker;
+use Illuminate\Database\Seeder;
 
 class MaintenanceRequestSeeder extends Seeder
 {
     /**
      * Run the database seeds.
+     *
+     * @param Faker $faker
      */
-    public function run()
+    public function run(Faker $faker): void
     {
-        // Get properties, rooms, tenants, and technicians (assuming they already exist)
-        $property1 = Property::find(1); // Property 1
-        $property2 = Property::find(2); // Property 2
-        
-        $room1 = Room::find(1); // Room 1
-        $room2 = Room::find(2); // Room 2
+        // Get all tenants and properties
+        $tenants = Tenant::all();
+        $properties = Property::all();
 
-        $tenant1 = Tenant::find(1); // Tenant 1
-        $tenant2 = Tenant::find(2); // Tenant 2
+        // Ensure there are tenants and properties
+        if ($tenants->isEmpty()) {
+            echo "No tenants found. Cannot create maintenance requests.\n";
+            return;
+        } elseif ($properties->isEmpty()) {
+            echo "No properties found. Cannot create maintenance requests.\n";
+            return;
+        }
 
-        $technician1 = User::where('role', 'technician')->first(); 
-        $technician2 = User::where('role', 'technician')->skip(1)->first();
-        
-        // Create maintenance requests for Tenant 1
-        MaintenanceRequest::create([
-            'property_id' => $property1->id,
-            'room_id' => $room1->id,
-            'tenant_id' => $tenant1->id,
-            'description' => 'Leaky faucet in the bathroom',
-            'priority' => 'high',
-            'status' => 'pending',
-            'technician_id' => $technician1->id,
-            'completion_date' => null, // Not completed yet
-            'remarks' => 'Urgent issue reported.',
-        ]);
+        // Seed maintenance requests for each tenant
+        foreach ($tenants as $tenant) {
+            // Pick a random property for the tenant
+            $property = $properties->random(); // Randomly select a property from the list
 
-        MaintenanceRequest::create([
-            'property_id' => $property2->id,
-            'room_id' => $room2->id,
-            'tenant_id' => $tenant2->id,
-            'description' => 'Air conditioning not working',
-            'priority' => 'medium',
-            'status' => 'in_progress',
-            'technician_id' => $technician2->id,
-            'completion_date' => null, // Not completed yet
-            'remarks' => 'Awaiting part replacement.',
-        ]);
+            // Randomly generate priority and status
+            $priority = $faker->randomElement(['low', 'medium', 'high']);
+            $status = $faker->randomElement(['open', 'closed', 'in-progress']);
+            
+            // Generate a random maintenance request description
+            $description = $faker->sentence(6, true); // A random sentence as the description
+            
+            // Generate the reported_at and resolved_at dates
+            $reportedAt = $faker->dateTimeThisYear(); // Random date within the current year
+            $resolvedAt = $status == 'closed' ? $faker->dateTimeBetween($reportedAt, 'now') : null; // If status is 'closed', set a resolved date
+
+            // Create the maintenance request record
+            MaintenanceRequest::create([
+                'tenant_id' => $tenant->id,  // Associate the request with the tenant
+                'property_id' => $property->id,  // Associate with the property
+                'priority' => $priority, // Random priority
+                'description' => $description, // Description for the maintenance issue
+                'status' => $status, // Random status (open, closed, in-progress)
+                'reported_at' => $reportedAt, // Date when the issue was reported
+                'resolved_at' => $resolvedAt, // Only set if the status is 'closed'
+            ]);
+        }
     }
 }

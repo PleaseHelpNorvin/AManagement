@@ -2,38 +2,40 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
-use App\Models\User; // Add this line to import the User model
 use App\Models\Property;
-
+use App\Models\User;
+use Faker\Generator as Faker;
+use Illuminate\Database\Seeder;
 
 class PropertySeeder extends Seeder
 {
     /**
      * Run the database seeds.
+     *
+     * @param Faker $faker
      */
-    public function run()
+    public function run(Faker $faker): void
     {
-        // Ensure that users are already created before properties
-        $admin1 = User::find(1); // Get admin by ID
-        $admin2 = User::find(2); // Get another admin
+        // Get a user with the 'admin' role (assuming 'role' column exists)
+        $adminUser = User::where('role', 'admin')->first();
 
-        // Create Properties
-        Property::create([
-            'unit_name' => 'Apartment 101',
-            'address' => '123 Main St, City, Country',
-            'admin_id' => $admin1->id, // Link to existing admin
-            'is_vacant' => true,
-        ]);
-
-        Property::create([
-            'unit_name' => 'Apartment 102',
-            'address' => '456 Elm St, City, Country',
-            'admin_id' => $admin2->id, // Link to another admin
-            'is_vacant' => false,
-        ]);
-
-        // Additional seeding for rooms, tenants, payments, etc.
+        // Ensure we have an admin user
+        if ($adminUser) {
+            // Seed 10 properties with Faker
+            foreach (range(1, 10) as $index) {
+                Property::create([
+                    'owner_id' => $adminUser->id,  // Set the owner_id to the admin user's id
+                    'name' => $faker->word,        // Random property name
+                    'address' => $faker->address,  // Random address
+                    'city' => $faker->city,        // Random city
+                    'postal_code' => $faker->postcode,  // Random postal code
+                    'type' => $faker->randomElement(['apartment','house','boarding-house']),  // Random property type
+                    'status' => $faker->randomElement(['available','rented','full']),  // Random status
+                ]);
+            }
+        } else {
+            // Output message if no admin user found
+            echo "No admin user found to assign as property owner.\n";
+        }
     }
 }
