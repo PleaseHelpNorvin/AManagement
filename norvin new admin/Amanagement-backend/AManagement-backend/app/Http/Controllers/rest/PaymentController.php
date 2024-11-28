@@ -49,7 +49,8 @@ class PaymentController extends ApiController
         // Use custom successResponse to return the payment link
         return $this->successResponse(
             $response,
-            'Payment link generated successfully.'
+            'Payment link generated successfully.',
+            200
         );
     }
 }

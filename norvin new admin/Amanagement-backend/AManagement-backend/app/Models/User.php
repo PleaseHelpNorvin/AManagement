@@ -70,6 +70,11 @@ class User extends Authenticatable
         return $this->hasMany(MaintenanceRequest::class, 'tenant_id');
     }
 
+    public function maintenanceRequestsAssigned()
+    {
+        return $this->hasMany(MaintenanceRequest::class, 'technician_id');
+    }
+
     public function messagesSent()
     {
         return $this->hasMany(Message::class, 'sender_id');

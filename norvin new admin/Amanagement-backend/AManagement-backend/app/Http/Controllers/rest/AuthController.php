@@ -57,7 +57,8 @@ class AuthController extends ApiController
         // Return success response with token and role
         return $this->successResponse([
             'token' => $token,
-            'role' => $user->role
+            'role' => $user->role,
+            'tenant_id' =>$user->id
         ], 'Tenant login successful');
     }
 
@@ -83,7 +84,8 @@ class AuthController extends ApiController
         // Return success response with token and role
         return $this->successResponse([
             'token' => $token,
-            'role' => $user->role
+            'role' => $user->role,
+            'tech_id' => $user->id,
         ], 'Technician login successful');
     }
 

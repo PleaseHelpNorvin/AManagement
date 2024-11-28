@@ -10,7 +10,7 @@ class MaintenanceRequest extends Model
     use HasFactory;
 
     protected $fillable = [
-        'priority', 'tenant_id', 'property_id', 'description', 'status', 'reported_at', 'resolved_at',
+        'priority','technician_id', 'tenant_id', 'property_id', 'description', 'status', 'reported_at', 'resolved_at',
     ];
 
     public function tenant()
@@ -21,5 +21,10 @@ class MaintenanceRequest extends Model
     public function property()
     {
         return $this->belongsTo(Property::class);
+    }
+
+    public function technician()
+    {
+        return $this->belongsTo(User::class, 'technician_id');
     }
 }

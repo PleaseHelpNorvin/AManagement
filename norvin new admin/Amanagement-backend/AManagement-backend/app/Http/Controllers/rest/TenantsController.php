@@ -26,7 +26,7 @@ class TenantsController extends ApiController
         ])->where('role', 'tenant')->get(); // Retrieve all users
     
         // Return the data as a JSON response (you can adjust the format as needed)
-        return $this->successResponse($users, 'Users fetched Successfully');
+        return $this->successResponse($users, 'Users Fetched Successfully');
     }
 
     // same with the index() but with the mapping
