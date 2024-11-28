@@ -6,22 +6,16 @@ use App\Http\Controllers\rest\AuthController;
 use App\Http\Controllers\rest\TenantsController;
 use App\Http\Controllers\rest\TechniciansController;
 use App\Http\Controllers\rest\MessageController;
-use App\Http\Controllers\rest\UserController;
 use App\Services\PayMongoService;
 use App\Http\Controllers\rest\MaintenanceRequestController;
 use App\Http\Controllers\rest\PaymentController;
 
 
-// Route::post('login', [AuthController::class, 'login']);
-// Route::post('logout', [AuthController::class, 'logout']);
-
-// Tenant login route
+    // login route
 Route::post('technician/login', [AuthController::class, 'technicianLogin']);
-// Tenant login route
 Route::post('tenant/login', [AuthController::class, 'tenantLogin']);
-// Admin login route
 Route::post('admin/login', [AuthController::class, 'adminLogin']);
-// Logout route
+    // Logout route
 Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 
 
@@ -29,10 +23,9 @@ Route::prefix('tenant')->middleware('auth:sanctum')->group(function () {
     // Tenant Profile
     Route::get('profile/{id}', [TenantsController::class, 'showProfile']);
 
-    Route::post('/generate-payment-link', [PaymentController::class, 'generatePaymentLink']);
-
     // Payment History
     // Route::get('payments', [TenantController::class, 'paymentHistory']);
+    Route::post('/generate-payment-link', [PaymentController::class, 'generatePaymentLink']);
 
     // // Maintenance Requests
     // Route::get('maintenance-requests', [TenantController::class, 'showMaintenanceRequests']);
@@ -44,15 +37,17 @@ Route::prefix('tenant')->middleware('auth:sanctum')->group(function () {
 });
 
 Route::prefix('admin')->middleware('auth:sanctum')->group(function () {
-    // Tenant Management
+    // Tenant 
     Route::get('tenants', [TenantsController::class, 'index']);
+    Route::get('tenants/table', [TenantsController::class, 'showTenantsTable']);
     Route::get('tenants/{id}', [TenantsController::class, 'showProfile']);
     Route::put('tenants/{id}', [TenantsController::class, 'update']);
 
-    //user
-    Route::get('user', [UserController::class, 'index']);
-    Route::get('user/{id}', [UserController::class, 'show']);
-    Route::put('user/{id}', [UserController::class, 'update']);
+    //Technicians
+    Route::get('technicians', [TechniciansController::class, 'index']);
+    Route::get('technicians/{id}', [TechniciansController::class, 'showProfile']);
+
+
 
     // // Admin to Tenant Messaging (Admin chooses tenant)
     // Route::post('messages/{tenantId}', [MessageController::class, 'sendMessage']); // Admin sends messages to tenants
@@ -71,4 +66,5 @@ Route::prefix('admin')->middleware('auth:sanctum')->group(function () {
 
 Route::prefix('technician')->middleware('auth:sanctum')->group(function(){
     Route::get('technicians', [TechniciansController::class, 'index']);
+    Route::get('profile/{id}', [TechniciansController::class, 'showProfile']);
 });
