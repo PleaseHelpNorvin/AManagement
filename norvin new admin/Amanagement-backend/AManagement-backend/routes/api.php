@@ -12,6 +12,10 @@ use App\Http\Controllers\rest\MessageController;
 use App\Http\Controllers\rest\MaintenanceRequestController;
 use App\Http\Controllers\rest\PaymentController;
 use App\Http\Controllers\rest\TenantRegisterController;
+use App\Http\Controllers\rest\ContractController;
+// use App\Http\Controllers\rest\ContractController;
+
+// TenantController
 
 //services
 use App\Services\PayMongoService;
@@ -27,8 +31,14 @@ Route::post('tenant/regiser', [TenantRegisterController::class, 'createTenantUse
 
 Route::prefix('tenant')->middleware('auth:sanctum')->group(function () {
     //register tenant user
-    Route::post('/create-profile', [TenantRegisterController:: class, 'createTenantUserProfile']);
-    Route::get('/get-contract-template', [TenantRegisterController::class, 'getContractTemplate']);
+    Route::post('create-profile', [TenantRegisterController:: class, 'createTenantUserProfile']);
+    //Contracts routes
+    Route::post('contracts/create', [ContractController::class, 'createContract']);
+    // Route::post('contracts/create', [ContractController::class, 'createContract']);
+    Route::get('contracts/{contractId}/generate', [ContractController::class, 'generateContract']);
+    Route::get('contracts/{contractId}', [ContractController::class, 'showContract'])->name('contracts.show');
+    Route::get('contracts', [ContractController::class, 'getContract']);
+
     // Tenant Profile
     Route::get('profile/{id}', [TenantsController::class, 'showProfile']);
 
@@ -38,7 +48,7 @@ Route::prefix('tenant')->middleware('auth:sanctum')->group(function () {
 
     // Maintenance Requests
     // Route::get('maintenance-requests', [TenantController::class, 'showMaintenanceRequests']);
-    Route::post('maintenance-requests', [TenantController::class, 'createMaintenanceRequest']);
+    Route::post('maintenance-requests', [TenantsController::class, 'createMaintenanceRequest']);
 
     // // Messaging (Tenant -> Admin only)
     // Route::get('messages', [MessageController::class, 'chatHistory']); // Fetch messages with Admin only

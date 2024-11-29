@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Models\Contract;
 use App\Models\User;
 use App\Models\Property;
-use Faker\Generator as Faker;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Arr;
 
@@ -13,62 +12,67 @@ class ContractSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     *
-     * @param Faker $faker
      */
-    public function run(Faker $faker): void
+    public function run(): void
     {
-        // Get tenants (users with 'tenant' role)
-        $users = User::where('role', 'tenant')->get();
-
-        // Get properties
+        // Fetch tenants (users with the 'tenant' role) and properties
+        $tenants = User::where('role', 'tenant')->get();
         $properties = Property::all();
 
         // Ensure there are enough tenants and properties
-        if ($users->isEmpty()) {
-            echo "Not enough tenants to create contracts \n";
-            return;
-        } elseif ($properties->isEmpty()) {
-            echo "Not enough properties to create contracts \n";
+        if ($tenants->isEmpty()) {
+            echo "No tenants found. Please seed tenants first.\n";
             return;
         }
 
-        // Seed contracts for each tenant and property
-        foreach ($users as $user) {
-            // Pick a random property
+        if ($properties->isEmpty()) {
+            echo "No properties found. Please seed properties first.\n";
+            return;
+        }
+
+        // Generate random contracts
+        foreach ($tenants as $tenant) {
+            // Randomly assign a property to the tenant
             $property = $properties->random();
 
-            // Random contract type
-            $contractType = Arr::random(['one_time', 'renewable', 'non_renewable', 'auto_renewal', 'single_term', 'recurring']);
+            // Randomly select a contract type
+            $contractType = Arr::random(['fixed', 'monthly', 'annual', 'one_time']);
 
-            // Random start date (in the current year)
-            $startDate = $faker->dateTimeThisYear();
+            // Randomize start and end dates
+            $startDate = now()->subMonths(rand(0, 12)); // Random start date within the last year
+            $endDate = in_array($contractType, ['fixed', 'annual'])
+                ? $startDate->copy()->addMonths(rand(6, 12)) // For fixed/annual contracts, add 6–12 months
+                : null; // No end date for monthly or one-time contracts
 
-            // End date logic: If the contract is non-renewable or single-term, end_date is null
-            $endDate = ($contractType === 'one_time' || $contractType === 'non_renewable' || $contractType === 'single_term') 
-                ? null 
-                : $faker->dateTimeBetween($startDate);
+            // Randomize rent amount, security deposit, and late fee
+            $rentAmount = fake()->randomFloat(2, 500, 2000); // Rent between 500 and 2000
+            $securityDeposit = fake()->randomFloat(2, 100, 1000); // Deposit between 100 and 1000
+            $lateFee = fake()->randomFloat(2, 50, 500); // Late fee between 50 and 500
 
-            // Random rent amount and security deposit
-            $rentAmount = $faker->randomFloat(2, 500, 2000);  // Rent between 500 and 2000
-            $securityDeposit = $faker->randomFloat(2, 100, 1000);  // Deposit between 100 and 1000
-
-            // Random payment due date (between 1st and 28th of the month)
-            $randomDay = rand(1, 28);
-            $paymentDueDate = $faker->dateTimeThisYear()->format('Y-m-') . str_pad($randomDay, 2, '0', STR_PAD_LEFT); // Full date format
+            // Payment frequency and due date
+            $paymentFrequency = in_array($contractType, ['monthly', 'annually', 'one_time']) ? $contractType : 'one_time';
+            $paymentDueDate = now()->addDays(rand(1, 28))->format('Y-m-d'); // Random day within the next month
 
             // Create the contract
             Contract::create([
-                'tenant_id' => null,  // Associate the contract with the tenant
-                'property_id' => null,  // Associate the contract with the property
+                'tenant_id' => $tenant->id,
+                'property_id' => $property->id,
                 'contract_type' => $contractType,
                 'start_date' => $startDate,
                 'end_date' => $endDate,
                 'rent_amount' => $rentAmount,
-                'security_deposit' => $securityDeposit,
+                'security_payment' => $securityDeposit,
+                'payment_frequency' => $paymentFrequency,
                 'payment_due_date' => $paymentDueDate,
-                'status' => 'template',  // Default to 'active'
+                'late_fee' => $lateFee,
+                'total_paid' => 0.00, // Default to 0
+                'status' => 'active', // Default status
+                'special_terms' => 'The tenant agrees to pay for utilities.',
+                'is_renewable' => in_array($contractType, ['fixed', 'annual']),
+                'notes' => 'Auto-generated contract.',
             ]);
         }
+
+        echo "Contracts seeded successfully!\n";
     }
 }

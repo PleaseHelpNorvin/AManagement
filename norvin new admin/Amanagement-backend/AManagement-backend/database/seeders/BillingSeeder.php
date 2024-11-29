@@ -1,4 +1,5 @@
 <?php
+
 namespace Database\Seeders;
 
 use App\Models\Billing;
@@ -39,7 +40,7 @@ class BillingSeeder extends Seeder
 
             // If no contract is found for the tenant, skip this tenant
             if (!$contract) {
-                echo "no contract";
+                echo "No contract for tenant ID {$tenant->id}, skipping...\n";
                 continue;
             }
 
@@ -56,6 +57,14 @@ class BillingSeeder extends Seeder
             // Random payment status
             $paymentStatus = $faker->randomElement(['pending', 'paid', 'overdue']);
 
+            // Generate random readings for electric and water
+            $electricReading = $faker->randomFloat(2, 10, 100);  // Example reading
+            $waterReading = $faker->randomFloat(2, 10, 100);  // Example reading
+
+            // Generate dummy binary data for electric and water meters
+            $electricMeterPicture = $this->generateRandomBinaryData();  // Generate dummy binary data
+            $waterMeterPicture = $this->generateRandomBinaryData();  // Same for water meter
+
             // Create the billing record
             Billing::create([
                 'tenant_id' => $tenant->id,
@@ -65,7 +74,29 @@ class BillingSeeder extends Seeder
                 'payment_status' => $paymentStatus,
                 'billing_period_start' => $billingPeriodStart,
                 'billing_period_end' => $billingPeriodEnd,
+                'electric_reading' => $electricReading,
+                'water_reading' => $waterReading,
+                'electric_meter_picture' => $electricMeterPicture,
+                'water_meter_picture' => $waterMeterPicture,
             ]);
         }
     }
+
+    /**
+     * Generate dummy binary data for an image.
+     *
+     * @return string
+     */
+    private function generateRandomBinaryData(): string
+    {
+        // Generate 1 KB of random data as binary
+        return random_bytes(1024);  // 1 KB of random binary data
+    }
+
+    // private function generateRandomImage(): string
+    // {
+    //     // Here we're just simulating image binary data.
+    //     // In a real scenario, you would probably store an image in storage and reference its path.
+    //     return base64_encode(file_get_contents(storage_path('app/public/random_image.jpg')));  // Example of how to get image data
+    // }
 }
