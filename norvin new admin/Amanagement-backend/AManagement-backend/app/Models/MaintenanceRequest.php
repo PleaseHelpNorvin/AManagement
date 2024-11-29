@@ -5,12 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+
 class MaintenanceRequest extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'priority','technician_id', 'tenant_id', 'property_id', 'description', 'status', 'reported_at', 'resolved_at',
+        'priority','technician_id', 'tenant_id', 'property_id', 'maintenance_picture_url', 'description', 'status', 'reported_at', 'resolved_at',
     ];
 
     public function tenant()

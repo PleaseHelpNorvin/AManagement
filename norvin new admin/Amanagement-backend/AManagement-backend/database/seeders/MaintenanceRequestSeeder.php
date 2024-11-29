@@ -9,6 +9,7 @@ use App\Models\User;
 use Faker\Generator as Faker;
 use Illuminate\Database\Seeder;
 
+
 class MaintenanceRequestSeeder extends Seeder
 {
     /**
@@ -22,6 +23,7 @@ class MaintenanceRequestSeeder extends Seeder
         $technicians = User::where('role', 'technician')->get();
         $tenants = Tenant::all();
         $properties = Property::all();
+        // $faker = Faker::create();
 
         // Ensure there are tenants and properties
         if ($tenants->isEmpty()) {
@@ -46,7 +48,7 @@ class MaintenanceRequestSeeder extends Seeder
             // Randomly generate priority and status
             $priority = $faker->randomElement(['low', 'medium', 'high']);
             $status = $faker->randomElement(['open', 'closed', 'in-progress']);
-            
+
             // Generate a random maintenance request description
             $description = $faker->sentence(6, true); // A random sentence as the description
             
@@ -59,9 +61,10 @@ class MaintenanceRequestSeeder extends Seeder
                 'technician_id' =>null,
                 'tenant_id' => $tenant->id,  // Associate the request with the tenant
                 'property_id' => $property->id,  // Associate with the property
+                'maintenance_picture_url' => $faker->imageUrl(150,150),
                 'priority' => $priority, // Random priority
                 'description' => $description, // Description for the maintenance issue
-                'status' => $status, // Random status (open, closed, in-progress)
+                'status' => 'open', // Random status (open, closed, in-progress)
                 'reported_at' => $reportedAt, // Date when the issue was reported
                 'resolved_at' => $resolvedAt, // Only set if the status is 'closed'
             ]);

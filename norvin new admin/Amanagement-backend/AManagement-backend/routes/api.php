@@ -28,11 +28,11 @@ Route::prefix('tenant')->middleware('auth:sanctum')->group(function () {
 
     // Payment History
     // Route::get('payments', [TenantController::class, 'paymentHistory']);
-    Route::post('/generate-payment-link', [PaymentController::class, 'generatePaymentLink']);
+    Route::post('payments/generate-payment-link', [PaymentController::class, 'generatePaymentLink']);
 
-    // // Maintenance Requests
+    // Maintenance Requests
     // Route::get('maintenance-requests', [TenantController::class, 'showMaintenanceRequests']);
-    // Route::post('maintenance-requests', [TenantController::class, 'createMaintenanceRequest']);
+    Route::post('maintenance-requests', [TenantController::class, 'createMaintenanceRequest']);
 
     // // Messaging (Tenant -> Admin only)
     // Route::get('messages', [MessageController::class, 'chatHistory']); // Fetch messages with Admin only

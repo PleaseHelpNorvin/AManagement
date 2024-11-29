@@ -98,11 +98,10 @@ class TenantsController extends ApiController
 
     public function showProfile($tenantId)
     {
-        // Retrieve the tenant's profile by ID with related data
+        // Retrieve the tenant by ID with related data
         $tenant = User::with([
-            'tenants',
+            'tenants.maintenanceRequests', // Load maintenanceRequests through tenants relationship
             'contracts',
-            'maintenanceRequests',
             'messagesSent',
             'messagesReceived',
             'notifications',
@@ -115,5 +114,18 @@ class TenantsController extends ApiController
     
         // Return the tenant's profile data as a JSON response
         return $this->successResponse($tenant, 'Tenant Profile Retrieved Successfully');
+    }
+    
+
+    public function createMaintenanceRequest()
+    {
+        $tenant = User::with([
+            'tenants',
+            'contracts',
+            'maintenanceRequests',
+            'messagesSent',
+            'messagesReceived',
+            'notifications',
+        ])->where('id', $tenantId)->where('role', 'tenant')->first();
     }
 }

@@ -6,6 +6,7 @@ use App\Http\Controllers\ApiController;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\MaintenanceRequest;
+use App\Models\Room;
 
 class TechniciansController extends ApiController
 {
@@ -122,9 +123,9 @@ class TechniciansController extends ApiController
 
     public function getAllNullMainteRequests()
 {
-    // Fetch maintenance requests where technician_id is null (not assigned), with related tenant data
-    $requests = MaintenanceRequest::with(['tenant'])->whereNull('technician_id')->get();
-
+    // Fetch maintenance requests where technician_id is null (not assigned), with related tenant and property data (including rooms)
+    $requests = MaintenanceRequest::with(['tenant', 'property.rooms'])->whereNull('technician_id')->get();
+    
     // Check if there are any requests
     if ($requests->isEmpty()) {
         return $this->notFoundResponse(null, 'No unassigned maintenance requests found');
@@ -132,16 +133,27 @@ class TechniciansController extends ApiController
 
     // Format the response
     $formatted = $requests->map(function ($request) {
+
         // Access tenant relationship data
         $tenant = $request->tenant; // This accesses the tenant relationship
+        $property = $request->property; // This accesses the property relationship
+
+        // Get tenant's room using the room relationship in the Tenant model
+        $tenantRoom = $tenant->room; // This will return the Room object that the tenant is assigned to
+
+        // If the tenant is assigned to a room, retrieve the room details
+        $roomName = $tenantRoom ? $tenantRoom->room_code : null;
 
         return [
             'id' => $request->id,
             'priority' => $request->priority,
-            'tenant_id' => $request->tenant_id,
-            'tenant_name' => $tenant ? $tenant->user->name : null, // Accessing tenant's user name
-            'tenant_email' => $tenant ? $tenant->user->email : null, // Accessing tenant's email
-            'property_id' => $request->property_id,
+            'requestor' => $request->tenant_id,
+            'requestor_name' => $tenant ? $tenant->user->name : null, // Accessing tenant's user name
+            'requestor_email' => $tenant ? $tenant->user->email : null, // Accessing tenant's email
+            'property_id' => $property->id,
+            'property_name' => $property->name,
+            'address' => $property->address,
+            'room_name' => $roomName, // The specific room the tenant resides in
             'description' => $request->description,
             'status' => $request->status,
             'reported_at' => $request->reported_at,
