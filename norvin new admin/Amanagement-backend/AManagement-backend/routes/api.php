@@ -27,11 +27,14 @@ Route::post('admin/login', [AuthController::class, 'adminLogin']);
 Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 
     //register user
-Route::post('tenant/regiser', [TenantRegisterController::class, 'createTenantUser']);
+Route::post('tenant/regiser', [TenantsController::class, 'createTenantUser']);
 
 Route::prefix('tenant')->middleware('auth:sanctum')->group(function () {
-    //register tenant user
-    Route::post('create-profile', [TenantRegisterController:: class, 'createTenantUserProfile']);
+    // tenant 
+    // Route::post('create-tenant',[Tenant]);
+    Route::post('create-profile', [TenantsController:: class, 'createTenantUserProfile']);
+    Route::get('profile/{id}', [TenantsController::class, 'showProfile']);
+
     //Contracts routes
     Route::post('contracts/create', [ContractController::class, 'createContract']);
     // Route::post('contracts/create', [ContractController::class, 'createContract']);
@@ -39,15 +42,12 @@ Route::prefix('tenant')->middleware('auth:sanctum')->group(function () {
     Route::get('contracts/{contractId}', [ContractController::class, 'showContract'])->name('contracts.show');
     Route::get('contracts', [ContractController::class, 'getContract']);
 
-    // Tenant Profile
-    Route::get('profile/{id}', [TenantsController::class, 'showProfile']);
-
     // Payment History
     // Route::get('payments', [TenantController::class, 'paymentHistory']);
     Route::post('payments/generate-payment-link', [PaymentController::class, 'generatePaymentLink']);
 
     // Maintenance Requests
-    // Route::get('maintenance-requests', [TenantController::class, 'showMaintenanceRequests']);
+    // Route::get('maintenance-requests/show', [TenantController::class, 'showMaintenanceRequests']);
     Route::post('maintenance-requests', [TenantsController::class, 'createMaintenanceRequest']);
 
     // // Messaging (Tenant -> Admin only)

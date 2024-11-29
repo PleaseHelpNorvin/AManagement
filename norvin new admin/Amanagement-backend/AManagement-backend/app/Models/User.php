@@ -52,7 +52,7 @@ class User extends Authenticatable
 
     public function tenants()
     {
-        return $this->hasMany(Tenant::class);
+        return $this->hasOne(Tenant::class);
     }
 
     public function properties()

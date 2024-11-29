@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\rest;
 
-use Barryvdh\DomPDF\Facade\Pdf;
-use App\Models\Contract;
-use App\Http\Controllers\ApiController;
-use Illuminate\Http\Request;
 use Carbon\Carbon;
+use App\Models\Tenant;
+use App\Models\Contract;
+use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\ApiController;
 
 
 
@@ -17,9 +18,17 @@ class ContractController extends ApiController
 
     public function createContract(Request $request)
     {
+        // Ensure the authenticated user is a tenant
+        $user = auth()->user();
+
+        if (!$user || !$user->isTenant()) {
+            return response()->json([
+                'message' => 'Only tenants can create contracts.',
+            ], 403); // Forbidden
+        }
+
         // Validate request data
         $validated = $request->validate([
-            'tenant_id' => 'required|exists:users,id', // Validate tenant exists in the users table
             'property_id' => 'required|exists:properties,id', // Validate property exists in the properties table
             'contract_type' => 'required|in:template,fixed,monthly,annual,one_time',
             'start_date' => 'required|date',
@@ -40,9 +49,18 @@ class ContractController extends ApiController
         DB::beginTransaction();
 
         try {
+            // Retrieve the tenant record for the logged-in user
+            // $tenant = Tenant::where('user_id', auth()->id())->first();
+
+            if (!$user) {
+                return response()->json([
+                    'message' => 'Tenant record not found for the authenticated user.',
+                ], 404);
+            }
+
             // Creating a new contract record
             $contract = Contract::create([
-                'tenant_id' => $validated['tenant_id'],
+                'tenant_id' => $user->id, // Automatically set the tenant ID
                 'property_id' => $validated['property_id'],
                 'contract_type' => $validated['contract_type'],
                 'start_date' => Carbon::parse($validated['start_date']),
@@ -86,10 +104,6 @@ class ContractController extends ApiController
         $filePath = public_path('contracts/contract_' . $contract->id . '.pdf');
         $pdf->save($filePath);
         return response()->download($filePath);
-
-        // Save or stream the PDF
-        // return $pdf->download('contract_' . $contract->id . '.pdf'); // Download option
-        // return $pdf->stream(); // View in browser option
     }
 
     public function n  ($contractId)
