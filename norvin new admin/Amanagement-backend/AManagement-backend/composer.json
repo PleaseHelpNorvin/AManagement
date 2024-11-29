@@ -13,6 +13,7 @@
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
         "pusher/pusher-php-server": "^7.2",
+        "thiagoalessio/tesseract_ocr": "^2.13",
         "twilio/sdk": "^8.3"
     },
     "require-dev": {

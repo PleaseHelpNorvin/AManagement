@@ -1,0 +1,1008 @@
+{
+	"info": {
+		"_postman_id": "bdfab5b3-5c99-45ca-a24f-7199a362f382",
+		"name": "new amanagement-be",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "38055117"
+	},
+	"item": [
+		{
+			"name": "api/admin/",
+			"item": [
+				{
+					"name": "api/admin/technicians",
+					"item": [
+						{
+							"name": "api/admin/technicians",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "3|nNvSOhjojQZl9TOsF01U5VaEGyNbJTwnyvk9u3GN2c848cb5",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/admin/technicians",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"admin",
+										"technicians"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "api/admin/technicians/map",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "2|ayBVYfVs1rRYOouvapDdyBeHY17TaBZvvB4nuJyu097c5c7e",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/admin/technicians/map",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"admin",
+										"technicians",
+										"map"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "api/admin/technicians/{id}",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "3|nNvSOhjojQZl9TOsF01U5VaEGyNbJTwnyvk9u3GN2c848cb5",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/admin/technicians/9",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"admin",
+										"technicians",
+										"9"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "api/admin/tenants",
+					"item": [
+						{
+							"name": "api/admin/tenants",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "3|nNvSOhjojQZl9TOsF01U5VaEGyNbJTwnyvk9u3GN2c848cb5",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/admin/tenants",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"admin",
+										"tenants"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "api/admin/tenants/table",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "3|nNvSOhjojQZl9TOsF01U5VaEGyNbJTwnyvk9u3GN2c848cb5",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/admin/tenants/table",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"admin",
+										"tenants",
+										"table"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "api/admin/tenants/{id}",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "2|ayBVYfVs1rRYOouvapDdyBeHY17TaBZvvB4nuJyu097c5c7e",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/admin/tenants/4?",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"admin",
+										"tenants",
+										"4"
+									],
+									"query": [
+										{
+											"key": "",
+											"value": null
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "api/admin/tenants/{id}",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "18|5SnRSsFkHfRoLYXPjLpzVQYJqNJoMfh1LWRgkIrv09db2d1b",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/admin/tenants/1?name=Dr. Janae Rutherford&email=meagan98@example.com&phone=+639171234567&lease_start=2024-01-02&lease_end=2025-01-03",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"admin",
+										"tenants",
+										"1"
+									],
+									"query": [
+										{
+											"key": "name",
+											"value": "Dr. Janae Rutherford"
+										},
+										{
+											"key": "email",
+											"value": "meagan98@example.com"
+										},
+										{
+											"key": "phone",
+											"value": "+639171234567"
+										},
+										{
+											"key": "lease_start",
+											"value": "2024-01-02"
+										},
+										{
+											"key": "lease_end",
+											"value": "2025-01-03"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "api/admin/maintenance-requests",
+					"item": [
+						{
+							"name": "api/admin/maintenance-requests/{id}",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "2|ayBVYfVs1rRYOouvapDdyBeHY17TaBZvvB4nuJyu097c5c7e",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/admin/maintenance-requests/1",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"admin",
+										"maintenance-requests",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "api/admin/maintenance-requests",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "2|ayBVYfVs1rRYOouvapDdyBeHY17TaBZvvB4nuJyu097c5c7e",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/admin/maintenance-requests",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"admin",
+										"maintenance-requests"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "api/technician/",
+			"item": [
+				{
+					"name": "api/technician/technicians",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "1|T0mZh6dQXiOmiiKOzQn8uYToUaxvEkGWRfhDCCPJ4bb22393",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/technician/technicians",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"technician",
+								"technicians"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "api/technician/profile/{id}",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "1|UGl5k6eqsQmA42MQKrF2dHkyA4n1ABT375x8Ts2G18848093",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/technician/profile/9",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"technician",
+								"profile",
+								"9"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "api/technician/availablerequests",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "1|UGl5k6eqsQmA42MQKrF2dHkyA4n1ABT375x8Ts2G18848093",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/technician/availablerequests",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"technician",
+								"availablerequests"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "api/technician/myrequests",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "1|UGl5k6eqsQmA42MQKrF2dHkyA4n1ABT375x8Ts2G18848093",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/technician/myrequests",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"technician",
+								"myrequests"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "api/technician/acceptrequests/{id}",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "1|UGl5k6eqsQmA42MQKrF2dHkyA4n1ABT375x8Ts2G18848093",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/technician/acceptrequests/3",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"technician",
+								"acceptrequests",
+								"3"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "api/tenant/",
+			"item": [
+				{
+					"name": "api/tenant/profile/{id}",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "1|T0mZh6dQXiOmiiKOzQn8uYToUaxvEkGWRfhDCCPJ4bb22393",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/tenant/profile/4",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"tenant",
+								"profile",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "api/tenant/payment/sgenerate-payment-link",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "4|v0cU0FZ9lqabnJ6qR70h3yeUFhYHXRxHKnz57Dd988d329cd",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/tenant/payments/generate-payment-link?amount=100000&description=Monthly Rent Payment&remarks=asdasdasdasd",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"tenant",
+								"payments",
+								"generate-payment-link"
+							],
+							"query": [
+								{
+									"key": "amount",
+									"value": "100000"
+								},
+								{
+									"key": "description",
+									"value": "Monthly Rent Payment"
+								},
+								{
+									"key": "remarks",
+									"value": "asdasdasdasd"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "api/tenant/maintenance-requests/{id}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/tenant/{id}/make-request",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"tenant",
+								"{id}",
+								"make-request"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "AUTHENTICATIONS",
+			"item": [
+				{
+					"name": "api/admin/login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/admin/login?email=admin1@example.com&password=password",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"admin",
+								"login"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "admin1@example.com"
+								},
+								{
+									"key": "password",
+									"value": "password"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "api/technician/login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/technician/login?email=tech3@example.com&password=password",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"technician",
+								"login"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "tech3@example.com"
+								},
+								{
+									"key": "password",
+									"value": "password"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "api/tenant/login",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "2|cvqbYjEMIRrB6vdO7rdxuBLj5AkmFbIZYH7S9VBLd9946c11",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/tenant/login?email=tenant1@example.com&password=password",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"tenant",
+								"login"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "tenant1@example.com"
+								},
+								{
+									"key": "password",
+									"value": "password"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "REGISTER TENANT",
+			"item": [
+				{
+					"name": "api/tenant/regiser",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/tenant/regiser?name=test1&email=test1@test.com&password=password&pass",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"tenant",
+								"regiser"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "test1"
+								},
+								{
+									"key": "email",
+									"value": "test1@test.com"
+								},
+								{
+									"key": "password",
+									"value": "password"
+								},
+								{
+									"key": "pass",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "api/tenant/create-profile/{id}",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "1|vTFOrH4Nia572WCcgnoEIK1yDnZa3GcNFxJPSZXu0e2d6b7f",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/tenant/create-profile/?user_id=1&phone_number=9454365069&address=sacc 1 buaya llc&profile_picture_url=null&emergency_contact=mother&bio=null",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"tenant",
+								"create-profile",
+								""
+							],
+							"query": [
+								{
+									"key": "user_id",
+									"value": "1"
+								},
+								{
+									"key": "phone_number",
+									"value": "9454365069"
+								},
+								{
+									"key": "address",
+									"value": "sacc 1 buaya llc"
+								},
+								{
+									"key": "profile_picture_url",
+									"value": "null"
+								},
+								{
+									"key": "emergency_contact",
+									"value": "mother"
+								},
+								{
+									"key": "bio",
+									"value": "null"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "New Request",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "1|vTFOrH4Nia572WCcgnoEIK1yDnZa3GcNFxJPSZXu0e2d6b7f",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/tenant/get-contract-template",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"tenant",
+								"get-contract-template"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

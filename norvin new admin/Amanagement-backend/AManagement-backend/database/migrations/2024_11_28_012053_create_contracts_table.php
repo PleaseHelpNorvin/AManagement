@@ -9,30 +9,39 @@ return new class extends Migration
     /**
     * Run the migrations.
     * 
-    * fixed         |   Fixed-term rental agreement	                  -   The tenant agrees to stay for a specific duration (e.g., 6 months, 1 year).
-    * renewable     |   Renewable lease contract                      -   The contract can be manually renewed at the end of the term.
-    * non_renewable |	Non-renewable lease agreement                 -   A one-time lease contract that cannot be extended (e.g., temporary housing).
-    * auto_renewal  |   Automatically renewing lease                  -   The lease renews automatically unless the tenant gives prior notice to vacate.
-    * single_term   |   Single-payment contract                       -   One-time payment for a short stay (e.g., daily, weekly rental agreements).
-    * recurring	    |   Monthly recurring payment for ongoing tenancy -   Continuous payment schedule for indefinite tenancy (e.g., month-to-month rent).
-
-     */
+    * Fixed-Term Contracts    | Let them specify the start_date and end_date.
+    * Monthly Contracts       | Set the lease_end_date to null, and specify that rent is paid monthly. Optionally, store a renewal_date or last_renewal_date.
+    * Annual Contracts        |	Similar to fixed-term, but with an annual renewal or expiration date.
+    * One-Time Contracts      | Set a one-time rent_amount for the entire duration, and lease_end_date may be the only relevant field.
+    **/
     public function up(): void
     {
         Schema::create('contracts', function (Blueprint $table) {
             $table->id();
             $table->foreignId('tenant_id')->nullable()->constrained('users')->onDelete('cascade');
             $table->foreignId('property_id')->nullable()->constrained('properties')->onDelete('cascade');
-            $table->enum('contract_type', ['template','one_time', 'renewable', 'non_renewable','auto_renewal', 'single_term', 'recurring'])->default('template'); // Enum column
+            $table->enum('contract_type', ['template','fixed','monthly', 'annual', 'one_time'])->default('template'); // Enum column
+            // Start date for the contract
             $table->timestamp('start_date');
+            // End date for fixed-term contracts (nullable for others)
             $table->timestamp('end_date')->nullable();
-            $table->decimal('rent_amount', 8,2);
-            $table->decimal('security_deposit', 8,2);
+            // Rent amount (can be monthly, annual, or one-time payment)
+            $table->decimal('rent_amount', 8, 2);
+            // Payment due date for rent (could be monthly, annually, or just once)
             $table->date('payment_due_date');
+            // Optional renewal date for monthly contracts (can renew periodically)
+            $table->date('renewal_date')->nullable();
+            //optional for the agreement that 
+            $table->text('special_term')->nullable()->default('The tenant agrees to pay the water and electricity bills for their room, starting at 0.');
+            // Enum for the status of the contract
             $table->enum('status', ['template', 'expired', 'terminated', 'finalized', 'active'])->default('template');
+            
+            // Timestamps to track contract creation and updates
             $table->timestamps();
         });
     }
+
+
 
     /**
      * Reverse the migrations.

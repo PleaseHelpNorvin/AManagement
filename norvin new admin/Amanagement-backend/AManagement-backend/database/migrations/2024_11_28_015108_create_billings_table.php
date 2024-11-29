@@ -17,6 +17,10 @@ return new class extends Migration
             $table->foreignId('contract_id')->constrained('contracts')->onDelete('cascade');
             $table->decimal('amount_due',8,2);
             $table->decimal('amount_paid',8,2);
+            $table->binary('electric_meter_picture');
+            $table->binary('water_meter_picture');
+            $table->decimal('electric_reading', 8, 2)->nullable();  // New field for electric reading
+            $table->decimal('water_reading', 8, 2)->nullable();    // New field for water reading
             $table->enum('payment_status', ['pending','paid','overdue']);
             $table->timestamp('billing_period_start');
             $table->datetime('billing_period_end')->nullable();
