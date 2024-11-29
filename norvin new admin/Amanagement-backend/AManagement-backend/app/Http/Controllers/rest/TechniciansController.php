@@ -122,44 +122,44 @@ class TechniciansController extends ApiController
     }
 
     public function getAllNullMainteRequests()
-{
-    // Fetch maintenance requests where technician_id is null (not assigned), with related tenant and property data (including rooms)
-    $requests = MaintenanceRequest::with(['tenant', 'property.rooms'])->whereNull('technician_id')->get();
-    
-    // Check if there are any requests
-    if ($requests->isEmpty()) {
-        return $this->notFoundResponse(null, 'No unassigned maintenance requests found');
-    }
+    {
+        // Fetch maintenance requests where technician_id is null (not assigned), with related tenant and property data (including rooms)
+        $requests = MaintenanceRequest::with(['tenant', 'property.rooms'])->whereNull('technician_id')->get();
+        
+        // Check if there are any requests
+        if ($requests->isEmpty()) {
+            return $this->notFoundResponse(null, 'No unassigned maintenance requests found');
+        }
 
-    // Format the response
-    $formatted = $requests->map(function ($request) {
+        // Format the response
+        $formatted = $requests->map(function ($request) {
 
-        // Access tenant relationship data
-        $tenant = $request->tenant; // This accesses the tenant relationship
-        $property = $request->property; // This accesses the property relationship
+            // Access tenant relationship data
+            $tenant = $request->tenant; // This accesses the tenant relationship
+            $property = $request->property; // This accesses the property relationship
 
-        // Get tenant's room using the room relationship in the Tenant model
-        $tenantRoom = $tenant->room; // This will return the Room object that the tenant is assigned to
+            // Get tenant's room using the room relationship in the Tenant model
+            $tenantRoom = $tenant->room; // This will return the Room object that the tenant is assigned to
 
-        // If the tenant is assigned to a room, retrieve the room details
-        $roomName = $tenantRoom ? $tenantRoom->room_code : null;
+            // If the tenant is assigned to a room, retrieve the room details
+            $roomName = $tenantRoom ? $tenantRoom->room_code : null;
 
-        return [
-            'id' => $request->id,
-            'priority' => $request->priority,
-            'requestor' => $request->tenant_id,
-            'requestor_name' => $tenant ? $tenant->user->name : null, // Accessing tenant's user name
-            'requestor_email' => $tenant ? $tenant->user->email : null, // Accessing tenant's email
-            'property_id' => $property->id,
-            'property_name' => $property->name,
-            'address' => $property->address,
-            'room_name' => $roomName, // The specific room the tenant resides in
-            'description' => $request->description,
-            'status' => $request->status,
-            'reported_at' => $request->reported_at,
-            'resolved_at' => $request->resolved_at,
-        ];
-    });
+            return [
+                'id' => $request->id,
+                'priority' => $request->priority,
+                'requestor' => $request->tenant_id,
+                'requestor_name' => $tenant ? $tenant->user->name : null, // Accessing tenant's user name
+                'requestor_email' => $tenant ? $tenant->user->email : null, // Accessing tenant's email
+                'property_id' => $property->id,
+                'property_name' => $property->name,
+                'address' => $property->address,
+                'room_name' => $roomName, // The specific room the tenant resides in
+                'description' => $request->description,
+                'status' => $request->status,
+                'reported_at' => $request->reported_at,
+                'resolved_at' => $request->resolved_at,
+            ];
+        });
 
     return $this->successResponse($formatted, 'Unassigned maintenance requests retrieved successfully');
 }

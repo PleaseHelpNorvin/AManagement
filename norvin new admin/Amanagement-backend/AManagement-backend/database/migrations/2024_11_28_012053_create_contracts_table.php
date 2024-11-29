@@ -21,15 +21,15 @@ return new class extends Migration
     {
         Schema::create('contracts', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('tenant_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('property_id')->constrained('properties')->onDelete('cascade');
-            $table->enum('contract_type', ['one_time', 'renewable', 'non_renewable','auto_renewal', 'single_term', 'recurring'])->default('one_time'); // Enum column
+            $table->foreignId('tenant_id')->nullable()->constrained('users')->onDelete('cascade');
+            $table->foreignId('property_id')->nullable()->constrained('properties')->onDelete('cascade');
+            $table->enum('contract_type', ['template','one_time', 'renewable', 'non_renewable','auto_renewal', 'single_term', 'recurring'])->default('template'); // Enum column
             $table->timestamp('start_date');
             $table->timestamp('end_date')->nullable();
             $table->decimal('rent_amount', 8,2);
             $table->decimal('security_deposit', 8,2);
-            $table->decimal('payment_due_date', 8,2);
-            $table->enum('status', ['active','expired','terminated'])->default('active');
+            $table->date('payment_due_date');
+            $table->enum('status', ['template', 'expired', 'terminated', 'finalized', 'active'])->default('template');
             $table->timestamps();
         });
     }

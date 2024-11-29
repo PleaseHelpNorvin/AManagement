@@ -14,7 +14,6 @@ class UserSeeder extends Seeder
         $admin1 = User::create([
             'name' => 'Admin One',
             'email' => 'admin1@example.com',
-            'phone' => '1234567890',
             'password' => Hash::make('password'),
             'role' => User::ADMIN,
         ]);
@@ -22,7 +21,6 @@ class UserSeeder extends Seeder
         $admin2 = User::create([
             'name' => 'Admin Two',
             'email' => 'admin2@example.com',
-            'phone' => '0987654321',
             'password' => Hash::make('password'),
             'role' => User::ADMIN,
         ]);
@@ -30,7 +28,6 @@ class UserSeeder extends Seeder
         $admin3 = User::create([
             'name' => 'Admin Three',
             'email' => 'admin3@example.com',
-            'phone' => '1122334455',
             'password' => Hash::make('password'),
             'role' => User::ADMIN,
         ]);
@@ -39,7 +36,6 @@ class UserSeeder extends Seeder
         $tenant1 = User::create([
             'name' => 'Tenant One',
             'email' => 'tenant1@example.com',
-            'phone' => '1112223333',
             'password' => Hash::make('password'),
             'role' => User::TENANT,
         ]);
@@ -47,7 +43,6 @@ class UserSeeder extends Seeder
         $tenant2 = User::create([
             'name' => 'Tenant Two',
             'email' => 'tenant2@example.com',
-            'phone' => '4445556666',
             'password' => Hash::make('password'),
             'role' => User::TENANT,
         ]);
@@ -55,7 +50,6 @@ class UserSeeder extends Seeder
         $tenant3 = User::create([
             'name' => 'Tenant Three',
             'email' => 'tenant3@example.com',
-            'phone' => '7778889999',
             'password' => Hash::make('password'),
             'role' => User::TENANT,
         ]);
@@ -64,7 +58,6 @@ class UserSeeder extends Seeder
         $technician1 = User::create([
             'name' => 'Tech One',
             'email' => 'tech1@example.com',
-            'phone' => '1231231234',
             'password' => Hash::make('password'),
             'role' => User::TECHNICIAN,
         ]);
@@ -72,7 +65,6 @@ class UserSeeder extends Seeder
         $technician2 = User::create([
             'name' => 'Tech Two',
             'email' => 'tech2@example.com',
-            'phone' => '1512512412',
             'password' => Hash::make('password'),
             'role' => User::TECHNICIAN,
         ]);
@@ -80,7 +72,6 @@ class UserSeeder extends Seeder
         $technician3 = User::create([
             'name' => 'Tech Three',
             'email' => 'tech3@example.com',
-            'phone' => '2345678901',
             'password' => Hash::make('password'),
             'role' => User::TECHNICIAN,
         ]);

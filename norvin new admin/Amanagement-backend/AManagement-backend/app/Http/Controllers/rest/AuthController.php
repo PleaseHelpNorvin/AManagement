@@ -97,4 +97,8 @@ class AuthController extends ApiController
         // Return success response
         return $this->successResponse(null, 'Logged out successfully');
     }
+
+
+    // all for registering TENANT
+    
 }

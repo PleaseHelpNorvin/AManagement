@@ -11,6 +11,7 @@ use App\Http\Controllers\rest\TechniciansController;
 use App\Http\Controllers\rest\MessageController;
 use App\Http\Controllers\rest\MaintenanceRequestController;
 use App\Http\Controllers\rest\PaymentController;
+use App\Http\Controllers\rest\TenantRegisterController;
 
 //services
 use App\Services\PayMongoService;
@@ -21,8 +22,13 @@ Route::post('tenant/login', [AuthController::class, 'tenantLogin']);
 Route::post('admin/login', [AuthController::class, 'adminLogin']);
 Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 
+    //register user
+Route::post('tenant/regiser', [TenantRegisterController::class, 'createTenantUser']);
 
 Route::prefix('tenant')->middleware('auth:sanctum')->group(function () {
+    //register tenant user
+    Route::post('/create-profile', [TenantRegisterController:: class, 'createTenantUserProfile']);
+    Route::get('/get-contract-template', [TenantRegisterController::class, 'getContractTemplate']);
     // Tenant Profile
     Route::get('profile/{id}', [TenantsController::class, 'showProfile']);
 
