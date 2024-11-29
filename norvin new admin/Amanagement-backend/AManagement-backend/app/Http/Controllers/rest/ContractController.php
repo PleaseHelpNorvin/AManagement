@@ -92,7 +92,7 @@ class ContractController extends ApiController
         // return $pdf->stream(); // View in browser option
     }
 
-    public function showContract($contractId)
+    public function n  ($contractId)
     {
         // Retrieve contract and related data
         $contract = Contract::with('tenant', 'property')->findOrFail($contractId);
