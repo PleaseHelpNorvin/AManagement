@@ -27,11 +27,11 @@ Route::post('admin/login', [AuthController::class, 'adminLogin']);
 Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 
     //register user
-Route::post('tenant/regiser', [TenantsController::class, 'createTenantUser']);
+Route::post('tenant/register', [TenantsController::class, 'createTenantUser']);
 
 Route::prefix('tenant')->middleware('auth:sanctum')->group(function () {
     // tenant 
-    // Route::post('create-tenant',[Tenant]);
+    Route::post('create-tenant',[TenantsController::class,'createTenantRecord']);
     Route::post('create-profile', [TenantsController:: class, 'createTenantUserProfile']);
     Route::get('profile/{id}', [TenantsController::class, 'showProfile']);
 

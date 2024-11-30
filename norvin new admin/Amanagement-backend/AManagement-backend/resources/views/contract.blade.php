@@ -82,12 +82,12 @@
 
     <div class="contract-info">
         <h2>Contract Information</h2>
-        <p><span class="section-label">Contract Type:</span> 
+        {{-- <p><span class="section-label">Contract Type:</span> 
             [<span class="checkbox {{ $contract->contract_type == 'fixed' ? 'x' : '' }}"></span>] Fixed 
             [<span class="checkbox {{ $contract->contract_type == 'monthly' ? 'x' : '' }}"></span>] Monthly 
             [<span class="checkbox {{ $contract->contract_type == 'annual' ? 'x' : '' }}"></span>] Annual 
             [<span class="checkbox {{ $contract->contract_type == 'one_time' ? 'x' : '' }}"></span>] One-Time
-        </p>
+        </p> --}}
         <p><span class="section-label">Contract Status:</span> 
             [<span class="checkbox {{ $contract->status == 'active' ? 'x' : '' }}"></span>] Active 
             [<span class="checkbox {{ $contract->status == 'expired' ? 'x' : '' }}"></span>] Expired 

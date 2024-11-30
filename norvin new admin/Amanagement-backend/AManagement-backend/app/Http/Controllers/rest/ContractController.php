@@ -30,7 +30,6 @@ class ContractController extends ApiController
         // Validate request data
         $validated = $request->validate([
             'property_id' => 'required|exists:properties,id', // Validate property exists in the properties table
-            'contract_type' => 'required|in:template,fixed,monthly,annual,one_time',
             'start_date' => 'required|date',
             'end_date' => 'nullable|date',
             'rent_amount' => 'required|numeric|min:0',
@@ -62,7 +61,6 @@ class ContractController extends ApiController
             $contract = Contract::create([
                 'tenant_id' => $user->id, // Automatically set the tenant ID
                 'property_id' => $validated['property_id'],
-                'contract_type' => $validated['contract_type'],
                 'start_date' => Carbon::parse($validated['start_date']),
                 'end_date' => $validated['end_date'] ? Carbon::parse($validated['end_date']) : null,
                 'rent_amount' => $validated['rent_amount'],

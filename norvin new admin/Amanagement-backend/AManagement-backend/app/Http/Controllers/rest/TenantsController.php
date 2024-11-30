@@ -16,87 +16,115 @@ class TenantsController extends ApiController
 {
     
     public function createTenantUser(Request $request)
-{
-    // Validate the request
-    $validator = Validator::make($request->all(), [
-        'name' => 'required|string|max:255',
-        'email' => 'required|string|email|max:255|unique:users',
-        'password' => 'required|string|min:8',  // password confirmation field should also be present in the request
-    ]);
+    {
+        // Validate the request
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8',  // password confirmation field should also be present in the request
+        ]);
 
-    // If validation fails, return validation error response
-    if ($validator->fails()) {
-        return response()->json(['errors' => $validator->errors()], 422);
+        // If validation fails, return validation error response
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
+        // Create a new user (tenant) using mass assignment
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),  // Hashing the password before saving
+        ]);
+
+        // Generate a Sanctum token for the new user
+        $token = $user->createToken('Tenant-Registered-Token')->plainTextToken;
+
+        // Log the user in after creation
+        auth()->login($user);
+
+        // Return a success response with a boolean for authentication status
+        return $this->successResponse([
+            'message' => 'Tenant user created and authenticated successfully',
+            'token' => $token,
+            'user' => $user,
+            'is_authenticated' => auth()->check() // Check if the user is authenticated
+        ]);
     }
-
-    // Create a new user (tenant) using mass assignment
-    $user = User::create([
-        'name' => $request->name,
-        'email' => $request->email,
-        'password' => Hash::make($request->password),  // Hashing the password before saving
-    ]);
-
-    // Generate a Sanctum token for the new user
-    $token = $user->createToken('Tenant-Registered-Token')->plainTextToken;
-
-    // Log the user in after creation
-    auth()->login($user);
-
-    // Return a success response with a boolean for authentication status
-    return $this->successResponse([
-        'message' => 'Tenant user created and authenticated successfully',
-        'token' => $token,
-        'user' => $user,
-        'is_authenticated' => auth()->check() // Check if the user is authenticated
-    ]);
-}
 
 
 
     public function createTenantUserProfile(Request $request)
-{
-    // Validate the incoming data
-    $validator = Validator::make($request->all(), [
-        'phone_number' => 'nullable|string|max:15',
-        'address' => 'nullable|string|max:255',
-        'profile_picture_url' => 'nullable',  // Assuming the URL format for the picture
-        'emergency_contact' => 'nullable|string|max:15',
-        'bio' => 'nullable|string|max:500',
-    ]);
+    {
+        // Validate the incoming data
+        $validator = Validator::make($request->all(), [
+            'phone_number' => 'nullable|string|max:15',
+            'address' => 'nullable|string|max:255',
+            'profile_picture_url' => 'nullable',  // Assuming the URL format for the picture
+            'emergency_contact' => 'nullable|string|max:15',
+            'bio' => 'nullable|string|max:500',
+        ]);
 
-    // If validation fails, return validation error response
-    if ($validator->fails()) {
-        return response()->json(['errors' => $validator->errors()], 422);
+        // If validation fails, return validation error response
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
+        // Get the authenticated user's ID
+        $userId = auth()->user()->id;
+
+        // Check if the user exists
+        $user = User::find($userId);
+
+        if (!$user) {
+            return response()->json(['error' => 'User not found'], 404);
+        }
+
+        // Check if the profile already exists for the user
+        $existingProfile = UserProfile::where('user_id', $userId)->first();
+        if ($existingProfile) {
+            return response()->json(['error' => 'Profile already exists for this user'], 409);
+        }
+
+        // Create a new profile for the tenant using mass-assignment
+        $profile = UserProfile::create([
+            'user_id' => $user->id,   // Link the profile to the authenticated user
+            'phone_number' => $request->phone_number,
+            'address' => $request->address,
+            'profile_picture_url' => $request->profile_picture_url,
+            'emergency_contact' => $request->emergency_contact,
+            'bio' => $request->bio,
+        ]);
+
+        return response()->json(['message' => 'Tenant user profile created successfully', 'profile' => $profile], 201);
     }
 
-    // Get the authenticated user's ID
-    $userId = auth()->user()->id;
+    public function createTenantRecord(Request $request)
+    {
+        // Validate the incoming data
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required|exists:users,id',  // Ensure the user exists
+            'lease_start_date' => 'required|date',
+            'lease_end_date' => 'nullable|date',
+            'room_id' => 'required|exists:rooms,id',  // Ensure the room exists
+            // 'status' => 'required|string',  // e.g., active or inactive
+        ]);
 
-    // Check if the user exists
-    $user = User::find($userId);
+        // If validation fails, return validation error response
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
 
-    if (!$user) {
-        return response()->json(['error' => 'User not found'], 404);
+        // Create a new tenant record
+        $tenant = Tenant::create([
+            'user_id' => $request->user_id,
+            'lease_start_date' => $request->lease_start_date,
+            'lease_end_date' => $request->lease_end_date,
+            'room_id' => $request->room_id,
+            'status' => 'active',
+        ]);
+
+        return response()->json(['message' => 'Tenant record created successfully', 'tenant' => $tenant], 201);
     }
-
-    // Check if the profile already exists for the user
-    $existingProfile = UserProfile::where('user_id', $userId)->first();
-    if ($existingProfile) {
-        return response()->json(['error' => 'Profile already exists for this user'], 409);
-    }
-
-    // Create a new profile for the tenant using mass-assignment
-    $profile = UserProfile::create([
-        'user_id' => $user->id,   // Link the profile to the authenticated user
-        'phone_number' => $request->phone_number,
-        'address' => $request->address,
-        'profile_picture_url' => $request->profile_picture_url,
-        'emergency_contact' => $request->emergency_contact,
-        'bio' => $request->bio,
-    ]);
-
-    return response()->json(['message' => 'Tenant user profile created successfully', 'profile' => $profile], 201);
-}
 
 
     public function index()
