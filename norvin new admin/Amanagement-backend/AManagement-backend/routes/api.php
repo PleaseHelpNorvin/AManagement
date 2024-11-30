@@ -37,7 +37,6 @@ Route::prefix('tenant')->middleware('auth:sanctum')->group(function () {
 
     //Contracts routes
     Route::post('contracts/create', [ContractController::class, 'createContract']);
-    // Route::post('contracts/create', [ContractController::class, 'createContract']);
     Route::get('contracts/{contractId}/generate', [ContractController::class, 'generateContract']);
     Route::get('contracts/{contractId}', [ContractController::class, 'showContract'])->name('contracts.show');
     Route::get('contracts', [ContractController::class, 'getContract']);

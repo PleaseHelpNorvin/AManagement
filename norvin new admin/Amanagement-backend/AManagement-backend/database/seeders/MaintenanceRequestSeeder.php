@@ -55,6 +55,8 @@ class MaintenanceRequestSeeder extends Seeder
             // Generate the reported_at and resolved_at dates
             $reportedAt = $faker->dateTimeThisYear(); // Random date within the current year
             $resolvedAt = $status == 'closed' ? $faker->dateTimeBetween($reportedAt, 'now') : null; // If status is 'closed', set a resolved date
+            
+            $title = $faker->text(10);
 
             // Create the maintenance request record
             MaintenanceRequest::create([
@@ -62,6 +64,7 @@ class MaintenanceRequestSeeder extends Seeder
                 'tenant_id' => $tenant->id,  // Associate the request with the tenant
                 'property_id' => $property->id,  // Associate with the property
                 'maintenance_picture_url' => $faker->imageUrl(150,150),
+                'title' => $title,
                 'priority' => $priority, // Random priority
                 'description' => $description, // Description for the maintenance issue
                 'status' => 'open', // Random status (open, closed, in-progress)

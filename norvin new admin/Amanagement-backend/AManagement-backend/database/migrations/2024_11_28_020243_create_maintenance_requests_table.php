@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('technician_id')->nullable()->constrained('users')->onDelete('set null');
             $table->foreignId('tenant_id')->constrained('tenants')->onDelete('cascade');
             $table->foreignId('property_id')->constrained('properties')->onDelete('cascade');
+            $table->string('title');
             $table->binary('maintenance_picture_url');
             $table->text('description');
             $table->enum('status', ['open','closed','in-progress'])->default('open');

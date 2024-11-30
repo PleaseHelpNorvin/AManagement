@@ -57,7 +57,7 @@ class ContractSeeder extends Seeder
             Contract::create([
                 'tenant_id' => $tenant->id,
                 'property_id' => $property->id,
-                'contract_type' => $contractType,
+                // 'contract_type' => $contractType,
                 'start_date' => $startDate,
                 'end_date' => $endDate,
                 'rent_amount' => $rentAmount,

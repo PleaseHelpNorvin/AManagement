@@ -39,7 +39,7 @@ return new class extends Migration
         
             // Renewal/Termination
             $table->date('renewal_date')->nullable(); // Optional renewal date for recurring contracts
-            $table->enum('status', ['active', 'expired', 'terminated', 'finalized'])->default('active'); // Status of the contract
+            $table->enum('status', ['pending','active', 'expired', 'terminated', 'finalized'])->default('pending'); // Status of the contract
             
             // Optional Details
             $table->text('special_terms')->nullable()->default('The tenant agrees to pay for utilities (electricity, water, etc.).'); // Special agreements or terms
