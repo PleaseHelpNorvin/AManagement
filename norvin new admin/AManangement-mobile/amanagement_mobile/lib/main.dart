@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:amanagement_mobile/screens/register1.dart'; // Import the screen
-import 'package:amanagement_mobile/screens/register2.dart';
-import 'package:amanagement_mobile/screens/register3.dart';
+import 'package:amanagement_mobile/screens/register/register1.dart';
+import 'package:amanagement_mobile/screens/register/register2.dart';
 void main() {
   runApp(MyApp());
 }

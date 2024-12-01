@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import '../../screens/register/register1.dart';
 import 'dart:io';
 
 class Register3 extends StatefulWidget {
@@ -49,6 +50,7 @@ class _CreateUserProfileScreenState extends State<Register3> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: BackButton(), // Add Back Button
         title: Text('Create User Profile'),
       ),
       body: Padding(
@@ -57,38 +59,7 @@ class _CreateUserProfileScreenState extends State<Register3> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Phone Number Field
-              TextField(
-                controller: phoneNumberController,
-                decoration: InputDecoration(
-                  labelText: 'Phone Number',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.phone),
-                ),
-                keyboardType: TextInputType.phone,
-              ),
-              SizedBox(height: 20),
-              // Address Field
-              TextField(
-                controller: addressController,
-                decoration: InputDecoration(
-                  labelText: 'Address',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.home),
-                ),
-              ),
-              SizedBox(height: 20),
-              // Emergency Contact Field
-              TextField(
-                controller: emergencyContactController,
-                decoration: InputDecoration(
-                  labelText: 'Emergency Contact',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.contact_phone),
-                ),
-              ),
-              SizedBox(height: 20),
-              // Profile Picture Upload
+              //Profile Picture F
               Text(
                 'Upload Profile Picture:',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
@@ -102,13 +73,48 @@ class _CreateUserProfileScreenState extends State<Register3> {
                           radius: 50,
                           backgroundImage: FileImage(_profilePicture!),
                         )
-                      : CircleAvatar(
+                      : const CircleAvatar(
                           radius: 50,
                           child: Icon(Icons.add_a_photo, size: 30),
                         ),
                 ),
               ),
               SizedBox(height: 20),
+
+              // Phone Number Field
+              TextField(
+                controller: phoneNumberController,
+                decoration: const InputDecoration(
+                  labelText: 'Phone Number',
+                  border: OutlineInputBorder(),
+                  prefixIcon: Icon(Icons.phone),
+                ),
+                keyboardType: TextInputType.phone,
+              ),
+              SizedBox(height: 20),
+
+              // Address Field
+              TextField(
+                controller: addressController,
+                decoration: InputDecoration(
+                  labelText: 'Address',
+                  border: OutlineInputBorder(),
+                  prefixIcon: Icon(Icons.home),
+                ),
+              ),
+              SizedBox(height: 20),
+
+              // Emergency Contact Field
+              TextField(
+                controller: emergencyContactController,
+                decoration: InputDecoration(
+                  labelText: 'Emergency Contact',
+                  border: OutlineInputBorder(),
+                  prefixIcon: Icon(Icons.contact_phone),
+                ),
+              ),
+              SizedBox(height: 20),
+
               // Bio Picture Upload
               Text(
                 'Upload Bio Picture:',
@@ -145,23 +151,30 @@ class _CreateUserProfileScreenState extends State<Register3> {
                 ),
               ),
               SizedBox(height: 30),
+                SizedBox(height: 30),
+              SizedBox(height: 30),
+              SizedBox(height: 30),
+
               // Save Button
               Center(
-                child: ElevatedButton(
-                  onPressed: () {
-                    // Save profile details or make an API call here
-                    print('Email: ${widget.email}');
-                    print('Password: ${widget.password}');
-                    print('Phone: ${phoneNumberController.text}');
-                    print('Address: ${addressController.text}');
-                    print('Emergency Contact: ${emergencyContactController.text}');
-                    print('Profile Picture Path: ${_profilePicture?.path}');
-                    print('Bio Picture Path: ${_bioPicture?.path}');
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('User Profile Created!')),
-                    );
-                  },
-                  child: Text('Create Profile'),
+                child: SizedBox(
+                  width: double.infinity, // Set width to max
+                  child: ElevatedButton(
+                    onPressed: () {
+                      // Save profile details or make an API call here
+                      print('Email: ${widget.email}');
+                      print('Password: ${widget.password}');
+                      print('Phone: ${phoneNumberController.text}');
+                      print('Address: ${addressController.text}');
+                      print('Emergency Contact: ${emergencyContactController.text}');
+                      print('Profile Picture Path: ${_profilePicture?.path}');
+                      print('Bio Picture Path: ${_bioPicture?.path}');
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('User Profile Created!')),
+                      );
+                    },
+                    child: Text('Create Profile'),
+                  ),
                 ),
               ),
             ],
