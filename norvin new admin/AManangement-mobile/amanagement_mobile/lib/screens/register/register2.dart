@@ -1,4 +1,5 @@
 import 'package:amanagement_mobile/api/api.dart';
+import 'package:amanagement_mobile/models/profile.dart';
 import 'package:amanagement_mobile/utils/https.dart';
 import 'package:flutter/foundation.dart' as foundation;
 import 'package:flutter/material.dart';
@@ -8,6 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io'; // For mobile platform file handling
 import 'package:mime/mime.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import './contract1.dart';
 
 class Register2 extends StatefulWidget {
   final int userId;
@@ -15,7 +17,12 @@ class Register2 extends StatefulWidget {
   final String name;
   final String token;
 
-  Register2({required this.token, required this.userId, required this.email, required this.name});
+  Register2({
+    required this.token, 
+    required this.userId, 
+    required this.email, 
+    required this.name
+  });
 
   @override
   CreateUserProfileScreenState createState() => CreateUserProfileScreenState();
@@ -64,7 +71,7 @@ class CreateUserProfileScreenState extends State<Register2> {
   }
 
   // Function to handle the profile submission
-  Future<void> _submitProfile() async {
+Future<void> _submitProfile() async {
   if (phoneNumberController.text.trim().isEmpty ||
       addressController.text.trim().isEmpty ||
       emergencyContactController.text.trim().isEmpty) {
@@ -75,32 +82,50 @@ class CreateUserProfileScreenState extends State<Register2> {
   }
 
   try {
-    var response = await ApiService().createProfile(
-      phoneNumber: phoneNumberController.text.trim(),
-      address: addressController.text.trim(),
-      emergencyContact: emergencyContactController.text.trim(),
-      profilePicture: _profilePicture,
-      bio: _bioPicture,
-      token: widget.token,
+    ProfileResponse response = ProfileResponse.fromJson(
+      await ApiService().createProfile(
+        phoneNumber: phoneNumberController.text.trim(),
+        address: addressController.text.trim(),
+        emergencyContact: emergencyContactController.text.trim(),
+        profilePicture: _profilePicture,
+        bio: _bioPicture,
+        token: widget.token,
+      ),
     );
 
-    if (response['statusCode'] == 200) {
+    if (response.success == true) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Profile created successfully!')),
       );
-      Navigator.pop(context);
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => Contract1(
+            token: widget.token,
+            userId: widget.userId,
+            email: widget.email,
+            name: widget.name,
+          ),
+        ),
+      );
     } else {
+      // Print error message
+      String errorMessage = response.message ?? 'Unknown error';
+      print('Error: $errorMessage');  // Ensure the error message is printed
+
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed: ${response['message']}')),
+        SnackBar(content: Text('Failed: $errorMessage')),
       );
     }
   } catch (e) {
-    print('Error: $e');
+    print('An error occurred: $e');  // Log error in the catch block as well
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('An error occurred.')),
+      SnackBar(content: Text('An error occurred. Please try again.')),
     );
   }
 }
+
+
 
 
 

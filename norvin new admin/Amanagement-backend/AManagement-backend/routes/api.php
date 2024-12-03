@@ -2,23 +2,24 @@
 
 //libraries
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
+use App\Services\PayMongoService;
 
 //controllers
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\rest\AuthController;
-use App\Http\Controllers\rest\TenantsController;
-use App\Http\Controllers\rest\TechniciansController;
+use App\Http\Controllers\rest\RoomController;
 use App\Http\Controllers\rest\MessageController;
-use App\Http\Controllers\rest\MaintenanceRequestController;
 use App\Http\Controllers\rest\PaymentController;
-use App\Http\Controllers\rest\TenantRegisterController;
+use App\Http\Controllers\rest\TenantsController;
 use App\Http\Controllers\rest\ContractController;
+use App\Http\Controllers\rest\TechniciansController;
 // use App\Http\Controllers\rest\ContractController;
 
 // TenantController
 
 //services
-use App\Services\PayMongoService;
+use App\Http\Controllers\rest\TenantRegisterController;
+use App\Http\Controllers\rest\MaintenanceRequestController;
 
     // login route
 Route::post('technician/login', [AuthController::class, 'technicianLogin']);
@@ -40,6 +41,10 @@ Route::prefix('tenant')->middleware('auth:sanctum')->group(function () {
     Route::get('contracts/{contractId}/generate', [ContractController::class, 'generateContract']);
     Route::get('contracts/{contractId}', [ContractController::class, 'showContract'])->name('contracts.show');
     Route::get('contracts', [ContractController::class, 'getContract']);
+
+    //Properties / Rooms
+    Route::get('properties', [RoomController::class, 'showProperties']);
+    Route::get('room/{property_id}', [RoomController::class, 'showRoomsByPropertyId']);
 
     // Payment History
     // Route::get('payments', [TenantController::class, 'paymentHistory']);

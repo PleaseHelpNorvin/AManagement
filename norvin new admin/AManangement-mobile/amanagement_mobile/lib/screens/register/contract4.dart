@@ -1,27 +1,35 @@
 import 'package:flutter/material.dart';
-import '../register/contract3.dart';
+import '../register/contract2.dart';
 
-class ConfirmationScreen extends StatelessWidget {
+class ContractOptionsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Confirm Contract")),
+      appBar: AppBar(title: Text("Contract Options")),
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: Column(
           children: [
-            Text("Property: Property 1"),
-            Text("Room: Room A"),
-            Text("Rent: \$1200.00"),
-            Text("Start Date: 2024-01-01"),
-            Text("Auto-Renew: Yes"),
-            Text("Payment Frequency: Monthly"),
+            SwitchListTile(
+              title: Text("Auto-Renew Contract"),
+              value: true, // Default value
+              onChanged: (value) {
+                // Update auto-renew option
+              },
+            ),
+            TextField(
+              decoration: InputDecoration(
+                labelText: "Special Terms",
+                hintText: "Enter any additional terms...",
+              ),
+              maxLines: 3,
+            ),
             Spacer(),
             ElevatedButton(
               onPressed: () {
-                // Submit the contract
+                // Navigate to the confirmation screen
               },
-              child: Text("Confirm and Submit"),
+              child: Text("Next"),
             ),
           ],
         ),
