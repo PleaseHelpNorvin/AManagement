@@ -71,7 +71,21 @@ Route::prefix('admin')->middleware('auth:sanctum')->group(function () {
     Route::get('technicians/map', [TechniciansController::class, 'mappedTechnicians']);
     Route::get('technicians/{id}', [TechniciansController::class, 'showProfile']);
 
-
+    //contract settings for making the admin can set a 1 data only intended for adding customized 
+    /*
+    {
+        "success": true,
+        "message": "Contract settings updated successfully.",
+        "data": {
+            "id": 1,
+            "late_fee_percentage": 7.00,
+            "security_deposit_percentage": 60.00,
+            "created_at": "2024-12-03T00:00:00.000000Z",
+            "updated_at": "2024-12-03T00:00:00.000000Z"
+        }
+            only the next the admin can only update that data
+    } */
+    Route::put('/contract-settings', [ContractSettingsController::class, 'updateContractSettings']);
 
     // // Admin to Tenant Messaging (Admin chooses tenant)
     // Route::post('messages/{tenantId}', [MessageController::class, 'sendMessage']); // Admin sends messages to tenants

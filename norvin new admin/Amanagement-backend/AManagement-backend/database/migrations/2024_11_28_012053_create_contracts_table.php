@@ -17,38 +17,22 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('contracts', function (Blueprint $table) {
-            // Primary Key
             $table->id();
-            
-            // Foreign Keys
-            $table->foreignId('tenant_id')->nullable()->constrained('users')->onDelete('cascade'); // Links to the tenant
+            $table->foreignId('tenant_id')->nullable()->constrained('users')->onDelete('set null'); // Tenant who accepts the contract
             $table->foreignId('property_id')->nullable()->constrained('properties')->onDelete('cascade'); // Links to the property
-        
-            // Contract Details
-            // $table->enum('contract_type', ['template', 'fixed', 'monthly', 'annual', 'one_time'])->default('template'); // Type of contract
-            $table->timestamp('start_date'); // Contract start date
-            $table->timestamp('end_date')->nullable(); // Contract end date (nullable for monthly/indefinite)
-        
-            // Financial Details
-            $table->decimal('rent_amount', 10, 2); // Rent amount (monthly, annual, or one-time)
-            $table->decimal('security_payment', 10, 2)->default(0.00); // Security deposit amount
-            $table->enum('payment_frequency', ['monthly', 'annually', 'one_time'])->default('monthly'); // How often the payment is due
-            $table->date('payment_due_date'); // Date when rent is due
-            $table->decimal('late_fee', 10, 2)->nullable()->default(0.00); // Late payment fee
-            $table->decimal('total_paid', 10, 2)->default(0.00); // Track total payments made by the tenant
-        
-            // Renewal/Termination
-            $table->date('renewal_date')->nullable(); // Optional renewal date for recurring contracts
-            $table->enum('status', ['pending','active', 'expired', 'terminated', 'finalized'])->default('pending'); // Status of the contract
-            
-            // Optional Details
-            $table->text('special_terms')->nullable()->default('The tenant agrees to pay for utilities (electricity, water, etc.).'); // Special agreements or terms
-            $table->boolean('is_renewable')->default(false); // Whether the contract is renewable
-            $table->text('notes')->nullable(); // Additional notes or comments
-        
-            // Metadata
-            $table->timestamps(); // Created and updated timestamps
+            $table->string('contract_code')->unique();
+            $table->decimal('rent_amount', 8, 2); // Rent amount for the specific contract
+            $table->decimal('late_fee', 8, 2); // Late fee for the specific contract
+            $table->decimal('security_deposit_amount', 8, 2); // Security deposit for the specific contract
+            $table->date('contract_date'); // Date the contract was created
+            $table->date('start_date'); // Start date of the contract
+            $table->date('end_date')->nullable(); // End date of the contract (nullable if ongoing)
+            $table->integer('notice_period');
+            $table->enum('status', ['pending', 'accepted', 'rejected'])->default('pending'); // Status of the contract
+            $table->enum('payment_due_day', ['15th', 'last_day']); // Payment due day
+            $table->timestamps(); // Created and Updated timestamps
         });
+        
     }
 
 
