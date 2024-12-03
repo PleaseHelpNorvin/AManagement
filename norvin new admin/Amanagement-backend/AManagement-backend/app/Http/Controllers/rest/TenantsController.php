@@ -10,6 +10,7 @@ use App\Models\UserProfile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\ApiController;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class TenantsController extends ApiController
@@ -51,52 +52,91 @@ class TenantsController extends ApiController
         ]);
     }
 
-
-
     public function createTenantUserProfile(Request $request)
     {
         // Validate the incoming data
         $validator = Validator::make($request->all(), [
             'phone_number' => 'nullable|string|max:15',
             'address' => 'nullable|string|max:255',
-            'profile_picture_url' => 'nullable',  // Assuming the URL format for the picture
+            'profile_picture_url' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',  // Image validation
             'emergency_contact' => 'nullable|string|max:15',
-            'bio' => 'nullable|string|max:500',
+            'bio' => 'nullable|file|mimes:png,jpg,pdf,docx,txt|max:5120', // Bio validation
         ]);
-
+    
         // If validation fails, return validation error response
         if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
+            return $this->validationErrorResponse($validator->errors());
         }
-
+    
         // Get the authenticated user's ID
         $userId = auth()->user()->id;
-
+    
         // Check if the user exists
         $user = User::find($userId);
-
+    
         if (!$user) {
-            return response()->json(['error' => 'User not found'], 404);
+            return $this->notFoundResponse(null, 'User not found');
         }
-
+    
         // Check if the profile already exists for the user
         $existingProfile = UserProfile::where('user_id', $userId)->first();
         if ($existingProfile) {
-            return response()->json(['error' => 'Profile already exists for this user'], 409);
+            return $this->errorResponse(null, 'Profile already exists for this user', 409);
         }
-
+    
+        // Ensure required folders exist
+        if (!file_exists(public_path('profile_pictures'))) {
+            mkdir(public_path('profile_pictures'), 0777, true);
+        }
+        if (!file_exists(public_path('bios'))) {
+            mkdir(public_path('bios'), 0777, true);
+        }
+    
+        // Handle file uploads (profile picture and bio)
+        $profilePictureUrl = null;
+        $bio = null;
+    
+        // Store profile picture with user ID in the file name
+        if ($request->hasFile('profile_picture_url')) {
+            $profilePictureUrl = $request->file('profile_picture_url')->storeAs(
+                'profile_pictures', 
+                'user_' . $userId . '_profile_picture.' . $request->file('profile_picture_url')->getClientOriginalExtension(),
+                'public'
+            );
+    
+            // Ensure file exists after upload
+            if (!Storage::disk('public')->exists($profilePictureUrl)) {
+                return $this->errorResponse(null, 'Failed to save profile picture.', 500);
+            }
+        }
+    
+        // Store bio with user ID in the file name
+        if ($request->hasFile('bio')) {
+            $bio = $request->file('bio')->storeAs(
+                'bios', 
+                'user_' . $userId . '_bio.' . $request->file('bio')->getClientOriginalExtension(),
+                'public'
+            );
+    
+            // Ensure file exists after upload
+            if (!Storage::disk('public')->exists($bio)) {
+                return $this->errorResponse(null, 'Failed to save bio.', 500);
+            }
+        }
+    
         // Create a new profile for the tenant using mass-assignment
         $profile = UserProfile::create([
             'user_id' => $user->id,   // Link the profile to the authenticated user
             'phone_number' => $request->phone_number,
             'address' => $request->address,
-            'profile_picture_url' => $request->profile_picture_url,
+            'profile_picture_url' => $profilePictureUrl ? asset('storage/' . $profilePictureUrl) : null, // Generate accessible URL
             'emergency_contact' => $request->emergency_contact,
-            'bio' => $request->bio,
+            'bio' => $bio ? asset('storage/' . $bio) : null, // Generate accessible URL
         ]);
-
-        return response()->json(['message' => 'Tenant user profile created successfully', 'profile' => $profile], 201);
+    
+        return $this->successResponse($profile, 'Tenant user profile created successfully', 201);
     }
+
 
     public function createTenantRecord(Request $request)
     {

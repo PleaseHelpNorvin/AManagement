@@ -13,6 +13,33 @@ class CorsMiddleware
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
+    // public function handle(Request $request, Closure $next): Response
+    // {
+    //     // Get the origin of the incoming request
+    //     $origin = $request->headers->get('Origin');
+
+    //     // Set the headers to allow the valid origin
+    //     $headers = [
+    //         'Access-Control-Allow-Methods' => 'GET, POST, PUT, DELETE, OPTIONS',
+    //         'Access-Control-Allow-Origin' => '*',  // Allow all origins for development
+    //         'Access-Control-Allow-Headers' => 'Content-Type, X-Requested-With, Authorization',
+    //         'Access-Control-Expose-Headers' => '*',
+    //         'Access-Control-Allow-Credentials' => 'true',  // Set to true if you need credentials (like cookies)
+    //     ];
+
+    //     if ($request->getMethod() === 'OPTIONS') {
+    //         return response()->json('OK', 200, $headers);
+    //     }
+
+    //     $response = $next($request);
+
+    //     foreach ($headers as $key => $value) {
+    //         $response->header($key, $value);
+    //     }
+
+    //     return $response;
+    // }
+
     public function handle(Request $request, Closure $next): Response
     {
         // $origins = [

@@ -37,6 +37,11 @@ dependencies:
   cupertino_icons: ^1.0.8
   shared_preferences: ^2.3.3
   image_picker: ^1.1.2
+  http: ^1.2.2
+  http_parser: ^4.1.1
+  file_picker: ^8.1.4
+  mime: ^1.0.0
+  dio: ^5.7.0
 
 dev_dependencies:
   flutter_test:
