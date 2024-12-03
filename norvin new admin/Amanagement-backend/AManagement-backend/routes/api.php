@@ -75,6 +75,17 @@ Route::prefix('admin')->middleware('auth:sanctum')->group(function () {
     /*
     {
         "success": true,
+        "message": "Success",
+        "data": {
+            "id": 1,
+            "late_fee_percentage": 5.00,
+            "security_deposit_percentage": 50.00,
+            "created_at": "2024-12-03T00:00:00.000000Z",
+            "updated_at": "2024-12-03T00:00:00.000000Z"
+        }
+    },
+    {
+        "success": true,
         "message": "Contract settings updated successfully.",
         "data": {
             "id": 1,
