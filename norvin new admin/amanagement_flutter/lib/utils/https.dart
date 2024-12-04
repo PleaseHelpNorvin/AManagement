@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import '../model/login.dart';
 import '../model/profile.dart';
 import 'package:mime/mime.dart';
 import 'dart:convert';
@@ -46,6 +47,59 @@ class ApiService {
     } catch (e) {
       print('Error during registration: $e');
       return null;
+    }
+  }
+
+  Future<LoginResponse?>loginUser(String email, String password) async { 
+    try {
+      final response = await http.post(
+        Uri.parse(Api.loginEndpoint),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({
+            'email': email,
+            'password':password,
+          }),
+      );
+
+      if(response.statusCode == 200) {
+        final Map<String, dynamic> responseBody = jsonDecode(response.body);
+        print(responseBody);
+        return LoginResponse.fromJson(responseBody);
+      } else {
+        print('Failed to register: ${response.body}');
+        return null;
+      }
+    } catch (e) {
+      print('Error during registration: $e');
+      return null;
+    }
+  }
+
+   Future<bool> logoutUser(String token) async {
+    final url = Uri.parse(Api.logoutEndpoint);
+
+    try {
+      final response = await http.post(
+        url,
+        headers: {
+          'Authorization': 'Bearer $token', // Pass the token for authentication
+          'Accept': 'application/json', // Expected response format
+        },
+      );
+
+      if (response.statusCode == 200) {
+        // Successfully logged out
+        return true;
+      } else {
+        // Handle failed logout
+        print('Logout failed: ${response.body}');
+        return false;
+      }
+    } catch (e) {
+      print('Error logging out: $e');
+      return false;
     }
   }
 

@@ -136,10 +136,6 @@ Future<void> _submitProfile() async {
   }
 }
 
-
-
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -1,6 +1,9 @@
+import 'package:amanagement_flutter/screens/home.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:amanagement_flutter/screens/register/register1.dart'; // Import Register1 screen
+import 'package:amanagement_flutter/screens/register/register1.dart';
+
+import '../../utils/https.dart'; // Import Register1 screen
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -19,45 +22,78 @@ class _LoginScreenState extends State<LoginScreen> {
     String email = emailController.text.trim();
     String password = passwordController.text.trim();
 
+    // Reset error messages
     setState(() {
       emailError = null;
       passwordError = null;
     });
 
+    // Validate fields
     if (email.isEmpty) {
       setState(() {
         emailError = 'Email is required';
       });
+    } else if (!RegExp(r"^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$").hasMatch(email)) {
+      setState(() {
+        emailError = 'Invalid email format';
+      });
     }
+
     if (password.isEmpty) {
       setState(() {
         passwordError = 'Password is required';
       });
     }
 
-    if (email.isNotEmpty && password.isNotEmpty) {
+    if (email.isNotEmpty && password.isNotEmpty && emailError == null) {
       setState(() {
         isLoading = true;
       });
 
       try {
-        // Simulate login API call
-        await Future.delayed(const Duration(seconds: 2)); 
+        ApiService apiService = ApiService();
+        final response = await apiService.loginUser(email, password);
 
-        // Simulate successful login
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        await prefs.setString('user_email', email);
-        await prefs.setString('user_token', 'dummy_token');
+        if (response != null && response.success) {
+          // Save the token and user data in SharedPreferences
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          await prefs.setString('user_token', response.token ?? '');
+          await prefs.setString('user_email', email);
 
-        setState(() {
-          isLoading = false;
-        });
+          setState(() {
+            isLoading = false;
+          });
 
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Login successful!')),
-        );
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Login successful!')),
+          );
 
-        // Navigate to next screen
+          // Extract user details from the response
+          final user = response.user;
+          final token = response.token;
+          final userId = user?['id'];
+          final name = user?['name'];
+
+          // Navigate to HomeScreen and pass the values
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => HomeScreen(
+                token: token ?? '',
+                userId: userId,
+                email: email,
+                name: name,
+              ),
+            ),
+          );
+        } else {
+          setState(() {
+            isLoading = false;
+          });
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Login failed: ${response?.message ?? 'Unknown error'}')),
+          );
+        }
       } catch (e) {
         setState(() {
           isLoading = false;
@@ -68,7 +104,7 @@ class _LoginScreenState extends State<LoginScreen> {
       }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please fill all fields')),
+        const SnackBar(content: Text('Please fill all fields correctly')),
       );
     }
   }

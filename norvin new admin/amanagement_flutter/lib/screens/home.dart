@@ -4,6 +4,8 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/widgets.dart'; // For Placeholder
 import 'package:shared_preferences/shared_preferences.dart';
 import '../screens/contract/contractlist.dart';
+import '../utils/https.dart';
+import 'login/login.dart';
 // import '../screens/payment/paymentlist.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -79,15 +81,39 @@ class _HomeScreenState extends State<HomeScreen> {
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
+
     });
   }
 
-  // Handle Logout
-  void _onLogout() {
-    
-    clearSharedPreferences();
+  Future<void>_onLogout(BuildContext context) async {
+    ApiService apiService = ApiService();
 
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString('user_token');
+
+
+    bool success = await apiService.logoutUser(token ?? '');
+
+    if (success) {
+      // SharedPreferences prefs = await SharedPreferences.getInstance();
+      // await prefs.remove('user_token');  // Clear the token from SharedPreferences
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Logout successful!')),
+      );
+        clearSharedPreferences();
+      // Optionally, navigate to login screen or clear navigation stack
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => LoginScreen()),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Logout failed!')),
+      );
+    }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -99,7 +125,7 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),
-            onPressed: _onLogout,
+            onPressed: () => _onLogout(context), 
           ),
         ],
       ),

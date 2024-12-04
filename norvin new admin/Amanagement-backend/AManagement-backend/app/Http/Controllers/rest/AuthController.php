@@ -54,12 +54,13 @@ class AuthController extends ApiController
         // Issue token using Sanctum
         $token = $user->createToken('Tenant-Token')->plainTextToken;
 
-        // Return success response with token and role
+        // Return success response with token and role, and user details
         return $this->successResponse([
+            'message' => 'Tenant login successful',
             'token' => $token,
-            'role' => $user->role,
-            'tenant_id' =>$user->id
-        ], 'Tenant login successful');
+            'user' => $user,  // Return user data as requested
+            'is_authenticated' => true
+        ]);
     }
 
     // Technician login (Issue Token)

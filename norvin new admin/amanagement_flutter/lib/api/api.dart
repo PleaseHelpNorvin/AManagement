@@ -4,4 +4,6 @@ class Api {
   static const String createProfileEndpoint = '$baseUrl/tenant/create-profile';
   static const String getRoomsEndpoint = '$baseUrl/tenant/room'; 
   static const String getPropertiesEndpoint = '$baseUrl/tenant/properties';
+  static const String logoutEndpoint = '$baseUrl/logout';
+  static const String loginEndpoint = '$baseUrl/tenant/login';
 }
