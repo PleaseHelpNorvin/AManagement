@@ -19,6 +19,7 @@ use App\Http\Controllers\rest\TechniciansController;
 
 //services
 use App\Http\Controllers\rest\TenantRegisterController;
+use App\Http\Controllers\rest\ContractSettingController;
 use App\Http\Controllers\rest\MaintenanceRequestController;
 
     // login route
@@ -34,12 +35,12 @@ Route::prefix('tenant')->middleware('auth:sanctum')->group(function () {
     // tenant 
     Route::post('create-tenant',[TenantsController::class,'createTenantRecord']);
     Route::post('create-profile', [TenantsController:: class, 'createTenantUserProfile']);
-    Route::get('profile/{id}', [TenantsController::class, 'showProfile']);
+    Route::get('profile/{userId}', [TenantsController::class, 'getUserProfile']);
 
     //Contracts routes
     Route::post('contracts/create', [ContractController::class, 'createContract']);
     Route::get('contracts/{contractId}/generate', [ContractController::class, 'generateContract']);
-    Route::get('contracts/{contractId}', [ContractController::class, 'showContract'])->name('contracts.show');
+    Route::get('contracts/{tenantId}', [ContractController::class, 'showContract']);
     Route::get('contracts', [ContractController::class, 'getContract']);
 
     //Properties / Rooms
@@ -96,7 +97,10 @@ Route::prefix('admin')->middleware('auth:sanctum')->group(function () {
         }
             only the next the admin can only update that data
     } */
-    Route::put('/contract-settings', [ContractSettingsController::class, 'updateContractSettings']);
+    // Route::put('/contract-settings', [ContractSettingsController::class, 'updateContractSettings']);
+    Route::get('contract-settings/', [ContractSettingController::class, 'index']); // View current settings
+    Route::post('contract-settings/', [ContractSettingController::class, 'store']); // Create or update settings
+    Route::post('contract-settings/calculate', [ContractSettingController::class, 'calculate']); // Calculate percentages
 
     // // Admin to Tenant Messaging (Admin chooses tenant)
     // Route::post('messages/{tenantId}', [MessageController::class, 'sendMessage']); // Admin sends messages to tenants

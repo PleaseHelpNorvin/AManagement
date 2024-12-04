@@ -12,6 +12,8 @@ use App\Models\Tenant;
 use App\Models\MaintenanceRequest;
 use App\Models\Message;
 use App\Models\Notification;
+use App\Models\UserProfile;  // Ensure the profile model is imported
+
 
 class User extends Authenticatable
 {

@@ -29,13 +29,13 @@ class DatabaseSeeder extends Seeder
             UserProfileSeeder::class,
             PropertySeeder::class,
             RoomSeeder::class,
-            ContractSeeder::class,
-            TenantSeeder::class,
-            BillingSeeder::class,
-            PaymentSeeder::class,
-            MaintenanceRequestSeeder::class,
-            MessageSeeder::class,
-            NotificationSeeder::class,
+            // ContractSeeder::class,
+            // TenantSeeder::class,
+            // BillingSeeder::class,
+            // PaymentSeeder::class,
+            // MaintenanceRequestSeeder::class,
+            // MessageSeeder::class,
+            // NotificationSeeder::class,
             // Add more seeders as needed
         ]);
     }

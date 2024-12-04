@@ -9,7 +9,8 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io'; // For mobile platform file handling
 import 'package:mime/mime.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import './contract1.dart';
+import '../contract/contract1.dart';
+import '../home.dart';
 
 class Register2 extends StatefulWidget {
   final int userId;
@@ -100,13 +101,21 @@ Future<void> _submitProfile() async {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => Contract1(
+          builder: (context) => HomeScreen(
             token: widget.token,
             userId: widget.userId,
             email: widget.email,
             name: widget.name,
           ),
-        ),
+        )
+        // MaterialPageRoute(
+        //   builder: (context) => Contract1(
+        //     token: widget.token,
+        //     userId: widget.userId,
+        //     email: widget.email,
+        //     name: widget.name,
+        //   ),
+        // ),
       );
     } else {
       // Print error message

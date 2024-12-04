@@ -15,6 +15,39 @@ use Illuminate\Support\Facades\Validator;
 
 class TenantsController extends ApiController
 {
+
+    public function getUserProfile($userId)
+    {
+        // Fetch the user with the related user profile using eager loading
+        $user = User::with('userProfile')->find($userId);
+
+        // Check if the user exists
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'User not found',
+            ], 404);
+        }
+
+        // Return the user data with profile information
+        return response()->json([
+            'success' => true,
+            'message' => 'Tenant Profile Retrieved Successfully',
+            'data' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'role' => $user->role,
+                'created_at' => $user->created_at,
+                'updated_at' => $user->updated_at,
+                'profile_picture_url' => $user->userProfile ? $user->userProfile->profile_picture_url : null,
+                'bio' => $user->userProfile ? $user->userProfile->bio : null,
+                'phone_number' => $user->userProfile ? $user->userProfile->phone_number : null,
+                'address' => $user->userProfile ? $user->userProfile->address : null,
+                'emergency_contact' => $user->userProfile ? $user->userProfile->emergency_contact : null,
+            ],
+        ]);
+    }
     
     public function createTenantUser(Request $request)
     {
@@ -136,7 +169,6 @@ class TenantsController extends ApiController
     
         return $this->successResponse($profile, 'Tenant user profile created successfully', 201);
     }
-
 
     public function createTenantRecord(Request $request)
     {

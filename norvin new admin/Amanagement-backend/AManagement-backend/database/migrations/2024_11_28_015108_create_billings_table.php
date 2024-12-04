@@ -26,6 +26,19 @@ return new class extends Migration
             $table->datetime('billing_period_end')->nullable();
             $table->timestamps();
         });
+
+        // Schema::create('billings', function (Blueprint $table) {
+        //     $table->id(); // Primary key
+        //     $table->string('contract_code')->unique(); // Unique contract code
+        //     $table->foreignId('contract_id')->constrained()->onDelete('cascade'); // Foreign key to contracts table
+        //     $table->decimal('rent_amount', 10, 2); // Rent amount
+        //     $table->decimal('late_fee', 10, 2); // Late fee
+        //     $table->decimal('security_deposit', 10, 2); // Security deposit
+        //     $table->decimal('total_amount', 10, 2); // Total amount (rent + late fee + security deposit)
+        //     $table->enum('status', ['pending', 'paid', 'overdue'])->default('pending'); // Billing status
+        //     $table->date('due_date'); // Due date for the payment
+        //     $table->timestamps(); // Timestamps (created_at, updated_at)
+        // });
     }
 
     /**

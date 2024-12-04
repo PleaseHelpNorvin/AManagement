@@ -22,4 +22,9 @@ class Room extends Model
     {
         return $this->hasMany(Tenant::class);
     }
+
+    public function contracts()
+    {
+        return $this->hasMany(Contract::class, 'property_id', 'property_id');
+    }
 }

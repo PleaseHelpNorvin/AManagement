@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:amanagement_mobile/screens/register/register1.dart';
-import 'package:amanagement_mobile/screens/register/register2.dart';
-import 'package:amanagement_mobile/screens/register/contract1.dart';
-import 'package:amanagement_mobile/screens/register/contract2.dart';
-import 'package:amanagement_mobile/screens/register/contract3.dart';
-import 'package:amanagement_mobile/screens/register/contract4.dart';
+// import 'package:amanagement_mobile/screens/register/register2.dart';
+// import 'package:amanagement_mobile/screens/contract/contract1.dart';
+// import 'package:amanagement_mobile/screens/contract/contract2.dart';
+// import 'package:amanagement_mobile/screens/contract/contract3.dart';
+// import 'package:amanagement_mobile/screens/contract/contract4.dart';
 void main() {
   runApp(MyApp());
 }

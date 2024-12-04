@@ -48,7 +48,10 @@ class Contract extends Model
     {
         return $this->hasMany(Billing::class);
     }
-
+    public function rooms()
+    {
+        return $this->hasManyThrough(Room::class, Property::class, 'id', 'property_id', 'property_id', 'id');
+    }
     // MANIPULATORS
 
       /**
